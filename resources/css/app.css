@@ -9,41 +9,70 @@
 
 
 @theme {
-    /*-- FUENTES --*/
+    /*  COLORES  */
 
-    --font-headlines: 'Nunito', sans-serif;
-    --font-body: 'Lora', serif;
+    /* ─── SAGE (antes teal) ─── */
+    --color-sage-400: #85b5ad;
+    --color-sage-500: #6b9e95;
 
-    /*-- COLORES --*/
+    /* ─── OLIVE ─── */
+    --color-olive-500: #b5ba73;
+    --color-olive-700: #6b702d;
+    --color-olive-800: #6b7a1a;
 
-    /*Azul turqueza*/
-    --color-menu-bg: #6b9e95;
-    /*hover menu*/
-    --color-menu-h: #85b5ad;
-    /* filter bar bg */
-    --color-filter-bg: #b5ba73;
-    /* filter hover */
-    --color-filter-h: #6b702d;
-    /* botones y acentos principales cafe rojiso*/
-    --color-accent: #8b2e2e;
-    /* hover acentos cafe rojiso oscurecido*/
-    --color-accent-h: #5d0404;
-    /* font titulos azul oscuro*/
-    --color-title-font: #2c4a52;
-    /* font acentos menu e iconos azul oscuro*/
-    --color-element-font: #1a2f35;
-    /* links de navegacion cafe */
-    --color-link-font: #4a2510;
-    /* texto sobre oscuro */
-    --color-cream: #f2e8d9;
-    /* párrafos */
-    --color-p-font: #6b7e83;
-    /* filter labels */
-    --color-labels-font: #6b7a1a;
+    /* ─── BROWN / ACCENT ─── */
+    --color-brown-600: #8b2e2e;
+    --color-brown-800: #5d0404;
+    --color-brown-900: #4a2510;
 
-    /* --color-olive-gold: #b5ba73; filter bar bg */
-    /* --color-olive-dark: #6b702d; filter hover */
+    /* ─── PINE (antes slate) ─── */
+    --color-pine-800: #2c4a52;
+    --color-pine-900: #1a2f35;
 
+    /* ─── NEUTRALS ─── */
+    --color-cream-100: #f2e8d9;
+    --color-warmgray-500: #6b7e83;
+}
+
+@theme {
+    /*  FONT  */
+    --font-headlines: "Nunito", sans-serif;
+    --font-body: "Lora", serif;
+}
+
+@theme {
+    /*  ACENTO  */
+    --color-primary: var(--color-brown-600);
+    --color-primary-hover: var(--color-brown-800);
+    --color-on-primary: var(--color-cream-100);
+}
+
+@theme {
+    /*  NAVEGACION  */
+    --color-nav-surface: var(--color-sage-500);
+    --color-nav-hover: var(--color-sage-400);
+    --color-nav-text: var(--color-brown-900);
+}
+
+@theme {
+    /*  FILTRO  */
+    --color-surface-muted: rgb(181 186 115 / 0.30);
+    --color-surface-muted-hover: rgb(107 112 45 / 0.45);
+    --color-text-label: var(--color-olive-800);
+}
+
+@theme {
+    /*  TEXTO  */
+    --color-text-primary: var(--color-pine-900);
+    --color-text-secondary: var(--color-warmgray-500);
+    --color-text-accent: var(--color-pine-800);
+    --color-text-inverse: var(--color-cream-100);
+}
+
+@theme {
+    /*  ELEMENTOS  */
+    --color-ui-strong: var(--color-pine-900);
+    --color-ui-muted: var(--color-pine-800);
 }
 
 
@@ -64,6 +93,123 @@
 
 [data-flux-label] {
     @apply !mb-0 !leading-tight;
+}
+
+@layer components {
+
+    /* ─── NAVBAR ─── */
+
+    [data-flux-navbar] {
+        background-color: var(--color-menu-bg);
+    }
+
+    /* ─── BRAND ─── */
+
+    [data-flux-brand] {
+        @apply font-bold text-base md:text-lg uppercase tracking-[0.2em];
+
+        font-family: var(--font-headlines);
+        color: var(--color-element-font);
+    }
+
+    /* ─── NAVIGATION LINK ─── */
+
+    [data-flux-nav-link] {
+        @apply font-normal text-sm;
+
+        font-family: var(--font-headlines);
+        color: var(--color-link-font);
+    }
+
+    [data-flux-nav-link]:hover {
+        background-color: var(--color-menu-h);
+    }
+
+    /* ─── BUTTON ─── */
+
+    [data-flux-button] {
+        @apply font-semibold text-sm;
+        border-radius: var(--radius-full);
+        font-family: var(--font-headlines);
+    }
+
+    [data-flux-button][data-variant="primary"] {
+        background-color: var(--color-accent);
+        color: var(--color-cream);
+    }
+
+    [data-flux-button][data-variant="primary"]:hover {
+        background-color: var(--color-accent-h);
+    }
+
+    [data-flux-button][data-variant="menu"] {
+        @apply border;
+        color: var(--color-element-font);
+        border-color: var(--color-element-font);
+    }
+
+    [data-flux-button][data-variant="menu"]:hover {
+        background-color: var(--color-menu-h);
+        color: var(--color-cream);
+        border-color: var(--color-menu-h);
+    }
+
+    /* ─── HEADING ─── */
+
+    [data-flux-heading] {
+        @apply font-bold text-4xl md:text-5xl lg:text-6xl leading-tight;
+
+        font-family: var(--font-body);
+        color: var(--color-title-font);
+    }
+
+    [data-flux-heading-accent] {
+        @apply italic;
+
+        color: var(--color-accent);
+    }
+
+    /* ─── EYEBROW ─── */
+
+    [data-flux-eyebrow] {
+        @apply font-normal text-xs uppercase tracking-[0.25em];
+
+        font-family: var(--font-headlines);
+        color: var(--color-accent);
+    }
+
+    /* ─── TEXT ─── */
+
+    [data-flux-text] {
+        @apply font-normal text-base leading-relaxed;
+
+        font-family: var(--font-headlines);
+        color: var(--color-p-font);
+    }
+
+    /* ─── FILTER ─── */
+
+    [data-flux-filter] {
+        background-color: rgb(181 186 115 / .3);
+    }
+
+    [data-flux-filter]:hover {
+        background-color: rgb(107 112 45 / .45);
+    }
+
+    [data-flux-filter-label] {
+        @apply font-normal text-[10px] uppercase tracking-[0.18em];
+
+        font-family: var(--font-headlines);
+        color: var(--color-labels-font);
+    }
+
+    [data-flux-filter-value] {
+        @apply font-medium text-sm;
+
+        font-family: var(--font-headlines);
+        color: var(--color-title-font);
+    }
 }
 
 input:focus[data-flux-control],
