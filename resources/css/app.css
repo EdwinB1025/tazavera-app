@@ -181,18 +181,18 @@
 
 
     .tz-button-nav {
-        @apply border-1 border-solid rounded-full p-1;
-        border-color: var(--color-text-primary);
+        @apply font-semibold border-1 border-solid border-2 rounded-full p-1;
+        border-color: var(--color-text-inverse);
         width: 5rem;
-        background-color: transparent;
-        color: var(--color-text-primary);
+        background-color: var(--color-primary);
+        color: var(--color-text-inverse);
     }
 
     .tz-button-nav:hover {
         @apply shadow-lg;
-        background-color: var(--color-nav-hover);
-        border-color: var(--color-text-inverse);
-        color: var(--color-text-inverse);
+        background-color: color-mix(in srgb, var(--color-ui-strong) 50%, transparent);
+        border-color: var(--color-ui-strong);
+        color: var(--color-ui-strong);
     }
 
     /* ─── HEADING ─── */

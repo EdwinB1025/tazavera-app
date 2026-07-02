@@ -2,8 +2,8 @@
     class="flex items-center justify-between w-full h-42 px-6"
     style="background-color: var(--color-nav-surface); height: 4rem;">
 
-    <div class="flex items-center">
-        <x-app-logo-icon class="w-16 h-16 -mt-1" />
+    <div class="flex items-center gap-1">
+        <x-app-logo-icon class="w-10 h-10 -mt-2" />
         <span class="tz-brand">TAZAVERA</span>
     </div>
 
