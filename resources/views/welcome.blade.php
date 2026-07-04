@@ -10,10 +10,10 @@
     <div class="h-[70%] w-[80%] flex items-stretch overflow-hidden relative">
         {{-- IZQUIERDA: Texto --}}
         <div class="flex-1 flex flex-col justify-center gap-9">
-            <span class="tz-subtitle2">La guía del catador</span>
+            <span class="tz-subtitle2">LA GUIA DEL BUEN CAFÉ</span>
 
             <flux:heading>
-                Cafés que <span class="tz-accent">merecen</span> cada sorbo
+                Tu café, el que <span class="tz-accent">merecen</span> cada sorbo
             </flux:heading>
 
             <p class="self-stretch tz-paragraph w-full">

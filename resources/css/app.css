@@ -59,8 +59,9 @@
 
 @theme {
     /*  FILTRO  */
-    --color-surface-muted: rgb(181 186 115 / 0.30);
-    --color-surface-muted-hover: rgb(107 112 45 / 0.45);
+    --color-surface-muted: color-mix(in srgb, var(--color-olive-500) 30%, transparent);
+    --color-surface-neutral: color-mix(in srgb, var(--color-olive-500) 85%, transparent);
+    --color-surface-muted-hover: color-mix(in srgb, var(--color-olive-500) 40%, transparent);
 }
 
 @theme {
@@ -68,6 +69,7 @@
     --color-text-primary: var(--color-pine-800);
     --color-text-secondary: var(--color-warmgray-500);
     --color-text-terciary: var(--color-olive-500);
+    --color-text-accent: var(--color-brown-600);
     --color-text-filter-label: var(--color-olive-800);
     --color-text-label: var(--color-olive-400);
     --color-text-accent: var(--color-pine-800);
@@ -110,13 +112,9 @@
         background-color: var(--color-nav-surface);
     }
 
-    [data-flux-navlist] {
-        @apply !flex !items-center !justify-center !gap-1 !rounded-none !py-0;
-        background-color: var(--color-nav-surface);
-    }
-
+    [data-flux-navlist],
     [data-flux-sidebar] {
-        @apply !flex !items-center !justify-center !gap-1 !rounded-none !py-0;
+        @apply !flex !flex-col !items-stretch !gap-1 !rounded-none !py-0;
         background-color: var(--color-nav-surface);
     }
 
@@ -128,35 +126,105 @@
         background-color: transparent !important;
     }
 
-
-    [data-flux-navbar-items] [data-content] {
-        @apply !text-sm !text-center;
-        font-family: var(--font-headlines) !important;
-        color: var(--color-nav-text) !important;
-    }
-
-    [data-flux-navbar-items]:hover {
-        @apply !inset-shadow-sm;
-        background-color: var(--color-nav-hover) !important;
-    }
-
-
-    [data-flux-sidebar-items] {
+    [data-flux-navlist-item],
+    [data-flux-sidebar-item] {
         @apply !rounded-none;
-        flex-basis: 6rem !important;
+        width: 100% !important;
         height: 4rem !important;
         background-color: transparent !important;
     }
 
 
-    [data-flux-sidebar-items] [data-content] {
-        @apply !text-sm !text-center;
+    [data-flux-navbar-items] [data-content],
+    [data-flux-navlist-item] [data-content],
+    [data-flux-sidebar-item] [data-content] {
+        @apply !text-base !text-center !italic;
         font-family: var(--font-headlines) !important;
         color: var(--color-nav-text) !important;
     }
 
-    [data-flux-sidebar-items]:hover {
+    [data-flux-navbar-items]:hover [data-content],
+    [data-flux-navlist-item]:hover [data-content],
+    [data-flux-sidebar-item]:hover [data-content] {
+        @apply !font-bold;
+    }
+
+
+    [data-flux-navbar-items]:hover,
+    [data-flux-navlist-item]:hover,
+    [data-flux-sidebar-item]:hover {
         @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    /* ─── SEARCH (sidebar) ─── */
+    [data-flux-sidebar] [data-flux-control] {
+        @apply !rounded-lg;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-sidebar] [data-flux-control]::placeholder {
+        color: var(--color-ui-muted) !important;
+        font-style: italic !important;
+        opacity: 1 !important;
+    }
+
+
+    /* ─── MENU (dropdown) ─── */
+    [data-flux-menu] {
+        @apply !rounded-lg;
+        background-color: var(--color-nav-surface) !important;
+    }
+
+    [data-flux-menu-item] {
+        @apply !rounded-none;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-menu-item]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    /* ─── TOGGLE (en el sidebar) ─── */
+    [data-flux-sidebar-toggle] {
+        @apply !rounded-lg;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-sidebar-toggle]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+
+    /* ─── PROFILE (avatar) ─── */
+    [data-flux-profile] {
+        @apply !rounded-lg;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-profile]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+
+    /* ─── MENU RADIO (dropdown en el menu) ─── */
+    [data-flux-menu-radio] {
+        @apply !rounded-none;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+    }
+
+    [data-flux-menu-radio]:hover {
         background-color: var(--color-nav-hover) !important;
     }
 
@@ -237,30 +305,6 @@
         color: var(--color-ui-strong) !important;
     }
 
-    /* ─── BRAND / LOGO ─── */
-    .tz-brand {
-        @apply font-bold text-base md:text-lg uppercase tracking-[0.2em];
-        font-family: var(--font-headlines);
-        color: var(--color-ui-strong);
-    }
-
-    /* ─── FILTRO─── */
-    .tz-filter {
-        @apply flex content-evenly rounded-2xl shadow-2xl w-full max-w-[90%] fixed bottom-12 inset-x-0 mx-auto z-10;
-        background-color: var(--color-surface-muted);
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        border: none;
-    }
-
-    .tz-filter [data-flux-select] {}
-
-    [data-flux-label] {
-        @apply !mb-0 !leading-tight;
-        color: var(--color-text-filter-label) !important;
-    }
-
     .tz-logincard {
         @apply rounded-2xl border-2 p-4;
         background-color: var(--color-text-inverse);
@@ -311,8 +355,27 @@
         border-color: var(--color-ui-strong) !important;
     }
 
+    /* ─── BRAND / LOGO ─── */
+    .tz-brand {
+        @apply font-bold text-base md:text-lg uppercase tracking-[0.2em];
+        font-family: var(--font-headlines);
+        color: var(--color-ui-strong);
+    }
+
+    /* ─── FILTRO─── */
+    .tz-filter {
+        @apply rounded-2xl;
+        @apply flex content-evenly rounded-2xl shadow-2xl w-full max-w-[90%] fixed bottom-12 inset-x-0 mx-auto z-10;
+        background-color: var(--color-surface-muted);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border: none;
+        overflow: hidden;
+    }
+
     .tz-filter [data-flux-field] {
-        @apply !flex-1 !flex !flex-col !items-start !gap-3 !px-6 !py-4;
+        @apply !flex-1 !flex !flex-col !items-start !gap-1 !px-6 !py-2 !pb-3;
         text-align: left;
         transition: background-color 150ms ease;
         border-right: 1px solid rgba(15, 13, 11, 0.15);
@@ -324,14 +387,36 @@
         ;
     }
 
+    [data-flux-label] {
+        @apply !mb-0 !leading-tight;
+        color: var(--color-text-filter-label) !important;
+    }
+
+    .tz-filter [data-flux-label] {
+        @apply !mb-0 !leading-tight;
+        color: var(--color-text-filter-label) !important;
+    }
+
+
     .tz-filter [data-flux-field]:hover {
         background-color: var(--color-surface-muted-hover);
+    }
+
+    .tz-filter [data-flux-field] [data-flux-input] {
+        background-color: inherit !important;
+        border: inherit !important;
     }
 
     .tz-filter [data-flux-control] {
         @apply !font-normal !text-sm;
         font-family: var(--font-headlines) !important;
         color: var(--color-text-primary) !important;
+    }
+
+    .tz-filter [data-flux-control] option {
+        @apply font-bold;
+        background-color: var(--color-surface-neutral) !important;
+        color: var(--color-text-accent) !important;
     }
 
     .tz-filter input:focus[data-flux-control],

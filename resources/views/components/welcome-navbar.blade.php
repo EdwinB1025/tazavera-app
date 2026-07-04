@@ -2,9 +2,8 @@
     class="flex items-center justify-between w-full h-42 px-6"
     style="background-color: var(--color-nav-surface); height: 4rem;">
 
-    <div class="flex items-center gap-1">
-        <x-app-logo-icon class="w-10 h-10 -mt-2" />
-        <span class="tz-brand">TAZAVERA</span>
+    <div class="flex items-center justify-center gap-1 w-3xs">
+        <x-logo.app-logo :navbar="true" />
     </div>
 
     <flux:navbar class="flex-1 justify-center">
@@ -14,7 +13,7 @@
     </flux:navbar>
 
 
-    <div class="flex items-center text-center">
-        <a class="tz-button-nav" href="{{ route('login') }}">Sign In</a>
+    <div class="flex items-stretch justify-center text-center w-3xs">
+        <a class="tz-button-nav " href="{{ route('login') }}">Sign In</a>
     </div>
 </header>

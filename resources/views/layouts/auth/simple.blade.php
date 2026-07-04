@@ -8,9 +8,9 @@
 <body class="min-h-screen bg-white antialiased">
     <div class="tz-bg-inverse flex min-h-svh flex-col items-center justify-center">
         <div class="tz-logincard flex w-ful  max-w-sm sm:max-w-lg flex-col gap-2">
-            <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
+            <a href="{{ route('landing') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
                 <span class="flex h-full w-full mb-1 items-center justify-center rounded-md">
-                    <x-app-logo-icon class="size-20 fill-current" />
+                    <x-logo.app-logo class="size-20 fill-current mx-auto h-full" />
                 </span>
                 <span class="sr-only">{{ config('app.name', 'TAZAVERA') }}</span>
             </a>
