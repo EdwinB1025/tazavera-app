@@ -6,7 +6,7 @@
 </head>
 
 <body class="tz-main">
-    <x-welcome-navbar />
+    <x-welcome.navbar />
     <div class="h-[70%] w-[80%] flex items-stretch overflow-hidden relative">
         {{-- IZQUIERDA: Texto --}}
         <div class="flex-1 flex flex-col justify-center gap-9">
@@ -35,7 +35,7 @@
                 class="w-full h-auto object-contain scale-90 origin-bottom-right translate-x-10 translate-y-15" />
         </div>
     </div>
-    <x-welcome-filterbar />
+    <x-welcome.filterbar />
 </body>
 
 </html>

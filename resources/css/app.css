@@ -216,6 +216,20 @@
         background-color: var(--color-nav-hover) !important;
     }
 
+    /* ─── MENU AVATAR (dropdown en el menu) ─── */
+
+    [data-flux-menu] {
+        background-color: var(--color-nav-surface) !important;
+        font-family: var(--font-headlines) !important;
+    }
+
+    [data-flux-menu-item] {
+        color: var(--color-nav-text) !important;
+    }
+
+    [data-flux-menu-item]:hover {
+        background-color: var(--color-nav-hover) !important;
+    }
 
     /* ─── MENU RADIO (dropdown en el menu) ─── */
     [data-flux-menu-radio] {

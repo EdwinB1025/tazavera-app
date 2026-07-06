@@ -7,7 +7,7 @@
         <x-auth.session-status class="text-center" :status="session('status')" />
 
         {{-- @chisel-passkeys --}}
-        <x-passkey-verify
+        <x-user.passkey-verify
             options-route="passkey.confirm-options"
             submit-route="passkey.confirm"
             :label="__('Confirmar con passkey')"
