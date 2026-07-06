@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('name', 60)->change();
             $table->string('surname', 60)->after('name');
-            $table->unsignedBigInteger('role_id')->after('surname');
         });
     }
 
@@ -28,7 +27,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('name')->change();
             $table->dropColumn('surname');
-            $table->dropColumn('role_id');
         });
     }
 };

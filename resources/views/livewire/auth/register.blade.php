@@ -11,7 +11,7 @@
             <flux:input class="tz-input"
                 name="name"
                 :label="__('Nombre')"
-                :value="old('nombre')"
+                :value="old('name')"
                 type="text"
                 required
                 autofocus
@@ -26,7 +26,7 @@
                 type="text"
                 required
                 autofocus
-                autocomplete="name"
+                autocomplete="surname"
                 :placeholder="__('Apellido completo')" />
 
             <!-- Email Address -->

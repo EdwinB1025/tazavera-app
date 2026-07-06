@@ -9,7 +9,7 @@
     <flux:header container class=" border-b">
         <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
-        <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
+        <x-logo.app-logo href="{{ route('dashboard') }}" wire:navigate />
 
         <flux:navbar class="-mb-px max-lg:hidden">
             <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
