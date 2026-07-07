@@ -5,8 +5,8 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white antialiased">
-    <div class="tz-bg-inverse flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+<body class="tz-bg-inverse min-h-screen bg-white antialiased">
+    <div class="tz-form-main flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
         <div class="flex w-full max-w-sm sm:max-w-lg flex-col gap-6">
             <a href="{{ route('landing') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
                 <span class="flex h-full w-full mb-1 items-center justify-center rounded-md">

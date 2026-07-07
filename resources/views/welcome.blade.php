@@ -5,7 +5,7 @@
     @include('partials.head')
 </head>
 
-<body class="tz-main">
+<body class="tz-welcome-bg">
     <x-welcome.navbar />
     <div class="h-[70%] w-[80%] flex items-stretch overflow-hidden relative">
         {{-- IZQUIERDA: Texto --}}

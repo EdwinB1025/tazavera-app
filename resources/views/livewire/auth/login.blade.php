@@ -6,7 +6,7 @@
         <x-auth.session-status class="text-center" :status="session('status')" />
 
         {{-- @chisel-passkeys --}}
-        <x-passkey-verify />
+        <x-user.passkey-verify />
         {{-- @end-chisel-passkeys --}}
 
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
