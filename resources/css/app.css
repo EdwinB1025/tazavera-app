@@ -1,40 +1,93 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap");
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
-@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    /*  COLORES  */
 
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
+    /* ─── SAGE  ─── */
+    --color-sage-400: #c3eae7;
+    --color-sage-500: #85b5ad;
+    --color-sage-600: #6B9E95;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+    /* ─── OLIVE ─── */
+    --color-olive-400: #c1cd18;
+    --color-olive-500: #b5ba73;
+    --color-olive-700: #6b702d;
+    --color-olive-800: #6b7a1a;
+
+    /* ─── BROWN / ACCENT ─── */
+    --color-brown-600: #8b2e2e;
+    --color-brown-800: #5d0404;
+    --color-brown-900: #4a2510;
+
+    /* ─── PINE  ─── */
+    --color-pine-700: #2C4A52;
+    --color-pine-800: #1a2f35;
+    --color-pine-900: color-mix(in srgb, var(--color-pine-800) 95%, black);;
+
+    /* ─── NEUTRALS ─── */
+    --color-cream-100: #f2e8d9;
+    --color-warmgray-500: #6b7e83;
+    --color-neutral: color-mix(in srgb, var(--color-sage-500) 30%, white);
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
+@theme {
+    /*  FONT  */
+    --font-headlines: "Nunito", sans-serif;
+    --font-body: "Lora", serif;
 }
+
+@theme {
+    /*  ACENTO  */
+    --color-primary: var(--color-brown-600);
+    --color-primary-hover: var(--color-brown-800);
+    --color-on-primary: var(--color-cream-100);
+}
+
+@theme {
+    /*  NAVEGACION  */
+    --color-nav-obscure: var(--color-pine-900);
+    --color-nav-surface: var(--color-sage-500);
+    --color-nav-current: color-mix(in srgb, var(--color-sage-500) 60%, var(--color-sage-600));
+    --color-nav-muted: var(--color-sage-400);
+    --color-nav-hover: var(--color-sage-600);
+    --color-nav-off: var(--color-warmgray-500);
+    --color-nav-text: var(--color-brown-900);
+}
+
+@theme {
+    /*  FILTRO  */
+    --color-surface-muted: color-mix(in srgb, var(--color-olive-500) 30%, transparent);
+    --color-surface-neutral: color-mix(in srgb, var(--color-olive-500) 85%, transparent);
+    --color-surface-muted-hover: color-mix(in srgb, var(--color-olive-500) 40%, transparent);
+    --color-surface-form: var(--color-cream-100);
+
+}
+
+@theme {
+    /*  TEXTO  */
+    --color-text-primary: var(--color-pine-700);
+    --color-text-secondary: var(--color-warmgray-500);
+    --color-text-terciary: var(--color-olive-500);
+    --color-text-accent: var(--color-brown-600);
+    --color-text-filter-label: var(--color-olive-800);
+    --color-text-label: var(--color-olive-400);
+    --color-text-inverse: var(--color-cream-100);
+}
+
+@theme {
+    /*  ELEMENTOS  */
+    --color-ui-strong: var(--color-pine-800);
+    --color-ui-muted: var(--color-pine-700);
+}
+
 
 @layer base {
 
@@ -47,20 +100,467 @@
     }
 }
 
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
-}
+@layer components {
 
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
-}
+    /* -- MAIN  --*/
+    @layer components {
+        .tz-welcome-bg {
+            @apply flex flex-col items-center pb-6 gap-2;
+            background-color: var(--color-cream-100);
+            min-height: 100vh;
+            height: 100vh;
+        }
+    }
 
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
+    /* ─── NAVEGACION ─── */
+    [data-flux-header] {
+        @apply !flex !items-center !justify-center !gap-1 !rounded-none !py-0;
+        background-color: color-mix(in srgb, var(--color-nav-surface) 85%, var(--color-ui-strong)) !important;
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+    }
+
+    [data-flux-navbar] {
+        @apply !flex !items-center !justify-center !gap-1 !rounded-none !py-0;
+        background-color: transparent !important;
+    }
+
+    [data-flux-navlist] {
+        @apply !flex !flex-col !items-stretch !gap-1 !rounded-none !py-0;
+        background-color: var(--color-nav-surface);
+    }
+
+    [data-flux-sidebar] {
+        @apply !flex !flex-col !items-stretch !gap-1 !rounded-r-lg !py-2 !mt-2;
+        background-color: var(--color-nav-surface) !important;
+    }
+
+
+    [data-flux-navbar-items] {
+        @apply !rounded-none !flex !items-center !min-w-40 max-lg:!min-w-34 max-md:!min-w-32;
+        height: 4rem !important;
+        flex-basis: 6rem !important;
+        background-color: transparent !important;
+    }
+
+
+    [data-flux-navlist-item],
+    [data-flux-sidebar-item] {
+        @apply !rounded-none !flex !items-center !min-w-40 !min-h-12 max-lg:!min-w-34 max-md:!min-w-32;
+        width: 100% !important;
+        background-color: transparent !important;
+    }
+
+
+    [data-flux-navbar-items] [data-content] {
+        @apply !text-base !text-center !italic !text-base max-lg:!text-sm max-md:!text-xs ;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+    }
+
+
+
+    [data-flux-navlist-item] [data-content],
+    [data-flux-sidebar-item] [data-content] {
+        @apply !text-base !text-base max-lg:!text-sm max-md:!text-xs;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-text-primary) !important;
+    }
+
+    [data-flux-navbar-items][data-current]{
+        @apply !shadow-md ;
+        background-color: var(--color-nav-current) !important;
+    }
+
+    [data-flux-navlist-item][data-current],
+    [data-flux-sidebar-item][data-current] {
+        @apply !shadow-md !underline !underline-offset-3;
+        background-color: var(--color-nav-current) !important;
+        text-decoration-color: var(--color-text-accent) !important;
+    }
+
+
+    [data-flux-navbar-items]:hover [data-content],
+    [data-flux-navlist-item]:hover [data-content],
+    [data-flux-sidebar-item]:hover [data-content] {
+        @apply !font-bold;
+    }
+
+    [data-flux-navbar-items] [data-flux-icon] {
+        color: var(--color-text-primary) !important;
+    }
+
+    [data-flux-navlist-item] [data-flux-icon],
+    [data-flux-sidebar-item] [data-flux-icon] {
+        color: var(--color-nav-text) !important;
+    }
+
+    [data-flux-navbar-items]:hover [data-flux-icon],
+    [data-flux-navlist-item]:hover [data-flux-icon],
+    [data-flux-sidebar-item]:hover [data-flux-icon] {
+        color: var(--color-text-terciary) !important;
+    }
+
+    [data-flux-navbar-items]:hover,
+    [data-flux-navlist-item]:hover,
+    [data-flux-sidebar-item]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+    
+
+    /* ─── SEARCH (sidebar) ─── */
+    [data-flux-sidebar] [data-flux-control] {
+        @apply !rounded-lg;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-sidebar] [data-flux-control]::placeholder {
+        color: var(--color-ui-muted) !important;
+        font-style: italic !important;
+        opacity: 1 !important;
+    }
+
+    /* ─── TOGGLE (en el sidebar) ─── */
+
+    [data-flux-sidebar-toggle][data-flux-button] {
+        @apply -mr-5;
+        background-color: var(--color-nav-hover) !important;
+        color: var(--color-text-primary) !important;
+    }
+
+    [data-flux-sidebar-toggle][data-flux-button]:hover {
+        @apply !inset-shadow-sm;
+        background-color: color-mix(in srgb, var(--color-ui-strong) 30%, transparent) !important;
+        color: var(--color-text-inverse) !important;
+    }
+
+
+    /* ─── MENU (dropdown) ─── */
+    [data-flux-menu] {
+        @apply !rounded-lg;
+        background-color: var(--color-nav-surface) !important;
+    }
+
+    [data-flux-menu-items] {
+        @apply !rounded-none;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-menu-items]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+
+    /* ─── PROFILE (avatar) ─── */
+    [data-flux-profile] {
+        @apply !rounded-lg;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+        background-color: transparent !important;
+    }
+
+    [data-flux-profile]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    /* ─── PROFILE (texto nombre) ─── */
+    [data-flux-profile]>span {
+        color: var(--color-text-accent) !important;
+    }
+
+    [data-flux-avatar] {
+        @apply ring-2 ring-offset-2;
+        background-color: var(--color-text-primary) !important;
+        --tw-ring-color: var(--color-text-primary);
+        --tw-ring-offset-color: var(--color-nav-surface);
+    }
+
+    [data-flux-avatar]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-primary) !important;
+        --tw-ring-color: var(--color-primary);
+        --tw-ring-offset-color: var(--color-nav-hover);
+    }
+
+    /* ─── MENU AVATAR (dropdown en el menu) ─── */
+
+    [data-flux-menu] {
+        background-color: var(--color-nav-surface) !important;
+        font-family: var(--font-headlines) !important;
+    }
+
+    [data-flux-menu-item] {
+        color: var(--color-nav-text) !important;
+    }
+
+    [data-flux-menu-item]:hover {
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    /* ─── MENU RADIO (dropdown en el menu) ─── */
+    [data-flux-menu-radio] {
+        @apply !rounded-none;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-nav-text) !important;
+    }
+
+    [data-flux-menu-radio]:hover {
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    /* ─── BOTÓN ─── */
+    /* Base: aplica a todos */
+    [data-flux-button] {
+        @apply !font-semibold !text-sm !rounded-full !cursor-pointer;
+        background-color: var(--color-primary) !important;
+        font-family: var(--font-headlines) !important;
+    }
+
+    [data-flux-button]:hover {
+        background-color: var(--color-primary-hover) !important;
+    }
+
+
+    .tz-button-nav {
+        @apply font-semibold border-1 border-solid border-2 rounded-full p-1;
+        border-color: var(--color-text-inverse);
+        width: 5rem;
+        background-color: var(--color-primary);
+        color: var(--color-text-inverse);
+    }
+
+    .tz-button-nav:hover {
+        @apply shadow-lg;
+        background-color: color-mix(in srgb, var(--color-ui-strong) 50%, transparent);
+        border-color: var(--color-ui-strong);
+        color: var(--color-ui-strong);
+    }
+
+    /* ─── HEADING ─── */
+    [data-flux-heading] {
+        @apply !font-bold !text-4xl md:text-5xl lg:text-6xl !leading-tight;
+        font-family: var(--font-body) !important;
+        color: var(--color-text-primary) !important;
+    }
+
+    /* ─── SUBHEADING ─── */
+    [data-flux-subheading] {
+        @apply !font-semibold !text-base !tracking-[0.1rem];
+        font-family: var(--font-headline) !important;
+        color: var(--color-primary) !important;
+    }
+
+    /* ─── ACENTO (énfasis itálica, hereda fuente) ─── */
+    .tz-accent {
+        @apply italic;
+        color: var(--color-primary);
+    }
+
+    /* ─── PÁRRAFO ─── */
+    .tz-paragraph {
+        @apply font-normal text-lg leading-relaxed w-full p-2;
+        font-family: var(--font-headlines);
+        color: var(--color-text-secondary);
+    }
+
+    [data-flux-text] {
+        @apply !font-normal !text-base !leading-relaxed;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-text-primary) !important;
+    }
+
+    /* ─── EYEBROW / SUBTÍTULO ─── */
+    .tz-subtitle {
+        @apply font-normal text-xs uppercase tracking-[0.25em];
+        font-family: var(--font-headlines);
+        color: var(--color-primary);
+    }
+
+    .tz-subtitle2 {
+        @apply font-semibold text-xs tracking-[0.25em];
+        font-family: var(--font-headlines);
+        color: var(--color-text-filter-label);
+    }
+
+    [data-flux-link] {
+        color: var(--color-ui-muted) !important;
+    }
+
+    [data-flux-link]:hover {
+        @apply !font-bold;
+        color: var(--color-ui-strong) !important;
+    }
+
+    .tz-logincard {
+        @apply rounded-2xl border-2 p-4;
+        background-color: var(--color-text-inverse);
+        border-color: var(--color-ui-strong);
+    }
+
+    .tz-background {
+        background-color: var(--color-text-inverse);
+    }
+
+    .tz-bg-inverse {
+        background-color: var(--color-neutral);
+    }
+
+    .tz-bg-form-muted {
+        background-color: color-mix(in srgb, var(--color-surface-form) 70%, rgb(255, 255, 255));
+    }
+
+    .tz-bg-gray {
+        background-color: color-mix(in srgb, var(--color-surface-form) 70%, rgb(193, 193, 193));
+    }
+
+    .tz-form-main {
+        @apply rounded-2xl border-2 shadow-xl p-4 pb-5;
+        background-color: color-mix(in srgb, var(--color-surface-form) 98%, rgb(0, 0, 0));
+        border-color: var(--color-ui-strong);
+    }
+
+    .tz-form-main [data-flux-navlist] {
+        background-color: transparent !important;
+    }
+
+    .tz-form-main [data-flux-navlist-item][data-current] [data-content] {
+        @apply !underline !underline-offset-4;
+        text-decoration-color: var(--color-primary) !important;
+    }
+
+    .tz-form-main [data-flux-navlist-item]:hover {
+        background-color: transparent !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+    }
+
+    /* Texto: va en el ui-radio directamente (el texto es nodo suelto) */
+    .tz-form-main [data-flux-radio-segmented] {
+        color: var(--color-text-primary) !important;
+    }
+
+    /* Icono */
+    .tz-form-main [data-flux-radio-segmented] [data-flux-icon] {
+        color: var(--color-text-secondary) !important;
+    }
+
+    [data-flux-field] [data-flux-label] {
+        @apply !mb-2;
+    }
+
+    [data-flux-input] {
+        @apply border-2 rounded-lg;
+        border-color: var(--color-ui-strong) !important;
+        background-color: color-mix(in srgb, var(--color-text-inverse) 40%, white);
+    }
+
+    [data-flux-input] [data-flux-control] {
+        color: var(--color-ui-strong) !important;
+    }
+
+    [data-flux-input] [data-flux-control]::placeholder {
+        color: var(--color-ui-muted) !important;
+        font-style: italic !important;
+        opacity: 0.5 !important;
+    }
+
+    /* tamaño del icono */
+    [data-flux-input] [data-flux-icon] {
+        @apply !size-4;
+        color: white !important;
+    }
+
+    /* color del ojo */
+    [data-flux-input] button:hover [data-flux-icon] {
+        color: var(--color-text-secondary) !important;
+    }
+
+    [data-flux-checkbox-indicator] {
+        @apply border-2 !rounded-sm !box-border;
+        border-color: var(--color-ui-strong) !important;
+    }
+
+    /* ─── BRAND / LOGO ─── */
+    .tz-brand {
+        @apply font-bold text-base md:text-xs lg:text-base xl:text-lg uppercase tracking-[0.2em];
+        font-family: var(--font-headlines);
+        color: var(--color-ui-strong);
+    }
+
+    /* ─── FILTRO─── */
+    .tz-filter {
+        @apply rounded-2xl;
+        @apply flex content-evenly rounded-2xl shadow-2xl w-full max-w-[90%] fixed bottom-12 inset-x-0 mx-auto z-10;
+        background-color: var(--color-surface-muted);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border: none;
+        overflow: hidden;
+    }
+
+    .tz-filter [data-flux-field] {
+        @apply !flex-1 !flex !flex-col !items-start !gap-1 !px-6 !py-2 !pb-3;
+        text-align: left;
+        transition: background-color 150ms ease;
+        border-right: 1px solid rgba(15, 13, 11, 0.15);
+
+        &:last-of-type {
+            border-right: none;
+        }
+
+        ;
+    }
+
+    [data-flux-label] {
+        @apply !mb-0 !leading-tight;
+        color: var(--color-text-filter-label) !important;
+    }
+
+    .tz-filter [data-flux-label] {
+        @apply !mb-0 !leading-tight;
+        color: var(--color-text-filter-label) !important;
+    }
+
+
+    .tz-filter [data-flux-field]:hover {
+        background-color: var(--color-surface-muted-hover);
+    }
+
+    .tz-filter [data-flux-field] [data-flux-input] {
+        background-color: inherit !important;
+        border: inherit !important;
+    }
+
+    .tz-filter [data-flux-control] {
+        @apply !font-normal !text-sm;
+        font-family: var(--font-headlines) !important;
+        color: var(--color-text-primary) !important;
+    }
+
+    .tz-filter [data-flux-control] option {
+        @apply font-bold;
+        background-color: var(--color-surface-neutral) !important;
+        color: var(--color-text-accent) !important;
+    }
+
+    .tz-filter input:focus[data-flux-control],
+    .tz-filter select:focus[data-flux-control],
+    .tz-filter textarea:focus[data-flux-control] {
+        @apply outline-hidden ring-2 ring-offset-2;
+        --tw-ring-color: var(--color-olive-500) !important;
+        --tw-ring-offset-color: var(--color-text-inverse) !important;
+    }
+
+    input:focus[data-flux-control],
+    textarea:focus[data-flux-control],
+    select:focus[data-flux-control] {
+        @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+    }
+
+}
