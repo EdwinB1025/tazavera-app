@@ -1,6 +1,6 @@
 <flux:header class="flex max-md:flex-col max-md:!gap-5 items-center justify-between">
 
-    <div class="flex items-center justify-center xl:mr-20 gap-1 lg:w-26 xl:w-42 cursor-pointer">
+    <div class="flex items-center justify-center md:mr-4 xl:mr-20 gap-1 lg:w-42 cursor-pointer">
         <x-logo.app-logo :navbar="true" iconClass="size-10 max-md:size-18" href="{{ route('home') }}" wire:navigate />
     </div>
 

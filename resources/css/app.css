@@ -135,61 +135,74 @@
     }
 
 
-    [data-flux-navbar-items],
-    [data-flux-navlist-items],
-    [data-flux-sidebar-items] {
+    [data-flux-navbar-items] {
         @apply !rounded-none !flex !items-center !min-w-40 max-lg:!min-w-34 max-md:!min-w-32;
         height: 4rem !important;
+        flex-basis: 6rem !important;
         background-color: transparent !important;
     }
 
-    [data-flux-navbar-items] {
-        flex-basis: 6rem !important;
-    }
 
-    [data-flux-navlist-items],
-    [data-flux-sidebar-items] {
+    [data-flux-navlist-item],
+    [data-flux-sidebar-item] {
+        @apply !rounded-none !flex !items-center !min-w-40 !min-h-12 max-lg:!min-w-34 max-md:!min-w-32;
         width: 100% !important;
-        background-color: var(--color-nav-current) !important;
+        background-color: transparent !important;
     }
 
-    [data-flux-navbar-items] [data-content],
-    [data-flux-navlist-items] [data-content],
-    [data-flux-sidebar-items] [data-content] {
+
+    [data-flux-navbar-items] [data-content] {
         @apply !text-base !text-center !italic !text-base max-lg:!text-sm max-md:!text-xs ;
         font-family: var(--font-headlines) !important;
         color: var(--color-nav-text) !important;
     }
 
-    [data-flux-navbar-items][data-current],
-    [data-flux-navlist-items][data-current],
-    [data-flux-sidebar-items][data-current] {
-        @apply !shadow-md;
-        background-color: var(--color-nav-current) !important;
-        background-color: var(--color-nav-current) !important;
-    }
 
-    [data-flux-navbar-items]:hover [data-content],
-    [data-flux-navlist-items]:hover [data-content],
-    [data-flux-sidebar-items]:hover [data-content] {
-        @apply !font-bold;
-    }
 
-    [data-flux-navbar-items] [data-flux-icon],
-    [data-flux-navlist-items] [data-flux-icon],
-    [data-flux-sidebar-items] [data-flux-icon] {
+    [data-flux-navlist-item] [data-content],
+    [data-flux-sidebar-item] [data-content] {
+        @apply !text-base !text-base max-lg:!text-sm max-md:!text-xs;
+        font-family: var(--font-headlines) !important;
         color: var(--color-text-primary) !important;
     }
 
+    [data-flux-navbar-items][data-current]{
+        @apply !shadow-md ;
+        background-color: var(--color-nav-current) !important;
+    }
+
+    [data-flux-navlist-item][data-current],
+    [data-flux-sidebar-item][data-current] {
+        @apply !shadow-md !underline !underline-offset-3;
+        background-color: var(--color-nav-current) !important;
+        text-decoration-color: var(--color-text-accent) !important;
+    }
+
+
+    [data-flux-navbar-items]:hover [data-content],
+    [data-flux-navlist-item]:hover [data-content],
+    [data-flux-sidebar-item]:hover [data-content] {
+        @apply !font-bold;
+    }
+
+    [data-flux-navbar-items] [data-flux-icon] {
+        color: var(--color-text-primary) !important;
+    }
+
+    [data-flux-navlist-item] [data-flux-icon],
+    [data-flux-sidebar-item] [data-flux-icon] {
+        color: var(--color-nav-text) !important;
+    }
+
     [data-flux-navbar-items]:hover [data-flux-icon],
-    [data-flux-navlist-items]:hover [data-flux-icon],
-    [data-flux-sidebar-items]:hover [data-flux-icon] {
+    [data-flux-navlist-item]:hover [data-flux-icon],
+    [data-flux-sidebar-item]:hover [data-flux-icon] {
         color: var(--color-text-terciary) !important;
     }
 
     [data-flux-navbar-items]:hover,
-    [data-flux-navlist-items]:hover,
-    [data-flux-sidebar-items]:hover {
+    [data-flux-navlist-item]:hover,
+    [data-flux-sidebar-item]:hover {
         @apply !inset-shadow-sm;
         background-color: var(--color-nav-hover) !important;
     }

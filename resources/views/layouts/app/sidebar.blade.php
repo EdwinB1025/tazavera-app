@@ -5,7 +5,7 @@
     </flux:sidebar.header>
 
     <flux:sidebar.nav>
-        <flux:sidebar.group :heading="__('Plataforma')" class="grid">
+        <flux:sidebar.group class="grid">
             <flux:sidebar.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
                 {{ __('Ofertas') }}
             </flux:sidebar.item>
