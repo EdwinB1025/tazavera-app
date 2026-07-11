@@ -3,7 +3,7 @@
     style="background-color: var(--color-nav-surface); height: 4rem;">
 
     <div class="flex items-center justify-center gap-1 w-3xs">
-        <x-logo.app-logo :navbar="true" />
+        <x-logo.app-logo :navbar="true" iconClass="size-10 max-md:size-16" />
     </div>
 
     <flux:navbar class="flex-1 justify-center">

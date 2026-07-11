@@ -1,13 +1,16 @@
-<flux:dropdown position="bottom" align="start">
-    <flux:sidebar.profile
-        :name="auth()->user()->name"
+@props(['full'=>false])
+<flux:dropdown {{ $attributes }} position="bottom" align="start">
+
+    <flux:profile circle
+        :name="auth()->user()->name . ' ' . auth()->user()->surname"
         :initials="auth()->user()->initials()"
         icon:trailing="chevrons-up-down"
-        data-test="sidebar-menu-button" />
+        data-test="sidebar-menu-button"
+        :class="$full ? '' : '[&>span]:max-xl:hidden'" />
 
     <flux:menu>
         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-            <flux:avatar
+            <flux:avatar circle as="button" :href="route('profile.edit')"
                 :name="auth()->user()->name"
                 :initials="auth()->user()->initials()" />
             <div class="grid flex-1 text-start text-sm leading-tight">
