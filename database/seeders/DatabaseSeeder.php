@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CoffeshopSeeder::class);
         $this->call(CoffeesSeeder::class);
         $this->call(OfferingsSeeder::class);
+        $this->call(ProvisionalEvaluationSeeder::class);
     }
 }
