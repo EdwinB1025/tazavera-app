@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->ulid('ulid')->unique();
             $table->foreignId('offering_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('evaluator_id')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->enum('evaluator_role', ['user', 'coffeeshop']);

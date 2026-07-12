@@ -19,7 +19,7 @@ return new class extends Migration
             $table->json('extrinsics');
             $table->timestamps();
 
-            $table->unique(['name', 'roastery_id'], 'uq_name_roastery');
+            $table->unique(['name', 'roastery'], 'uq_name_roastery');
         });
     }
 

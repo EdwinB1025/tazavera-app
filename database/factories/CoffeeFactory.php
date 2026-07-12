@@ -29,7 +29,7 @@ class CoffeeFactory extends Factory
 
         return [
             'name' => fake()->words(3, true),
-            'roastery_id' => fake()->company(),
+            'roastery' => fake()->company(),
             'roast_level' => fake()->randomElement(['light', 'medium_light', 'medium', 'medium_dark', 'dark']),
             'extrinsics' => [
                 'country' => $country,
