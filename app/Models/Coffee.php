@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'roastery_id', 'roast_level', 'extrinsics'])]
+#[Fillable(['name', 'roastery', 'roast_level', 'extrinsics'])]
 class Coffee extends Model
 {
     /** @use HasFactory<\Database\Factories\CoffeeFactory> */
