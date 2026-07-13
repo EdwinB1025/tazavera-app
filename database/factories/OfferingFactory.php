@@ -21,8 +21,6 @@ class OfferingFactory extends Factory
     public function definition(): array
     {
         return [
-            'location_id' => Location::inRandomOrder()->first()?->id ?? Location::factory(),
-            'coffee_id' => Coffee::inRandomOrder()->first()?->id ?? Coffee::factory(),
             'verification_status' => 'provisional',
         ];
     }

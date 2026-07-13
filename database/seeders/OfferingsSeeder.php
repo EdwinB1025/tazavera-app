@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Coffee;
+use App\Models\Location;
 use App\Models\Offering;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,6 +15,14 @@ class OfferingsSeeder extends Seeder
      */
     public function run(): void
     {
-        Offering::factory()->count(20)->create();
+        $coffees = Coffee::all();
+        foreach (Location::all() as $location) {
+            foreach ($coffees->random(3) as $coffee) {
+                Offering::factory()->create([
+                    'location_id' => $location->id,
+                    'coffee_id' => $coffee->id,
+                ]);
+            }
+        }
     }
 }

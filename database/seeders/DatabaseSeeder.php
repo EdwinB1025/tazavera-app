@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OlfactoryTaxonomy;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,9 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(CoffeshopSeeder::class);
-        $this->call(CoffeesSeeder::class);
-        $this->call(OfferingsSeeder::class);
-        $this->call(ProvisionalEvaluationSeeder::class);
+        $this->call(
+            [
+                CoffeshopSeeder::class,
+                CoffeesSeeder::class,
+                OfferingsSeeder::class,
+                ProvisionalEvaluationSeeder::class,
+                OlfactoryTaxonomySeeder::class
+            ]
+        );
     }
 }

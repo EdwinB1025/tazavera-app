@@ -21,7 +21,7 @@ class EvaluationFactory extends Factory
 
         return [
             'evaluator_role' => 'coffeeshop',
-            'extraction_method' => fake()->randomElement(['V60', 'Espresso', 'Chemex', 'Aeropress']),
+            'extraction_method' => 'cupping',
             'descriptive' => [
                 'roast_level' => fake()->randomElement(['light', 'medium_light', 'medium', 'medium_dark', 'dark']),
                 'main_tastes' => fake()->randomElements(['salty', 'sour', 'sweet', 'bitter', 'umami'], 2),
