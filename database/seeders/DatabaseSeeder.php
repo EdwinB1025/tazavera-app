@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
                 CoffeesSeeder::class,
                 OfferingsSeeder::class,
                 ProvisionalEvaluationSeeder::class,
-                OlfactoryTaxonomySeeder::class
+                OlfactoryTaxonomySeeder::class,
             ]
         );
     }

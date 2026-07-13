@@ -26,8 +26,12 @@ class LocationFactory extends Factory
             'web' => fake()->url(),
             'social' => fake()->url(),
             'address' => fake()->address(),
+            'country' => 'España',
+            'city' => fake()->randomElement(['Barcelona', 'Madrid', 'Valencia', 'Sevilla']),
+            'postal_code' => fake()->postcode(),
             'latitud' => fake()->latitude(),
             'longitud' => fake()->longitude(),
+
         ];
     }
 }
