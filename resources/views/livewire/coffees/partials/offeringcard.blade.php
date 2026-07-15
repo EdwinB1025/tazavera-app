@@ -76,9 +76,12 @@ new class extends Component
                 $primary = $offering->getTastes(0);
                 $primaryRefs = array_column($primary, 'ref');
                 $taxonomies = OlfactoryTaxonomy::byRefs($primaryRefs)->get()->keyBy('id');
+
                 @endphp
                 @foreach($primary as $cata)
-                @php $taxonomy = $taxonomies[$cata['ref']] ?? null; @endphp
+                @php $taxonomy = $taxonomies[$cata['ref']] ?? null;
+                L
+                @endphp
                 <flux:badge class="!text-xs" :style="'background-color: ' . ($taxonomy->color ?? 'Geen')">
                     {{ $taxonomy->name_es ?? 'N/A' }}
                 </flux:badge>
