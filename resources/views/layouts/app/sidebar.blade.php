@@ -6,7 +6,7 @@
 
     <flux:sidebar.nav>
         <flux:sidebar.group class="grid">
-            <flux:sidebar.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
+            <flux:sidebar.item icon="home" :href="route('offerings')" :current="request()->routeIs('offerings')" wire:navigate>
                 {{ __('Ofertas') }}
             </flux:sidebar.item>
             <flux:sidebar.item icon="clipboard-list" :current="request()->routeIs('evaluaciones')" wire:navigate>

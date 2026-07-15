@@ -9,7 +9,7 @@
     <x-layouts::app.header />
     <x-layouts::app.sidebar class="top-0 max-h-dvh h-full" />
 
-    <flux:main class="mx-[5%] my-[5%]">{{ $slot }}</flux:main>
+    <flux:main class="flex flex-col !px-[3%] !py-[3%] m-0">{{ $slot }}</flux:main>
     @persist('toast')
     <flux:toast.group>
         <flux:toast />

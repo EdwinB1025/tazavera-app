@@ -10,9 +10,11 @@ class OfferingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $offerings = Offering::search($request);
+
+        return view('offerings.index', compact('offerings'));
     }
 
     /**

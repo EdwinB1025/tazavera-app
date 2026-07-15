@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Evaluation;
+use App\Models\OlfactoryTaxonomy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class EvaluationFactory extends Factory
 
         return [
             'evaluator_role' => 'coffeeshop',
-            'extraction_method' => 'cupping',
+            'extraction_method' => fake()->randomElement(['V60', 'Espresso', 'Chemex', 'Aeropress']),
             'descriptive' => [
                 'roast_level' => fake()->randomElement(['light', 'medium_light', 'medium', 'medium_dark', 'dark']),
                 'main_tastes' => fake()->randomElements(['salty', 'sour', 'sweet', 'bitter', 'umami'], 2),
@@ -31,12 +32,47 @@ class EvaluationFactory extends Factory
                     'note' => null,
                 ], $axes),
                 'cata' => collect(['fragrance_aroma', 'flavor_aftertaste', 'acidity'])
-                    ->flatMap(fn($dimension) => array_map(
-                        fn($ref) => ['dimension' => $dimension, 'ref' => $ref],
-                        fake()->randomElements(range(15, 45), fake()->numberBetween(1, 5))
-                    ))
+                    ->flatMap(function ($dimension) {
+                        $specificTastes = OlfactoryTaxonomy::level(2)->get();
+                        $ids = $specificTastes->pluck('id')->all();
+
+                        $randomTastes = fake()->randomElements($ids, 1);
+
+                        $level1Tastes = OlfactoryTaxonomy::find($randomTastes)->pluck('parent_id')->all();
+
+                        $level0Tastes = OlfactoryTaxonomy::find($level1Tastes)->pluck('parent_id')->all();
+
+
+                        $level2 = array_map(function ($ref) use ($dimension) {
+                            return [
+                                'dimension' => $dimension,
+                                'ref' => $ref,
+                                'level' => 2
+                            ];
+                        }, $randomTastes);
+
+
+                        $level1 = array_map(function ($ref) use ($dimension) {
+                            return [
+                                'dimension' => $dimension,
+                                'ref' => $ref,
+                                'level' => 1
+                            ];
+                        }, $level1Tastes);
+
+                        $level0 = array_map(function ($ref) use ($dimension) {
+                            return [
+                                'dimension' => $dimension,
+                                'ref' => $ref,
+                                'level' => 0
+                            ];
+                        }, $level0Tastes);
+
+                        return array_merge($level2, $level1, $level0);
+                    })
                     ->values()
                     ->all(),
+
             ],
             'affective' => [
                 'is_defective' => false,
