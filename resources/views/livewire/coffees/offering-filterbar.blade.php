@@ -1,6 +1,6 @@
 <div>
     {{-- Desktop: bar --}}
-    <div class="hidden lg:block">
+    <div class="hidden lg:block mb-6">
         <form class="tz-filter" method="GET" action="{{ route('offerings') }}">
             @include('livewire.coffees.partials.filter-fields') {{-- include in this case better so the rendered variables applied --}}
 

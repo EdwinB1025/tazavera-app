@@ -24,4 +24,12 @@ class OlfactoryTaxonomy extends Model
             fn($condition) => $condition->where('level', $level)
         );
     }
+
+    /** @return \Illuminate\Database\Eloquent\Builder|\App\Models\OlfactoryTaxonomy
+     * Retrieve colors by references of the cata attributes */
+    #[Scope]
+    protected function byRefs(Builder $query, array $refs): void
+    {
+        $query->when($refs, fn($condition) => $condition->whereIn('id', $refs));
+    }
 }

@@ -17,6 +17,33 @@ class Offering extends Model
     /** @use HasFactory<\Database\Factories\OfferingFactory> */
     use HasFactory;
 
+    /** We assign the responsability of retriving the tastes and the score to the offering model, not the view */
+    public function getTastes(int|array|null $level = null): array
+    {
+        $tastes_source = $this->consensus['cata_freq'] ??
+            $this->evaluations()
+                ->where('evaluator_role', 'coffeeshop')
+                ->first()?->descriptive['cata_freq'] ?? [];
+
+        if ($level !== null) {
+            return array_filter(
+                $tastes_source,
+                fn($c) => is_array($level) ?
+                    in_array($c['level'], $level) : $c['level'] === $level
+            );
+        }
+
+        return $tastes_source;
+    }
+
+    public function getScore(): float
+    {
+        return $this->consensus['cupping_avg'] ??
+            $this->evaluations()
+            ->where('evaluator_role', 'coffeeshop')
+            ->first()?->cupping_score ?? 0;
+    }
+
     public static function search(Request $request)
     {
 
@@ -102,8 +129,6 @@ class Offering extends Model
             );
         }
     }
-
-
 
     protected function casts(): array
     {
