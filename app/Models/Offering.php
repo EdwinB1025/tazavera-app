@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Console\Attributes\Hidden;
+use Database\Factories\OfferingFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 #[Fillable(['location_id', 'coffee_id', 'evaluation_count', 'defective_evaluation_count', 'consensus', 'concordance', 'verification_status'])]
 class Offering extends Model
 {
-    /** @use HasFactory<\Database\Factories\OfferingFactory> */
+    /** @use HasFactory<OfferingFactory> */
     use HasFactory;
 
     /** We assign the responsability of retriving the tastes and the score to the offering model, not the view */
@@ -23,12 +24,12 @@ class Offering extends Model
         $tastes_source = $this->consensus['cata_freq'] ??
             $this->evaluations()
                 ->where('evaluator_role', 'coffeeshop')
-                ->first()?->descriptive['cata_freq'] ?? [];
+                ->first()?->descriptive['cata'] ?? [];
 
         if ($level !== null) {
             return array_filter(
                 $tastes_source,
-                fn($c) => is_array($level) ?
+                fn ($c) => is_array($level) ?
                     in_array($c['level'], $level) : $c['level'] === $level
             );
         }
@@ -38,10 +39,9 @@ class Offering extends Model
 
     public function getScore(): float
     {
-        return $this->consensus['cupping_avg'] ??
-            $this->evaluations()
-            ->where('evaluator_role', 'coffeeshop')
-            ->first()?->cupping_score ?? 0;
+        return data_get($this->consensus, 'cupping_avg')
+            ?? $this->evaluations()->where('evaluator_role', 'coffeeshop')->first()?->affective['cupping_score']
+            ?? 0;
     }
 
     public static function search(Request $request)
@@ -65,15 +65,14 @@ class Offering extends Model
     /** @use  Illuminate\Database\Eloquent\Builder;
      * Queries to be used during the filtering of the Offering model with relationships
      * whereHas validates there is an existing relationship for the external entity in Eloquent**/
-
     #[Scope]
     protected function city(Builder $query, ?string $city): void
     {
         $query->when(
             $city,
-            fn($condition) => $condition->whereHas(
+            fn ($condition) => $condition->whereHas(
                 'location',
-                fn($location) => $location->where('city', $city)
+                fn ($location) => $location->where('city', $city)
             )
         );
     }
@@ -83,9 +82,9 @@ class Offering extends Model
     {
         $query->when(
             $origin,
-            fn($condition) => $condition->whereHas(
+            fn ($condition) => $condition->whereHas(
                 'coffee',
-                fn($coffee) => $coffee->where('extrinsict->origin->country', $origin)
+                fn ($coffee) => $coffee->where('extrinsics->origin->country', $origin)
             )
         );
     }
@@ -95,9 +94,9 @@ class Offering extends Model
     {
         $query->when(
             $process,
-            fn($condition) => $condition->whereHas(
+            fn ($condition) => $condition->whereHas(
                 'coffee',
-                fn($coffee) => $coffee->where('extrinsict->process', $process)
+                fn ($coffee) => $coffee->where('extrinsics->process', $process)
             )
         );
     }
@@ -105,27 +104,56 @@ class Offering extends Model
     #[Scope]
     protected function scoreMin(Builder $query, ?float $score): void
     {
-        $query->when(
+        $consensus = Offering::query();
+        $consensus->when(
             $score,
-            fn($condition) => $condition->where('consensus->cupping_avg', '>=', $score)
+            fn ($condition) => $condition->where('consensus->cupping_avg', '>=', $score)
         );
+
+        if ($consensus->exists()) {
+            $query->mergeConstraintsFrom($consensus);
+        } else {
+            $query->when($score, fn ($condition) => $condition->whereHas(
+                'evaluations',
+                fn ($subquery) => $subquery->where('evaluator_role', 'coffeeshop')->where('affective->cupping_score', '>=', $score)
+            ));
+        }
     }
 
     #[Scope]
     protected function tastes(Builder $query, ?array $tastes): void
     {
-        $query->when(
+        $consensus = Offering::query();
+        $consensus->when(
             $tastes,
-            fn($condition) => $condition->whereIn('consensus->cata_req->[*]->ref', $tastes)
+            fn ($condition) => $condition->where(function ($nestedquery) use ($tastes) {
+                foreach ($tastes as $ref) {
+                    $nestedquery->orWhereJsonContains(
+                        'consensus->cata_req',
+                        ['ref' => $ref]
+                    );
+                }
+            })
         );
 
-        if (!($query->exists())) {
+        if ($consensus->exists()) {
+            $query->mergeConstraintsFrom($consensus);
+        } else {
             $query->when(
                 $tastes,
-                fn($condition) => $condition->whereHas(
-                    'evaluation',
-                    fn($evaluations) => $evaluations->whereIn('descriptive->cata->[*]->ref', $tastes)
+                fn ($condition) => $condition->whereHas(
+                    'evaluations',
+                    function ($evaluations) use ($tastes) {
+                        $evaluations->where(
+                            function ($nestedquery) use ($tastes) {
+                                foreach ($tastes as $ref) {
+                                    $nestedquery->orWhereJsonContains('descriptive->cata', ['ref' => $ref]);
+                                }
+                            }
+                        );
+                    }
                 )
+
             );
         }
     }
@@ -147,8 +175,8 @@ class Offering extends Model
         return $this->belongsTo(Coffee::class);
     }
 
-    public function evaluations(): BelongsTo
+    public function evaluations(): HasMany
     {
-        return $this->belongsTo(Evaluation::class);
+        return $this->hasMany(Evaluation::class);
     }
 }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Evaluation;
 use App\Models\Location;
 use App\Models\Offering;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProvisionalEvaluationSeeder extends Seeder

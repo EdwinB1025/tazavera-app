@@ -32,8 +32,10 @@ class CoffeeFactory extends Factory
             'roastery' => fake()->company(),
             'roast_level' => fake()->randomElement(['light', 'medium_light', 'medium', 'medium_dark', 'dark']),
             'extrinsics' => [
-                'country' => $country,
-                'region' => fake()->randomElement($regions[$country]),
+                'origin' => [
+                    'country' => $country,
+                    'region' => fake()->randomElement($regions[$country]),
+                ],
                 'variety' => fake()->randomElement(['Caturra', 'Bourbon', 'Geisha', 'Typica', 'SL28']),
                 'process' => fake()->randomElement(['Lavado', 'Natural', 'Honey']),
                 'altitude' => fake()->numberBetween(1200, 2200),

@@ -88,6 +88,7 @@
     /*  ELEMENTOS  */
     --color-ui-strong: var(--color-pine-800);
     --color-ui-muted: var(--color-pine-700);
+    --color-ui-button-light: var(--color-olive-500);
 }
 
 @theme {
@@ -512,11 +513,10 @@
         flex-direction: row;
         align-items: center;
         border: none;
-        overflow: hidden;
     }
 
     .tz-filter [data-flux-field] {
-        @apply flex-1 !flex !flex-col !items-start !gap-1 !max-w-xs !px-6 !py-2 !pb-3;
+        @apply flex-1 !flex !flex-col !items-start !gap-1 !max-w-xs !px-4 !py-2 !pb-3;
         text-align: left;
         transition: background-color 150ms ease;
         border-right: 1px solid rgba(15, 13, 11, 0.15);
@@ -549,9 +549,12 @@
     }
 
     .tz-filter [data-flux-control] {
-        @apply !font-normal !text-sm;
+        @apply !block !w-full !h-10 max-lg:!h-22 !font-normal !text-sm !rounded-lg !shadow-xs sm:!text-sm !m-0 !py-2 ps-3 pe-2 border-zinc-200 border-b-zinc-300/80;
         font-family: var(--font-headlines) !important;
         color: var(--color-text-primary) !important;
+        background-color: color-mix(in srgb, var(--color-ui-button-light) 50%, white) !important;
+        --tw-ring-color: var(--color-ui-button-light) !important;
+        --tw-ring-offset-color: var(--color-text-inverse) !important;
     }
 
     .tz-filter [data-flux-control] option {
@@ -562,14 +565,23 @@
 
     .tz-filter input:focus[data-flux-control],
     .tz-filter select:focus[data-flux-control],
+    .tz-filter button:focus[data-flux-control],
     .tz-filter textarea:focus[data-flux-control] {
-        @apply outline-hidden ring-2 ring-offset-2;
-        --tw-ring-color: var(--color-olive-500) !important;
+        @apply !outline-hidden !ring-2 !ring-offset-2;
+        --tw-ring-color: var(--color-ui-button-light) !important;
         --tw-ring-offset-color: var(--color-text-inverse) !important;
+    }
+
+    .tz-filter-panel {
+        @apply flex flex-col shadow-xs min-w-sm border border-zinc-200 border-b-zinc-300/80 font-bold absolute top-full left-0 mt-1 p-3 max-h-64 overflow-y-auto !min-w-64;
+        background-color: var(--color-ui-button-light);
+        border: 1px solid var(--color-ui-button-light);
+        color: var(--color-text-accent) !important;
     }
 
     input:focus[data-flux-control],
     textarea:focus[data-flux-control],
+    button:focus[data-flux-control],
     select:focus[data-flux-control] {
         @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
     }
@@ -636,7 +648,7 @@
         font-family: var(--font-body);
     }
 
-    [data-flux-badge] {
+    [data-flux-badge]:not([data-flux-offering-tastes] [data-flux-badge]) {
         @apply !mt-2 !min-w-24 !justify-center;
         color: var(--color-text-filter-label) !important;
     }
@@ -663,7 +675,7 @@
     }
 
     [data-flux-offering-content] {
-        @apply flex flex-col gap-3 flex-1 px-4 my-2;
+        @apply flex flex-col gap-2 flex-1 px-4 my-2;
     }
 
     [data-flux-offering-header] {
@@ -722,7 +734,12 @@
     }
 
     [data-flux-offering-tastes] {
-        @apply flex flex-wrap gap-2 mt-2;
+        @apply !flex !flex-row !items-center gap-1;
+    }
+
+    [data-flux-offering-tastes] [data-flux-badge] {
+        @apply !text-xs !min-w-0;
+        color: var(--color-text-primary)
     }
 
     [data-flux-offering-meta] {
@@ -730,11 +747,34 @@
     }
 
     [data-flux-offering-actions] {
-        @apply flex gap-2 mt-4;
+        @apply flex justify-end gap-2 mt-2 mr-8;
     }
 
     [data-flux-offering-actions] [data-flux-button] {
-        @apply !text-xs !px-3 !py-2;
+        @apply !text-xs !px-3 !py-2 !min-w-40;
+    }
+
+    [data-flux-offering-actions] [data-flux-button]:first-child {
+        background-color: color-mix(in srgb, var(--color-ui-button-light) 65%, transparent) !important;
+        color: var(--color-text-filter-label) !important;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    [data-flux-offering-actions] [data-flux-button]:first-child:hover {
+        background-color: var(--color-ui-button-light) !important;
+        color: var(--color-text-filter-label) !important;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    /* Botón Evaluar — oxblood transparente → sólido en hover */
+    [data-flux-offering-actions] [data-flux-button]:last-child {
+        background-color: color-mix(in srgb, var(--color-primary) 65%, transparent) !important;
+        color: var(--color-primary) !important;
+    }
+
+    [data-flux-offering-actions] [data-flux-button]:last-child:hover {
+        background-color: var(--color-primary) !important;
+        color: var(--color-text-inverse) !important;
     }
 
     [data-flux-offering-origin] {

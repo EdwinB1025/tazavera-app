@@ -26,7 +26,7 @@ class EvaluationFactory extends Factory
             'descriptive' => [
                 'roast_level' => fake()->randomElement(['light', 'medium_light', 'medium', 'medium_dark', 'dark']),
                 'main_tastes' => fake()->randomElements(['salty', 'sour', 'sweet', 'bitter', 'umami'], 2),
-                'axis' => array_map(fn($axis) => [
+                'axis' => array_map(fn ($axis) => [
                     'axis' => $axis,
                     'value' => fake()->numberBetween(5, 12),
                     'note' => null,
@@ -42,21 +42,19 @@ class EvaluationFactory extends Factory
 
                         $level0Tastes = OlfactoryTaxonomy::find($level1Tastes)->pluck('parent_id')->all();
 
-
                         $level2 = array_map(function ($ref) use ($dimension) {
                             return [
                                 'dimension' => $dimension,
                                 'ref' => $ref,
-                                'level' => 2
+                                'level' => 2,
                             ];
                         }, $randomTastes);
-
 
                         $level1 = array_map(function ($ref) use ($dimension) {
                             return [
                                 'dimension' => $dimension,
                                 'ref' => $ref,
-                                'level' => 1
+                                'level' => 1,
                             ];
                         }, $level1Tastes);
 
@@ -64,7 +62,7 @@ class EvaluationFactory extends Factory
                             return [
                                 'dimension' => $dimension,
                                 'ref' => $ref,
-                                'level' => 0
+                                'level' => 0,
                             ];
                         }, $level0Tastes);
 
@@ -78,7 +76,7 @@ class EvaluationFactory extends Factory
                 'is_defective' => false,
                 'defect_types' => [],
                 'cupping_score' => fake()->numberBetween(78, 90),
-                'axis' => array_map(fn($axis) => [
+                'axis' => array_map(fn ($axis) => [
                     'axis' => $axis === 'aftertaste' ? 'overall' : $axis,
                     'value' => fake()->numberBetween(5, 9),
                 ], $axes),

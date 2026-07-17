@@ -9,7 +9,7 @@ new class extends Component
 };
 ?>
 
-<div class="tz-offering-card" data-flux-offering-card>
+<div class="tz-offering-card mb-2" data-flux-offering-card>
     <div class="flex">
         {{-- Lado izquierdo: puntaje --}}
         <div data-flux-offering-score>
@@ -70,36 +70,37 @@ new class extends Component
                 · {{ $offering->coffee->extrinsics['variety'] ?? 'N/A' }}
             </flux:text>
 
-            {{-- Sabores Primarios --}}
-            <div data-flux-offering-tastes>
-                @php
-                $primary = $offering->getTastes(0);
-                $primaryRefs = array_column($primary, 'ref');
-                $taxonomies = OlfactoryTaxonomy::byRefs($primaryRefs)->get()->keyBy('id');
+            <div class="flex flex-col gap-1">
+                {{-- Sabores Primarios --}}
+                <div data-flux-offering-tastes>
+                    @php
+                    $primary = $offering->getTastes(0);
+                    $primaryRefs = array_column($primary, 'ref');
+                    $taxonomies = OlfactoryTaxonomy::byRefs($primaryRefs)->get()->keyBy('id');
 
-                @endphp
-                @foreach($primary as $cata)
-                @php $taxonomy = $taxonomies[$cata['ref']] ?? null;
-                L
-                @endphp
-                <flux:badge class="!text-xs" :style="'background-color: ' . ($taxonomy->color ?? 'Geen')">
-                    {{ $taxonomy->name_es ?? 'N/A' }}
-                </flux:badge>
-                @endforeach
-            </div>
-            {{-- Sabores Secundarios --}}
-            <div data-flux-offering-tastes>
-                @php
-                $secondary = $offering->getTastes([1,2]);
-                $secondaryRefs = array_column($secondary, 'ref');
-                $taxonomies_sec = OlfactoryTaxonomy::byRefs($secondaryRefs)->get()->keyBy('id');
-                @endphp
-                @foreach($secondary as $cata)
-                @php $taxonomy = $taxonomies_sec[$cata['ref']] ?? null; @endphp
-                <flux:badge class="!text-xs" :style="'background-color: ' . ($taxonomy->color ?? 'transparent')">
-                    {{ $taxonomy->name_es ?? 'N/A' }}
-                </flux:badge>
-                @endforeach
+                    @endphp
+                    @foreach($primary as $cata)
+                    @php $taxonomy = $taxonomies[$cata['ref']] ?? null;
+                    @endphp
+                    <flux:badge class="!text-xs" :style="'background-color: ' . ($taxonomy->color ?? 'transparent')">
+                        {{ $taxonomy->name_es ?? 'N/A' }}
+                    </flux:badge>
+                    @endforeach
+                </div>
+                {{-- Sabores Secundarios --}}
+                <div data-flux-offering-tastes>
+                    @php
+                    $secondary = $offering->getTastes([1,2]);
+                    $secondaryRefs = array_column($secondary, 'ref');
+                    $taxonomies_sec = OlfactoryTaxonomy::byRefs($secondaryRefs)->get()->keyBy('id');
+                    @endphp
+                    @foreach($secondary as $cata)
+                    @php $taxonomy = $taxonomies_sec[$cata['ref']] ?? null; @endphp
+                    <flux:badge class="!text-xs" :style="'background-color: ' . ($taxonomy->color ?? 'transparent') . '99'">
+                        {{ $taxonomy->name_es ?? 'N/A' }}
+                    </flux:badge>
+                    @endforeach
+                </div>
             </div>
         </div>
         {{-- Metadata: evaluaciones --}}
@@ -115,6 +116,6 @@ new class extends Component
     {{-- Botones --}}
     <div data-flux-offering-actions>
         <flux:button variant="outline" size="sm" icon="eye" href="">Ver</flux:button>
-        <flux:button variant="primary" size="sm" icon="plus" href="">Evaluar</flux:button>
+        <flux:button variant="outline" size="sm" icon="plus" href="">Evaluar</flux:button>
     </div>
 </div>

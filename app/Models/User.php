@@ -41,7 +41,6 @@ class User extends Authenticatable implements PasskeyUser
      *
      * @return array<string, string>
      */
-
     public function locations(): HasMany
     {
         return $this->hasMany(Location::class);
@@ -60,10 +59,10 @@ class User extends Authenticatable implements PasskeyUser
      */
     public function initials(): string
     {
-        $initials = Str::initials($this->name, true) . ' ' . Str::initials($this->surname, true);
+        $initials = Str::initials($this->name, true).' '.Str::initials($this->surname, true);
 
         return Str::length($initials) > 1
-            ? Str::substr($initials, 0, 1) . Str::substr($initials, -1)
+            ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
             : $initials;
     }
 }

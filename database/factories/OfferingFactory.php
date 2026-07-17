@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Coffee;
-use App\Models\Location;
 use App\Models\Offering;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +15,6 @@ class OfferingFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     public function definition(): array
     {
         return [

@@ -1,5 +1,5 @@
 {{-- BÚSQUEDA POR NOMBRE --}}
-<flux:field class="!flex-[3]">
+<flux:field class="!flex-[1.5]">
     <flux:label>Buscar Café</flux:label>
     <flux:input
         type="text"
@@ -54,24 +54,74 @@
     </flux:select>
 </flux:field>
 
-{{-- SABORES PRINCIPALES --}}
-<flux:field>
+{{-- SABORES PRINCIPALES: usando alpine.js --}}
+<flux:field class="!flex-[1.5]">
     <flux:label>Sabores Principales</flux:label>
-    <flux:select name="main_taste" placeholder="Todos">
-        <flux:select.option value="">Todos</flux:select.option>
-        @foreach ($main_tastes as $taste)
-        <flux:select.option value="{{ $taste }}" :selected="request('main_taste') === $taste">{{ $taste }}</flux:select.option>
-        @endforeach
-    </flux:select>
+    <div x-data="{ open: false }" class="min-w-full relative group">
+        <button
+            type="button"
+            @click="open = !open"
+            x-ref="tastes_button"
+            data-flux-control>
+            <span class="flex justify-between items-start w-full">
+                <span>Todos</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <flux:icon.chevron-up-down x-show="!open" class="w-6 h-6" />
+                    <flux:icon.chevron-up x-show="open" class="w-6 h-6" />
+                </span>
+            </span>
+        </button>
+
+        <div
+            x-show="open"
+            @click.outside="open = false"
+            class="tz-filter-panel">
+            @foreach ($main_tastes as $taste)
+            <label>
+                <input
+                    type="checkbox"
+                    name="main_tastes[]"
+                    value="{{ $taste->id }}"
+                    {{ in_array($taste->id, (array) request('main_tastes', [])) ? 'checked' : '' }} />
+                <span>{{ $taste->name_es }}</span>
+            </label>
+            @endforeach
+        </div>
+    </div>
 </flux:field>
 
-{{-- SABORES SECUNDARIOS --}}
+{{-- SABORES SECUNDARIOS: mismo patrón --}}
 <flux:field>
     <flux:label>Sabores Secundarios</flux:label>
-    <flux:select name="specific_taste" placeholder="Todos">
-        <flux:select.option value="">Todos</flux:select.option>
-        @foreach ($specific_tastes as $taste)
-        <flux:select.option value="{{ $taste }}" :selected="request('specific_taste') === $taste">{{ $taste }}</flux:select.option>
-        @endforeach
-    </flux:select>
+    <div x-data="{ open: false }" class="min-w-full relative group">
+        <button
+            type="button"
+            @click="open = !open"
+            x-ref="specific_tastes_button"
+            data-flux-control>
+            <span class="flex justify-between items-start">
+                <span>Todos</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <flux:icon.chevron-up-down x-show="!open" class="w-6 h-6" />
+                    <flux:icon.chevron-up x-show="open" class="w-6 h-6" />
+                </span>
+            </span>
+        </button>
+
+        <div
+            x-show="open"
+            @click.outside="open = false"
+            class="tz-filter-panel">
+            @foreach ($specific_tastes as $taste)
+            <label>
+                <input
+                    type="checkbox"
+                    name="specific_tastes[]"
+                    value="{{ $taste->id }}"
+                    {{ in_array($taste->id, (array) request('specific_tastes', [])) ? 'checked' : '' }} />
+                <span>{{ $taste->name_es }}</span>
+            </label>
+            @endforeach
+        </div>
+    </div>
 </flux:field>
