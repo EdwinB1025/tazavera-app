@@ -3,10 +3,10 @@
     <flux:label>Buscar Café</flux:label>
     <flux:input
         type="text"
-        name="search"
+        name="name"
         placeholder="Nombre del café..."
         icon="magnifying-glass"
-        value="{{ request('search') }}" />
+        value="{{ request('name') }}" />
 </flux:field>
 
 {{-- BÚSQUEDA POR CIUDAD --}}

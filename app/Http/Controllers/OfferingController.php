@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterOfferingRequest;
 use App\Models\Offering;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class OfferingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(FilterOfferingRequest $request)
     {
         $offerings = Offering::search($request);
 

@@ -29,7 +29,7 @@ class Offering extends Model
         if ($level !== null) {
             return array_filter(
                 $tastes_source,
-                fn ($c) => is_array($level) ?
+                fn($c) => is_array($level) ?
                     in_array($c['level'], $level) : $c['level'] === $level
             );
         }
@@ -48,6 +48,7 @@ class Offering extends Model
     {
 
         $offerings = Offering::query()
+            ->name($request->input('name'))
             ->city($request->input('city'))
             ->origin($request->input('origin'))
             ->process($request->input('process'))
@@ -66,13 +67,27 @@ class Offering extends Model
      * Queries to be used during the filtering of the Offering model with relationships
      * whereHas validates there is an existing relationship for the external entity in Eloquent**/
     #[Scope]
+    protected function name(Builder $query, ?string $name): void
+    {
+        $query->when($name, fn($condition) => $condition->whereHas(
+            'coffee',
+            function ($subquery) use ($name) {
+                $arrayWords = explode(' ', trim($name));
+                foreach ($arrayWords as $word) {
+                    $subquery->where('name', 'like', '%' . $word . '%');
+                }
+            }
+        ));
+    }
+
+    #[Scope]
     protected function city(Builder $query, ?string $city): void
     {
         $query->when(
             $city,
-            fn ($condition) => $condition->whereHas(
+            fn($condition) => $condition->whereHas(
                 'location',
-                fn ($location) => $location->where('city', $city)
+                fn($location) => $location->where('city', $city)
             )
         );
     }
@@ -82,9 +97,9 @@ class Offering extends Model
     {
         $query->when(
             $origin,
-            fn ($condition) => $condition->whereHas(
+            fn($condition) => $condition->whereHas(
                 'coffee',
-                fn ($coffee) => $coffee->where('extrinsics->origin->country', $origin)
+                fn($coffee) => $coffee->where('extrinsics->origin->country', $origin)
             )
         );
     }
@@ -94,9 +109,9 @@ class Offering extends Model
     {
         $query->when(
             $process,
-            fn ($condition) => $condition->whereHas(
+            fn($condition) => $condition->whereHas(
                 'coffee',
-                fn ($coffee) => $coffee->where('extrinsics->process', $process)
+                fn($coffee) => $coffee->where('extrinsics->process', $process)
             )
         );
     }
@@ -107,15 +122,15 @@ class Offering extends Model
         $consensus = Offering::query();
         $consensus->when(
             $score,
-            fn ($condition) => $condition->where('consensus->cupping_avg', '>=', $score)
+            fn($condition) => $condition->where('consensus->cupping_avg', '>=', $score)
         );
 
         if ($consensus->exists()) {
             $query->mergeConstraintsFrom($consensus);
         } else {
-            $query->when($score, fn ($condition) => $condition->whereHas(
+            $query->when($score, fn($condition) => $condition->whereHas(
                 'evaluations',
-                fn ($subquery) => $subquery->where('evaluator_role', 'coffeeshop')->where('affective->cupping_score', '>=', $score)
+                fn($subquery) => $subquery->where('evaluator_role', 'coffeeshop')->where('affective->cupping_score', '>=', $score)
             ));
         }
     }
@@ -126,7 +141,7 @@ class Offering extends Model
         $consensus = Offering::query();
         $consensus->when(
             $tastes,
-            fn ($condition) => $condition->where(function ($nestedquery) use ($tastes) {
+            fn($condition) => $condition->where(function ($nestedquery) use ($tastes) {
                 foreach ($tastes as $ref) {
                     $nestedquery->orWhereJsonContains(
                         'consensus->cata_req',
@@ -141,7 +156,7 @@ class Offering extends Model
         } else {
             $query->when(
                 $tastes,
-                fn ($condition) => $condition->whereHas(
+                fn($condition) => $condition->whereHas(
                     'evaluations',
                     function ($evaluations) use ($tastes) {
                         $evaluations->where(
