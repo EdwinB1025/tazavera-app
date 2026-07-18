@@ -65,7 +65,8 @@ new class extends Component
 
             {{-- Ubicación + proceso + variedad --}}
             <flux:text class="!text-xs !text-secondary !italic">
-                {{ $offering->coffee->extrinsics['country'] ?? 'N/A' }}
+                {{ $offering->coffee->extrinsics['origin']['country'] ?? 'N/A' }}
+                . {{ $offering->coffee->extrinsics['origin']['region'] ?? 'N/A' }}
                 · {{ $offering->coffee->extrinsics['process'] ?? 'N/A' }}
                 · {{ $offering->coffee->extrinsics['variety'] ?? 'N/A' }}
             </flux:text>

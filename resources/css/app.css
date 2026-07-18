@@ -573,7 +573,7 @@
     }
 
     .tz-filter-panel {
-        @apply flex flex-col shadow-xs min-w-sm border border-zinc-200 border-b-zinc-300/80 font-bold absolute top-full left-0 mt-1 p-3 max-h-64 overflow-y-auto !min-w-64;
+        @apply flex flex-col shadow-xs min-w-sm border border-zinc-200 border-b-zinc-300/80 font-bold absolute top-full left-0 mt-1 p-3 max-h-64 overflow-y-auto !min-w-64 z-50;
         background-color: var(--color-ui-button-light);
         border: 1px solid var(--color-ui-button-light);
         color: var(--color-text-accent) !important;

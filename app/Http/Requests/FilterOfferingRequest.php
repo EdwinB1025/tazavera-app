@@ -12,7 +12,7 @@ class FilterOfferingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,7 +27,7 @@ class FilterOfferingRequest extends FormRequest
             'city' => ['nullable', 'string'],
             'origin' => ['nullable', 'string'],
             'process' => ['nullable', 'string'],
-            'score' => ['nullable', 'intger', 'in:80,85,90'],
+            'score' => ['nullable', 'integer', 'in:80,85,90'],
             'main_tastes' => ['nullable', 'array'],
             'main_tastes.*' => ['integer', 'distinct', 'exists:olfactory_taxonomies,id'],
             'specific_tastes' => ['nullable', 'array'],

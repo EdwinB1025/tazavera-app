@@ -6,7 +6,7 @@
         name="name"
         placeholder="Nombre del café..."
         icon="magnifying-glass"
-        value="{{ request('name') }}" />
+        value="{{ old('name', request('name')) }}" />
 </flux:field>
 
 {{-- BÚSQUEDA POR CIUDAD --}}
@@ -16,7 +16,7 @@
     <flux:select name="city" placeholder="Todas">
         <flux:select.option value="">Todas</flux:select.option>
         @foreach ($cities as $city)
-        <flux:select.option value="{{ $city }}" :selected="request('city') === $city">{{ $city }}</flux:select.option>
+        <flux:select.option value="{{ $city }}" :selected="old('city', request('city')) === $city">{{ $city }}</flux:select.option>
         @endforeach
     </flux:select>
 </flux:field>
@@ -27,7 +27,7 @@
     <flux:select name="origin" placeholder="Todos">
         <flux:select.option value="">Todos</flux:select.option>
         @foreach ($origins as $origin)
-        <flux:select.option value="{{ $origin }}" :selected="request('origin') === $origin">{{ $origin }}</flux:select.option>
+        <flux:select.option value="{{ $origin }}" :selected="old('origin', request('origin')) === $origin">{{ $origin }}</flux:select.option>
         @endforeach
     </flux:select>
 </flux:field>
@@ -38,7 +38,7 @@
     <flux:select name="process" placeholder="Todos">
         <flux:select.option value="">Todos</flux:select.option>
         @foreach ($processes as $process)
-        <flux:select.option value="{{ $process }}" :selected="request('process') === $process">{{ $process }}</flux:select.option>
+        <flux:select.option value="{{ $process }}" :selected="old('process', request('process')) === $process">{{ $process }}</flux:select.option>
         @endforeach
     </flux:select>
 </flux:field>
@@ -48,14 +48,14 @@
     <flux:label>Puntaje</flux:label>
     <flux:select name="score" placeholder="Cualquiera">
         <flux:select.option value="">Cualquiera</flux:select.option>
-        <flux:select.option value="80" :selected="request('score') === '80'">80+</flux:select.option>
-        <flux:select.option value="85" :selected="request('score') === '85'">85+</flux:select.option>
-        <flux:select.option value="90" :selected="request('score') === '90'">90+</flux:select.option>
+        <flux:select.option value="80" :selected="old('score', request('score')) === '80'">80+</flux:select.option>
+        <flux:select.option value="85" :selected="old('score', request('score')) === '85'">85+</flux:select.option>
+        <flux:select.option value="90" :selected="old('score', request('score')) === '90'">90+</flux:select.option>
     </flux:select>
 </flux:field>
 
 {{-- SABORES PRINCIPALES: usando alpine.js --}}
-<flux:field class="!flex-[1.5]">
+<flux:field class="!flex-[1.1]">
     <flux:label>Sabores Principales</flux:label>
     <div x-data="{ open: false }" class="min-w-full relative group">
         <button
@@ -82,7 +82,7 @@
                     type="checkbox"
                     name="main_tastes[]"
                     value="{{ $taste->id }}"
-                    {{ in_array($taste->id, (array) request('main_tastes', [])) ? 'checked' : '' }} />
+                    {{ in_array($taste->id, (array) old('main_tastes', request('main_tastes', []))) ? 'checked' : '' }} />
                 <span>{{ $taste->name_es }}</span>
             </label>
             @endforeach
@@ -91,7 +91,7 @@
 </flux:field>
 
 {{-- SABORES SECUNDARIOS: mismo patrón --}}
-<flux:field>
+<flux:field class="!flex-[1.1]">
     <flux:label>Sabores Secundarios</flux:label>
     <div x-data="{ open: false }" class="min-w-full relative group">
         <button
@@ -118,7 +118,7 @@
                     type="checkbox"
                     name="specific_tastes[]"
                     value="{{ $taste->id }}"
-                    {{ in_array($taste->id, (array) request('specific_tastes', [])) ? 'checked' : '' }} />
+                    {{ in_array($taste->id, (array) old('specific_tastes', request('specific_tastes', []))) ? 'checked' : '' }} />
                 <span>{{ $taste->name_es }}</span>
             </label>
             @endforeach
