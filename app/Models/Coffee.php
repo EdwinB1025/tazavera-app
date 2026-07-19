@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Console\Attributes\Hidden;
+use Database\Factories\CoffeeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'roastery_id', 'roast_level', 'extrinsics'])]
+#[Fillable(['name', 'roastery', 'roast_level', 'extrinsics'])]
 class Coffee extends Model
 {
-    /** @use HasFactory<\Database\Factories\CoffeeFactory> */
+    /** @use HasFactory<CoffeeFactory> */
     use HasFactory;
+
+    public function offering(): HasMany
+    {
+        return $this->hasMany(Offering::class);
+    }
 
     protected function casts(): array
     {

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class LocationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => User::factory(),
             'name' => fake()->company(),
             'description' => fake()->sentence(10),
             'phone' => fake()->phoneNumber(),
@@ -26,8 +27,12 @@ class LocationFactory extends Factory
             'web' => fake()->url(),
             'social' => fake()->url(),
             'address' => fake()->address(),
+            'country' => 'España',
+            'city' => fake()->randomElement(['Barcelona', 'Madrid', 'Valencia', 'Sevilla']),
+            'postal_code' => fake()->postcode(),
             'latitud' => fake()->latitude(),
             'longitud' => fake()->longitude(),
+
         ];
     }
 }

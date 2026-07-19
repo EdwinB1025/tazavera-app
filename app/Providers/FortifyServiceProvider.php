@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-/* @chisel-registration */
-
 use App\Actions\Fortify\CreateNewUser;
-/* @end-chisel-registration */
 use App\Actions\Fortify\ResetUserPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -40,9 +37,7 @@ class FortifyServiceProvider extends ServiceProvider
     private function configureActions(): void
     {
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        /* @chisel-registration */
         Fortify::createUsersUsing(CreateNewUser::class);
-        /* @end-chisel-registration */
     }
 
     /**
@@ -50,21 +45,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn() => view('livewire.auth.login'));
-        /* @chisel-email-verification */
-        Fortify::verifyEmailView(fn() => view('livewire.auth.verify-email'));
-        /* @end-chisel-email-verification */
-        /* @chisel-2fa */
-        Fortify::twoFactorChallengeView(fn() => view('livewire.auth.two-factor-challenge'));
-        /* @end-chisel-2fa */
-        /* @chisel-password-confirmation */
-        Fortify::confirmPasswordView(fn() => view('livewire.auth.confirm-password'));
-        /* @end-chisel-password-confirmation */
-        /* @chisel-registration */
-        Fortify::registerView(fn() => view('livewire.auth.register'));
-        /* @end-chisel-registration */
-        Fortify::resetPasswordView(fn() => view('livewire.auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn() => view('livewire.auth.forgot-password'));
+        Fortify::loginView(fn () => view('livewire.auth.login'));
+        Fortify::verifyEmailView(fn () => view('livewire.auth.verify-email'));
+        Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
+        Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
+        Fortify::registerView(fn () => view('livewire.auth.register'));
+        Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
+        Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
     }
 
     /**
@@ -77,19 +64,17 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        /* @chisel-passkeys */
         RateLimiter::for('passkeys', function (Request $request) {
             $credentialId = $request->input('credential.id');
 
             return Limit::perMinute(10)->by(
-                ($credentialId ?: $request->session()->getId()) . '|' . $request->ip(),
+                ($credentialId ?: $request->session()->getId()).'|'.$request->ip(),
             );
         });
-        /* @end-chisel-passkeys */
     }
 }

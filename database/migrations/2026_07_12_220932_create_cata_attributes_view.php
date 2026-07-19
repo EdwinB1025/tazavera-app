@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -19,10 +17,10 @@ SELECT
     dim.dimension      AS dimension,
     leaf.id            AS id,
     leaf.level         AS level,
-    root.name_es       AS categoria,
-    sub.name_es        AS subcategoria,
-    leaf.name_es       AS atributo,
-    leaf.name_en       AS atributo_en,
+    root.name_es       AS category,
+    sub.name_es        AS sub_category,
+    leaf.name_es       AS attribute,
+    leaf.name_en       AS attribute_en,
     leaf.color         AS color
 FROM olfactory_taxonomies AS leaf
 JOIN olfactory_taxonomies AS sub  ON leaf.parent_id = sub.id
@@ -41,10 +39,10 @@ SELECT
     'acidity'          AS dimension,
     leaf.id            AS id,
     leaf.level         AS level,
-    root.name_es       AS categoria,
-    sub.name_es        AS subcategoria,
-    leaf.name_es       AS atributo,
-    leaf.name_en       AS atributo_en,
+    root.name_es       AS category,
+    sub.name_es        AS sub_category,
+    leaf.name_es       AS attribute,
+    leaf.name_en       AS attribute_en,
     leaf.color         AS color
 FROM olfactory_taxonomies AS leaf
 JOIN olfactory_taxonomies AS sub  ON leaf.parent_id = sub.id
@@ -59,10 +57,10 @@ SELECT
     'general'          AS dimension,
     node.id            AS id,
     node.level         AS level,
-    parent.name_es     AS categoria,
-    node.name_es       AS subcategoria,
-    NULL               AS atributo,
-    node.name_en       AS atributo_en,
+    parent.name_es     AS category,
+    node.name_es       AS sub_category,
+    NULL               AS attribute,
+    node.name_en       AS attribute_en,
     node.color         AS color
 FROM olfactory_taxonomies AS node
 LEFT JOIN olfactory_taxonomies AS parent ON node.parent_id = parent.id
@@ -74,6 +72,6 @@ WHERE node.level <= 1;");
      */
     public function down(): void
     {
-        DB::statement("DROP VIEW IF EXISTS cata_attributes");
+        DB::statement('DROP VIEW IF EXISTS cata_attributes');
     }
 };

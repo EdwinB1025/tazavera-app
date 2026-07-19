@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\OlfactoryTaxonomy;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,9 +18,9 @@ class DatabaseSeeder extends Seeder
             [
                 CoffeshopSeeder::class,
                 CoffeesSeeder::class,
+                OlfactoryTaxonomySeeder::class,
                 OfferingsSeeder::class,
                 ProvisionalEvaluationSeeder::class,
-                OlfactoryTaxonomySeeder::class
             ]
         );
     }
