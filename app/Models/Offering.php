@@ -143,7 +143,7 @@ class Offering extends Model
             $tastes,
             fn($condition) => $condition->where(function ($nestedquery) use ($tastes) {
                 foreach ($tastes as $ref) {
-                    $nestedquery->orWhereJsonContains(
+                    $nestedquery->WhereJsonContains(
                         'consensus->cata_req',
                         ['ref' => (int) $ref]
                     );
@@ -162,7 +162,7 @@ class Offering extends Model
                         $evaluations->where(
                             function ($nestedquery) use ($tastes) {
                                 foreach ($tastes as $ref) {
-                                    $nestedquery->orWhereJsonContains('descriptive->cata', ['ref' => (int) $ref]);
+                                    $nestedquery->WhereJsonContains('descriptive->cata', ['ref' => (int) $ref]);
                                 }
                             }
                         );

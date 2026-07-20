@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FilterOfferingRequest;
-use App\Models\Offering;
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
 
-class OfferingController extends Controller
+class EvaluationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(FilterOfferingRequest $request)
+    public function index()
     {
-        $offerings = Offering::search($request);
-
-        return view('layouts.offerings.index', compact('offerings'));
+        //
     }
 
     /**
@@ -37,7 +34,7 @@ class OfferingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Offering $offering)
+    public function show(Evaluation $evaluation)
     {
         //
     }
@@ -45,7 +42,7 @@ class OfferingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Offering $offering)
+    public function edit(Evaluation $evaluation)
     {
         //
     }
@@ -53,7 +50,7 @@ class OfferingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Offering $offering)
+    public function update(Request $request, Evaluation $evaluation)
     {
         //
     }
@@ -61,7 +58,7 @@ class OfferingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Offering $offering)
+    public function destroy(Evaluation $evaluation)
     {
         //
     }

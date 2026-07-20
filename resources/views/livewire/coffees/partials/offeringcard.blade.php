@@ -117,6 +117,6 @@ new class extends Component
     {{-- Botones --}}
     <div data-flux-offering-actions>
         <flux:button variant="outline" size="sm" icon="eye" href="">Ver</flux:button>
-        <flux:button variant="outline" size="sm" icon="plus" href="">Evaluar</flux:button>
+        <flux:button variant="outline" size="sm" icon="plus" href="{{route('evaluations', compact('offering'))}}">Evaluar</flux:button>
     </div>
 </div>

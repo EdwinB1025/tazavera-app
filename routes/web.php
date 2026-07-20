@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\OfferingController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +12,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->names([
             'index' => 'offerings',
         ]);
+    Route::resource('evaluations', EvaluationController::class);
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
