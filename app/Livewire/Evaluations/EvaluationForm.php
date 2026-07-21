@@ -11,7 +11,7 @@ class EvaluationForm extends Component
     // Properties of the entity to be used by the wire:model components
     public Offering $offering;
 
-    public ?string $evaluation_role = 'specialist';
+    public ?string $evaluator_role = 'specialist';
     public ?string $extraction_method = null;
     public ?string $note = null;
 
@@ -54,14 +54,25 @@ class EvaluationForm extends Component
     public const MAIN_TASTES = ['salty', 'sour', 'sweet', 'bitter', 'umami'];
     public const MOUTHFEEL_DESCRIPTORS = ['rough', 'oily', 'smooth', 'mouth_drying', 'metallic'];
     public const AXES = ['aroma', 'flavor', 'aftertaste', 'acidity', 'sweetness', 'mouthfeel'];
+    public const EXTRACTION_METHODS = [
+        'espresso',
+        'v60',
+        'chemex',
+        'aeropress',
+        'french_press',
+        'moka',
+        'cold_brew',
+        'siphon',
+        'kalita',
+    ];
 
     public function mount(Offering $offering): void
     {
-        $this->offering = $offering;
+        $this->offering = $offering->load('coffee', 'location');
     }
 
     public function render()
     {
-        return view('livewire.coffees.evaluation-form', ['cataAttributes' => CataAttribute::all(),]);
+        return view('livewire.evaluations.evaluation-form', ['cataAttributes' => CataAttribute::all(),]);
     }
 }

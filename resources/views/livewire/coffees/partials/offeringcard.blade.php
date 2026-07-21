@@ -12,7 +12,7 @@ new class extends Component
 <div class="tz-offering-card mb-2" data-flux-offering-card>
     <div class="flex">
         {{-- Lado izquierdo: puntaje --}}
-        <div data-flux-offering-score>
+        <div class="tz-right-border-card" data-flux-offering-score>
             @php
             $score = $offering->getScore() ?? 85.5;
 
@@ -115,8 +115,8 @@ new class extends Component
         </div>
     </div>
     {{-- Botones --}}
-    <div data-flux-offering-actions>
+    <div class="tz-top-border-card" data-flux-offering-actions>
         <flux:button variant="outline" size="sm" icon="eye" href="">Ver</flux:button>
-        <flux:button variant="outline" size="sm" icon="plus" href="{{route('evaluations', compact('offering'))}}">Evaluar</flux:button>
+        <flux:button variant="outline" size="sm" icon="plus" href="{{route('evaluations.create', array_merge(request()->query(), ['offering' => $offering->id]))}}">Evaluar</flux:button>
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evaluation;
+use App\Models\Offering;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
@@ -18,9 +19,11 @@ class EvaluationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $offering = Offering::find($request->input('offering'));
+        $offering->load('location', 'coffee');
+        return view('layouts.evaluations.index', compact('offering'));
     }
 
     /**
