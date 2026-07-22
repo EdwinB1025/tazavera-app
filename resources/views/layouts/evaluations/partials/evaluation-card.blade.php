@@ -34,13 +34,13 @@ $axes = explode('_', $axis);
     <div x-show="open" x-collapse class="flex flex-col md:flex-row gap-6 p-4">
         @if($axis!=='overall')
         {{-- Seccion Descriptive --}}
-        <div class="flex-1 min-w-0 flex flex-col items-stretch p-2 gap-4">
+        <div class="flex-1 min-w-0 flex flex-col items-stretch !p-2 gap-4 tz-right-border-card">
             <flux:subheading class="tz-subtitle"> Evaluacion Descriptiva </flux:subheading>
 
             {{-- Fila 1: intensidad(es) --}}
             <div class="flex flex-col gap-4 p-0 w-full">
                 <flux:label> Intensidad </flux:label>
-                <div class="tz-card-section flex flex-col gap-2 mx-2 w-full">
+                <div class="tz-card-section flex flex-col gap-2 mx-2">
                     @foreach($axes as $axisIntensity)
                     <x-layouts::evaluations.partials.descriptive-intensity :axis="$axisIntensity" />
                     @endforeach
@@ -51,7 +51,7 @@ $axes = explode('_', $axis);
             @if($showFlavors)
             <div class="flex flex-col gap-4 w-full">
                 <flux:label>{{$axis == 'overall' ? 'Defectos' : 'Atributos cata'}}</flux:label>
-                <div class="tz-card-section p-4 mx-2 w-full">
+                <div class="tz-card-section p-4 mx-2">
                     <x-layouts::evaluations.partials.descriptor-cascade :nodes="$cataNodes" :target="$cataTarget" />
                 </div>
             </div>
@@ -87,7 +87,7 @@ $axes = explode('_', $axis);
                 @if($axis!=='overall')
                 <flux:label>Evaluacion Afectiva</flux:label>
                 @endif
-                <div class="tz-card-section flex flex-col gap-2 mx-2 w-full">
+                <div class="tz-card-section flex flex-col gap-2 mx-2">
                     @foreach($axes as $axisAffective)
                     <x-layouts::evaluations.partials.affective-bean :axis="$axisAffective" />
                     @endforeach
@@ -97,7 +97,7 @@ $axes = explode('_', $axis);
                     <div class="inline-flex gap-2 mb-2">
                         <flux:label> Taza con defectos </flux:label>
                         <flux:checkbox
-                            x-data="{selected: @entagles('affective.is_defective.value')}"
+                            wire:model="affective.is_defective"
                             :value="true"
                             @click="open = !open">
                         </flux:checkbox>
@@ -105,7 +105,7 @@ $axes = explode('_', $axis);
 
                     <div x-show="open" x-cloak class="flex flex-col gap-4 w-full">
                         <flux:label>{{$axis == 'overall' ? 'Defectos' : 'Atributos cata'}}</flux:label>
-                        <div class="tz-card-section p-4 mx-2 w-full">
+                        <div class="tz-card-section p-4 mx-2">
                             <x-layouts::evaluations.partials.descriptor-cascade :nodes="$cataNodes" :target="$cataTarget" />
                         </div>
                     </div>
@@ -113,7 +113,7 @@ $axes = explode('_', $axis);
                 @endif
                 <div class="flex flex-col p-2">
                     <flux:label class="pb-2">Notas: </flux:label>
-                    <flux:textarea wire:model="affective.note.{{ $axis }}"
+                    <flux:textarea wire:model="{{$axis == 'overall' ? 'note':'affective.note.' . $axis}}"
                         placeholder="Observaciones descriptivas..." rows="3" />
                 </div>
             </div>

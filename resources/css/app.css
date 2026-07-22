@@ -594,8 +594,8 @@
         color: var(--color-ui-strong) !important;
     }
 
-    [data-flux-checkbox][data-checked][data-flux-control]{
-        background-color: var(--color-ui-button-light)!important;
+    [data-flux-checkbox][data-checked] [data-flux-checkbox-indicator] {
+        background-color: var(--color-ui-button-light) !important;
     }
 
     textarea[data-flux-control] {

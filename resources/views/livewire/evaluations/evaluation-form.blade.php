@@ -7,8 +7,8 @@
                 <flux:icon.arrow-left class="inline size-4" /> Volver
             </flux:link>
             <div class="flex items-center gap-2">
-                <flux:button variant="outline" size="sm" data-tz-action="save" wire:click="saveDraft">Guardar</flux:button>
-                <flux:button variant="outline" size="sm" data-tz-action="close" wire:click="closeEvaluation">Cerrar Evaluación</flux:button>
+                <flux:button variant="outline" size="sm" type="submit" form="evaluation-form" name="status" value="open" data-tz-action="save">Guardar</flux:button>
+                <flux:button variant="outline" size="sm" type="submit" form="evaluation-form" name="status" value="closed" data-tz-action="close">Cerrar Evaluación</flux:button>
             </div>
         </div>
         <flux:subheading>EVALUACIÓN</flux:subheading>
@@ -43,6 +43,26 @@
                 @endforeach
             </flux:select>
         </flux:field>
+
+        {{-- Nivel de tueste --}}
+        <flux:field>
+            <flux:label>Nivel de tueste</flux:label>
+            <flux:select wire:model="descriptive.roast_level" placeholder="Selecciona un nivel..." data-flux-input>
+                @foreach($this::ROAST_LEVELS as $level)
+                <flux:select.option value="{{ $level }}">
+                    {{ __('roast_level.'.$level) }}
+                </flux:select.option>
+                @endforeach
+            </flux:select>
+        </flux:field>
+
+        {{-- Sabores principales --}}
+        <div class="flex flex-col gap-4 w-full">
+            <flux:label>Sabores principales</flux:label>
+            <div class="tz-card-section p-4 mx-2">
+                <x-layouts::evaluations.partials.descriptor-cascade :nodes="$mainTasteNodes" :target="'descriptive.main_tastes'" />
+            </div>
+        </div>
 
         {{-- Leyenda: Impresión de calidad (1–9) --}}
         <div class="tz-card-section" x-data="{ open: false }">
@@ -79,10 +99,20 @@
 
     @endforeach
 
+    <form id="evaluation-form" method="POST" action="{{ route('evaluations.store') }}">
+        @csrf
+        <input type="hidden" name="offering_id" value="{{ $offering->id }}">
+        <input type="hidden" name="evaluator_role" value="{{ $evaluator_role }}">
+        <input type="hidden" name="extraction_method" value="{{ $extraction_method }}">
+        <input type="hidden" name="descriptive" value="{{ json_encode($descriptive) }}">
+        <input type="hidden" name="affective" value="{{ json_encode($affective) }}">
+        <input type="hidden" name="note" value="{{ $note }}">
+    </form>
+
     {{-- ACCIONES FINALES --}}
     <div class="tz-top-border-card pt-3 mx-4" data-flux-evaluation-actions>
         <flux:button variant="outline" size="sm" data-tz-action="cancel" href="{{ route('offerings', request()->query()) }}">Cancelar</flux:button>
-        <flux:button variant="outline" size="sm" data-tz-action="save" wire:click="saveDraft">Guardar</flux:button>
-        <flux:button variant="outline" size="sm" data-tz-action="close" wire:click="closeEvaluation">Cerrar Evaluación</flux:button>
+        <flux:button variant="outline" size="sm" type="submit" form="evaluation-form" name="status" value="open" data-tz-action="save">Guardar</flux:button>
+        <flux:button variant="outline" size="sm" type="submit" form="evaluation-form" name="status" value="closed" data-tz-action="close">Cerrar Evaluación</flux:button>
     </div>
 </div>

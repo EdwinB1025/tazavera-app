@@ -31,7 +31,18 @@ class EvaluationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Evaluation::create([
+            'offering_id'       => $request->input('offering_id'),
+            'evaluator_id'      => auth()->id(),
+            'evaluator_role'    => $request->input('evaluator_role'),
+            'extraction_method' => $request->input('extraction_method'),
+            'status'            => $request->input('status'),
+            'descriptive'       => json_decode($request->input('descriptive'), true),
+            'affective'         => json_decode($request->input('affective'), true),
+            'note'              => $request->input('note'),
+        ]);
+
+        return redirect()->route('evaluations.create', ['offering' => $request->input('offering_id')]);
     }
 
     /**

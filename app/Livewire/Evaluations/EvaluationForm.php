@@ -3,6 +3,7 @@
 namespace App\Livewire\Evaluations;
 
 use App\Models\CataAttribute;
+use App\Models\Evaluation;
 use App\Models\Offering;
 use App\Models\OlfactoryTaxonomy;
 use Livewire\Component;
@@ -107,6 +108,8 @@ class EvaluationForm extends Component
             'cataNodes' => 'defects',
         ],
     ];
+    public const ROAST_LEVELS = ['light', 'medium_light', 'medium', 'medium_dark', 'dark'];
+
     public const EXTRACTION_METHODS = [
         'espresso',
         'v60',
@@ -128,9 +131,10 @@ class EvaluationForm extends Component
     {
 
         $nodesByKey = [
-            'aromatics' => OlfactoryTaxonomy::tastes([0, 1, 2], 'aromatics')->get(),
-            'defects'   => OlfactoryTaxonomy::tastes([0, 1, 2], 'defects')->get(),
-            'mouthfeel' => OlfactoryTaxonomy::tastes([0, 1], 'mouthfeel')->get(),
+            'aromatics'  => OlfactoryTaxonomy::tastes([0, 1, 2], 'aromatics')->get(),
+            'defects'    => OlfactoryTaxonomy::tastes([0, 1, 2], 'defects')->get(),
+            'mouthfeel'  => OlfactoryTaxonomy::tastes([0, 1], 'mouthfeel')->get(),
+            'main_taste' => OlfactoryTaxonomy::tastes([0], 'main_tastes')->get(),
         ];
 
         $components = array_map(function ($c) use ($nodesByKey) {
@@ -140,22 +144,34 @@ class EvaluationForm extends Component
 
         return view(
             'livewire.evaluations.evaluation-form',
-            ['components' => $components,]
+            [
+                'components'     => $components,
+                'mainTasteNodes' => $nodesByKey['main_taste'],
+            ]
         );
-    }
-
-    public function updateIsDeffective(): void
-    {
-        $this->affective['is_defective'] = !empty($this->affective['cata']['defects']);
     }
 
     public function saveDraft(): void
     {
-        //
+        $this->persist('open');
     }
 
     public function closeEvaluation(): void
     {
-        //
+        $this->persist('closed');
+    }
+
+    private function persist(string $status): void
+    {
+        Evaluation::create([
+            'offering_id'       => $this->offering->id,
+            'evaluator_id'      => auth()->id(),
+            'evaluator_role'    => $this->evaluator_role,
+            'extraction_method' => $this->extraction_method,
+            'status'            => $status,
+            'descriptive'       => $this->descriptive,
+            'affective'         => $this->affective,
+            'note'              => $this->note,
+        ]);
     }
 }
