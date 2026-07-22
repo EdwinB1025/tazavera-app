@@ -4,6 +4,7 @@ namespace App\Livewire\Evaluations;
 
 use App\Models\CataAttribute;
 use App\Models\Offering;
+use App\Models\OlfactoryTaxonomy;
 use Livewire\Component;
 
 class EvaluationForm extends Component
@@ -16,29 +17,10 @@ class EvaluationForm extends Component
     public ?string $note = null;
 
     // Evaluacion descriptiva (formato definido para la serializacione en el campo jazon)
+
     public array $descriptive = [
         'roast_level' => null,
-        'main_tastes' => [],
-        'axis' => [
-            'aroma'      => ['value' => null, 'note' => null],
-            'flavor'     => ['value' => null, 'note' => null],
-            'aftertaste' => ['value' => null, 'note' => null],
-            'acidity'    => ['value' => null, 'note' => null],
-            'sweetness'  => ['value' => null, 'note' => null],
-            'mouthfeel'  => ['value' => null, 'note' => null],
-        ],
-        'cata' => [
-            'fragrance_aroma'   => [],   // refs seleccionados en el desplegable
-            'flavor_aftertaste' => [],
-            'acidity'           => [],
-        ],
-        'mouthfeel_descriptors' => [],   // fijos: rough/oily/smooth/mouth_drying/metallic
-    ];
-
-    // Estado afectivo
-    public array $affective = [
-        'is_defective' => false,
-        'defect_types' => [],
+        'main_tastes' => [],                    // hasta 2: salty/sour/sweet/bitter/umami
         'axis' => [
             'aroma'      => null,
             'flavor'     => null,
@@ -46,14 +28,85 @@ class EvaluationForm extends Component
             'acidity'    => null,
             'sweetness'  => null,
             'mouthfeel'  => null,
+            'overall'    => null,
+        ],
+        'cata' => [
+            'aroma'   => [],          // ids seleccionados (niveles 0/1/2)
+            'flavor_aftertaste' => [],
+        ],
+        'note' => [
+            'aroma'      => null,
+            'flavor_aftertaste'     => null,
+            'acidity'    => null,
+            'sweetness'  => null,
+            'mouthfeel'  => null,
+            'overall'    => null,
+        ],
+    ];
+
+    // Estado afectivo
+    public array $affective = [
+        'is_defective'  => false,
+        'cupping_score' => null,                    // hasta 2: salty/sour/sweet/bitter/umami
+        'axis' => [
+            'aroma'      => null,
+            'flavor'     => null,
+            'aftertaste' => null,
+            'acidity'    => null,
+            'sweetness'  => null,
+            'mouthfeel'  => null,
+            'overall'    => null,
+        ],
+        'cata' => [
+            'defects'   => [],                  // ids de nodos con categoria 'defects'
+            'mouthfeel' => [],                  // ids de nodos mouthfeel (115-120)
+        ],
+        'note' => [
+            'aroma'      => null,
+            'flavor_aftertaste'     => null,
+            'acidity'    => null,
+            'sweetness'  => null,
+            'mouthfeel'  => null,
+            'overall'    => null,
         ],
     ];
 
     // Listas fijas (fuente única para vista y validación)
-    public const ROAST_LEVELS = ['light', 'medium_light', 'medium', 'medium_dark', 'dark'];
-    public const MAIN_TASTES = ['salty', 'sour', 'sweet', 'bitter', 'umami'];
-    public const MOUTHFEEL_DESCRIPTORS = ['rough', 'oily', 'smooth', 'mouth_drying', 'metallic'];
-    public const AXES = ['aroma', 'flavor', 'aftertaste', 'acidity', 'sweetness', 'mouthfeel'];
+
+    public const COMPONENTS = [
+        [
+            'name' => 'aroma',
+            'cataTarget' => 'descriptive.cata.aroma',
+            'cataNodes' => 'aromatics',
+        ],
+        [
+            'name' => 'flavor_aftertaste',
+            'cataTarget' => 'descriptive.cata.flavor_aftertaste',
+            'cataNodes' => 'aromatics',
+
+        ],
+        [
+            'name' => 'acidity',
+            'cataTarget' => null,
+            'cataNodes' => null,
+        ],
+        [
+            'name' => 'sweetness',
+            'cataTarget' => null,
+            'cataNodes' => null,
+
+        ],
+        [
+            'name' => 'mouthfeel',
+            'cataTarget' => 'affective.cata.mouthfeel',
+            'cataNodes' => 'mouthfeel',
+        ],
+        [
+            'name' => 'overall',
+            'cataTarget' => 'affective.cata.defects',
+            'cataNodes' => 'defects',
+        ],
+    ];
     public const EXTRACTION_METHODS = [
         'espresso',
         'v60',
@@ -73,6 +126,36 @@ class EvaluationForm extends Component
 
     public function render()
     {
-        return view('livewire.evaluations.evaluation-form', ['cataAttributes' => CataAttribute::all(),]);
+
+        $nodesByKey = [
+            'aromatics' => OlfactoryTaxonomy::tastes([0, 1, 2], 'aromatics')->get(),
+            'defects'   => OlfactoryTaxonomy::tastes([0, 1, 2], 'defects')->get(),
+            'mouthfeel' => OlfactoryTaxonomy::tastes([0, 1], 'mouthfeel')->get(),
+        ];
+
+        $components = array_map(function ($c) use ($nodesByKey) {
+            $c['cataNodes'] = $c['cataNodes'] ? $nodesByKey[$c['cataNodes']] : null;
+            return $c;
+        }, self::COMPONENTS);
+
+        return view(
+            'livewire.evaluations.evaluation-form',
+            ['components' => $components,]
+        );
+    }
+
+    public function updateIsDeffective(): void
+    {
+        $this->affective['is_defective'] = !empty($this->affective['cata']['defects']);
+    }
+
+    public function saveDraft(): void
+    {
+        //
+    }
+
+    public function closeEvaluation(): void
+    {
+        //
     }
 }

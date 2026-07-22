@@ -72,10 +72,10 @@ new class extends Component
             </flux:text>
 
             <div class="flex flex-col gap-1">
-                {{-- Sabores Primarios --}}
+                {{-- Olfativos Base --}}
                 <div data-flux-offering-tastes>
                     @php
-                    $primary = $offering->getTastes(0);
+                    $primary = $offering->getCata(0);
                     $primaryRefs = array_column($primary, 'ref');
                     $taxonomies = OlfactoryTaxonomy::byRefs($primaryRefs)->get()->keyBy('id');
 
@@ -88,11 +88,25 @@ new class extends Component
                     </flux:badge>
                     @endforeach
                 </div>
-                {{-- Sabores Secundarios --}}
+                {{-- Olfativos Primarios --}}
                 <div data-flux-offering-tastes>
                     @php
-                    $secondary = $offering->getTastes([1,2]);
+                    $secondary = $offering->getCata([1]);
                     $secondaryRefs = array_column($secondary, 'ref');
+                    $taxonomies_ter = OlfactoryTaxonomy::byRefs($secondaryRefs)->get()->keyBy('id');
+                    @endphp
+                    @foreach($secondary as $cata)
+                    @php $taxonomy = $taxonomies_ter[$cata['ref']] ?? null; @endphp
+                    <flux:badge class="!text-xs" :style="'background-color: ' . ($taxonomy->color ?? 'transparent') . '99'">
+                        {{ $taxonomy->name_es ?? 'N/A' }}
+                    </flux:badge>
+                    @endforeach
+                </div>
+                {{-- Olfativos Secundarios --}}
+                <div data-flux-offering-tastes>
+                    @php
+                    $terciary = $offering->getCata([2]);
+                    $terciaryRefs = array_column($secondary, 'ref');
                     $taxonomies_sec = OlfactoryTaxonomy::byRefs($secondaryRefs)->get()->keyBy('id');
                     @endphp
                     @foreach($secondary as $cata)

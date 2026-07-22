@@ -536,7 +536,7 @@
     }
 
     .tz-filter [data-flux-label] {
-        @apply !mb-0 !leading-tight;
+        @apply !mb-0 !text-base !leading-tight;
         color: var(--color-text-filter-label) !important;
     }
 
@@ -592,6 +592,10 @@
     button[data-flux-control],
     select[data-flux-control] {
         color: var(--color-ui-strong) !important;
+    }
+
+    [data-flux-checkbox][data-checked][data-flux-control]{
+        background-color: var(--color-ui-button-light)!important;
     }
 
     textarea[data-flux-control] {
@@ -766,7 +770,7 @@
     }
 
     .tz-card-section:hover {
-        background-color: color-mix(in srgb, var(--color-on-primary) 70%, var(--color-warmgray-500)) !important;;
+        background-color: color-mix(in srgb, var(--color-on-primary) 85%, var(--color-warmgray-500)) !important;;
         
     }
 
@@ -822,6 +826,51 @@
         @apply !text-xs !italic;
         color: var(--color-warmgray-500) !important;
         font-family: var(--font-body);
+    }
+
+    /* ─── EVALUATION FORM ACTIONS ─── */
+    [data-flux-evaluation-actions] {
+        @apply flex items-center justify-end gap-2;
+    }
+
+    [data-flux-evaluation-actions] [data-flux-button] {
+        @apply !text-xs !px-3 !py-2;
+    }
+
+    /* Cancelar — neutral, misma función que "Volver" */
+    [data-flux-evaluation-actions] [data-tz-action="cancel"] {
+        background-color: color-mix(in srgb, var(--color-warmgray-500) 35%, transparent) !important;
+        color: var(--color-warmgray-500) !important;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    [data-flux-evaluation-actions] [data-tz-action="cancel"]:hover {
+        background-color: var(--color-warmgray-500) !important;
+        color: var(--color-text-inverse) !important;
+    }
+
+    /* Guardar — informativo, tono pine (coincide con la leyenda "descriptiva") */
+    [data-flux-evaluation-actions] [data-tz-action="save"] {
+        background-color: color-mix(in srgb, var(--color-nav-obscure) 35%, transparent) !important;
+        color: var(--color-nav-obscure) !important;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    [data-flux-evaluation-actions] [data-tz-action="save"]:hover {
+        background-color: var(--color-nav-obscure) !important;
+        color: var(--color-text-inverse) !important;
+    }
+
+    /* Cerrar Evaluación — CTA principal, mismo tono oxblood que "Evaluar" */
+    [data-flux-evaluation-actions] [data-tz-action="close"] {
+        background-color: color-mix(in srgb, var(--color-primary) 35%, transparent) !important;
+        color: var(--color-primary) !important;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    [data-flux-evaluation-actions] [data-tz-action="close"]:hover {
+        background-color: var(--color-primary) !important;
+        color: var(--color-text-inverse) !important;
     }
 
     /* Evaluacion Affectiva */

@@ -56,7 +56,7 @@
 
 {{-- SABORES PRINCIPALES: usando alpine.js --}}
 <flux:field class="!flex-[1.1]">
-    <flux:label>Sabores Principales</flux:label>
+    <flux:label>Sabores</flux:label>
     <div x-data="{ open: false }" class="min-w-full relative group">
         <button
             type="button"
@@ -92,7 +92,7 @@
 
 {{-- SABORES SECUNDARIOS: mismo patrón --}}
 <flux:field class="!flex-[1.1]">
-    <flux:label>Sabores Secundarios</flux:label>
+    <flux:label>Olfativos</flux:label>
     <div x-data="{ open: false }" class="min-w-full relative group">
         <button
             type="button"

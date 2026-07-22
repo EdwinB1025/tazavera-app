@@ -19,12 +19,19 @@ class Offering extends Model
     use HasFactory;
 
     /** We assign the responsability of retriving the tastes and the score to the offering model, not the view */
-    public function getTastes(int|array|null $level = null): array
+    public function getCata(int|array|null $level = null): array
     {
-        $tastes_source = $this->consensus['cata_freq'] ??
-            $this->evaluations()
+        if (empty($this->consensus['cata_freq'])) {
+            $evaluations = $this->evaluations()
                 ->where('evaluator_role', 'coffeeshop')
-                ->first()?->descriptive['cata'] ?? [];
+                ->first();
+            $tastes_source = array_merge(
+                $evaluations?->descriptive['cata']['aroma'] ?? [],
+                $evaluations?->descriptive['cata']['flavor_aftertaste'] ?? []
+            );
+        } else {
+            $tastes_source = $this->consensus['cata_freq'];
+        }
 
         if ($level !== null) {
             return array_filter(
@@ -36,6 +43,20 @@ class Offering extends Model
 
         return $tastes_source;
     }
+
+    public function getMainTastes(): array
+    {
+        if (empty($this->consensus['main_tastes'])) {
+            $tastes_source = $this->evaluations()
+                ->where('evaluator_role', 'coffeeshop')
+                ->first()->main_tastes() ?? [];
+        } else {
+            $tastes_source = $this->main_tastes() ?? [];
+        }
+
+        return $tastes_source;
+    }
+
 
     public function getScore(): float
     {
@@ -136,40 +157,37 @@ class Offering extends Model
     }
 
     #[Scope]
-    protected function tastes(Builder $query, ?array $tastes): void
+    protected function hasCataRefs(Builder $query, ?array $refs): void
     {
-        $consensus = Offering::query();
-        $consensus->when(
-            $tastes,
-            fn($condition) => $condition->where(function ($nestedquery) use ($tastes) {
-                foreach ($tastes as $ref) {
+        $query->where(
+            function ($nestedquery) use ($refs) {
+                foreach ($refs as $ref) {
                     $nestedquery->WhereJsonContains(
                         'consensus->cata_req',
                         ['ref' => (int) $ref]
                     );
                 }
-            })
+            }
+        );
+    }
+
+
+    #[Scope]
+    protected function tastes(Builder $query, ?array $refs): void
+    {
+        $consensus = Offering::query();
+        $consensus->when(
+            $refs,
+            fn($offerings) => $offerings->hasCataRefs($refs)
         );
 
         if ($consensus->exists()) {
             $query->mergeConstraintsFrom($consensus);
         } else {
-            $query->when(
-                $tastes,
-                fn($condition) => $condition->whereHas(
-                    'evaluations',
-                    function ($evaluations) use ($tastes) {
-                        $evaluations->where(
-                            function ($nestedquery) use ($tastes) {
-                                foreach ($tastes as $ref) {
-                                    $nestedquery->WhereJsonContains('descriptive->cata', ['ref' => (int) $ref]);
-                                }
-                            }
-                        );
-                    }
-                )
-
-            );
+            $query->when($refs, fn($q) => $q->whereHas(
+                'evaluations',
+                fn($evaluations) => $evaluations->hasCataRefs($refs)
+            ));
         }
     }
 

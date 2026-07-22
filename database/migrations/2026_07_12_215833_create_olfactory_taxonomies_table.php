@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('description_es', 250)->nullable();
             $table->char('color_base', 7)->nullable();
             $table->char('color', 7)->nullable();
+            $table->json('categories')->nullable();
             $table->timestamps();
         });
     }

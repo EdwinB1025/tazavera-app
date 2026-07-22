@@ -18,69 +18,46 @@ class EvaluationFactory extends Factory
      */
     public function definition(): array
     {
-        $axes = ['aroma', 'flavor', 'aftertaste', 'acidity', 'sweetness', 'mouthfeel'];
+        $axes = ['aroma', 'flavor', 'aftertaste', 'acidity', 'sweetness', 'mouthfeel', 'overall'];
+        $noteKeys = ['aroma', 'flavor_aftertaste', 'acidity', 'sweetness', 'mouthfeel', 'overall'];
+
+        // real nodes desde la taxonomía, filtrados por categoría → [{ref, level}]
+        $cata = fn(array $levels, string $category, int $count) =>
+        OlfactoryTaxonomy::tastes($levels, $category)->get()
+            ->shuffle()
+            ->take($count)
+            ->map(fn($n) => ['ref' => $n->id, 'level' => $n->level])
+            ->values()
+            ->all();
+
+        $defects = $cata([0, 1, 2], 'defects', 2);
 
         return [
-            'evaluator_role' => 'coffeeshop',
+            'evaluator_role'    => 'coffeeshop',
             'extraction_method' => fake()->randomElement(['V60', 'Espresso', 'Chemex', 'Aeropress']),
+
             'descriptive' => [
                 'roast_level' => fake()->randomElement(['light', 'medium_light', 'medium', 'medium_dark', 'dark']),
-                'main_tastes' => fake()->randomElements(['salty', 'sour', 'sweet', 'bitter', 'umami'], 2),
-                'axis' => array_map(fn ($axis) => [
-                    'axis' => $axis,
-                    'value' => fake()->numberBetween(5, 12),
-                    'note' => null,
-                ], $axes),
-                'cata' => collect(['fragrance_aroma', 'flavor_aftertaste', 'acidity'])
-                    ->flatMap(function ($dimension) {
-                        $specificTastes = OlfactoryTaxonomy::level(2)->get();
-                        $ids = $specificTastes->pluck('id')->all();
-
-                        $randomTastes = fake()->randomElements($ids, 1);
-
-                        $level1Tastes = OlfactoryTaxonomy::find($randomTastes)->pluck('parent_id')->all();
-
-                        $level0Tastes = OlfactoryTaxonomy::find($level1Tastes)->pluck('parent_id')->all();
-
-                        $level2 = array_map(function ($ref) use ($dimension) {
-                            return [
-                                'dimension' => $dimension,
-                                'ref' => $ref,
-                                'level' => 2,
-                            ];
-                        }, $randomTastes);
-
-                        $level1 = array_map(function ($ref) use ($dimension) {
-                            return [
-                                'dimension' => $dimension,
-                                'ref' => $ref,
-                                'level' => 1,
-                            ];
-                        }, $level1Tastes);
-
-                        $level0 = array_map(function ($ref) use ($dimension) {
-                            return [
-                                'dimension' => $dimension,
-                                'ref' => $ref,
-                                'level' => 0,
-                            ];
-                        }, $level0Tastes);
-
-                        return array_merge($level2, $level1, $level0);
-                    })
-                    ->values()
-                    ->all(),
-
+                'main_tastes' => $cata([0], 'main_tastes', 2),
+                'axis' => collect($axes)->mapWithKeys(fn($a) => [$a => fake()->numberBetween(5, 12)])->all(),
+                'cata' => [
+                    'aroma'             => $cata([0, 1, 2], 'aromatics', 3),
+                    'flavor_aftertaste' => $cata([0, 1, 2], 'aromatics', 3),
+                ],
+                'note' => collect($noteKeys)->mapWithKeys(fn($k) => [$k => null])->all(),
             ],
+
             'affective' => [
-                'is_defective' => false,
-                'defect_types' => [],
+                'is_defective'  => !empty($defects),
                 'cupping_score' => fake()->numberBetween(78, 90),
-                'axis' => array_map(fn ($axis) => [
-                    'axis' => $axis === 'aftertaste' ? 'overall' : $axis,
-                    'value' => fake()->numberBetween(5, 9),
-                ], $axes),
+                'axis' => collect($axes)->mapWithKeys(fn($a) => [$a => fake()->numberBetween(5, 9)])->all(),
+                'cata' => [
+                    'defects'   => $defects,
+                    'mouthfeel' => $cata([0, 1], 'mouthfeel', 2),
+                ],
+                'note' => collect($noteKeys)->mapWithKeys(fn($k) => [$k => null])->all(),
             ],
+
             'note' => 'Autoevaluación inicial de la cafetería.',
         ];
     }

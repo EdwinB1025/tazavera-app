@@ -12,7 +12,7 @@ class OlfactoryTaxonomySeeder extends Seeder
      */
     public function run(): void
     {
-        $path = database_path('seeders/data/taxonomia-olfativa-semilla.csv');
+        $path = database_path('seeders/data/taxonomia-sensorial-semilla.csv');
         $handle = fopen($path, 'r');
         fgetcsv($handle); // saltar cabecera
 
@@ -28,6 +28,7 @@ class OlfactoryTaxonomySeeder extends Seeder
                 'description_es' => $data[5] ?: null,
                 'color_base' => $data[7] ?: null,
                 'color' => $data[8] ?: null,
+                'categories' => $data[9] ?: null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
