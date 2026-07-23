@@ -3,7 +3,6 @@
 namespace App\Livewire\Evaluations;
 
 use App\Models\CataAttribute;
-use App\Models\Evaluation;
 use App\Models\Offering;
 use App\Models\OlfactoryTaxonomy;
 use Livewire\Component;
@@ -151,27 +150,4 @@ class EvaluationForm extends Component
         );
     }
 
-    public function saveDraft(): void
-    {
-        $this->persist('open');
-    }
-
-    public function closeEvaluation(): void
-    {
-        $this->persist('closed');
-    }
-
-    private function persist(string $status): void
-    {
-        Evaluation::create([
-            'offering_id'       => $this->offering->id,
-            'evaluator_id'      => auth()->id(),
-            'evaluator_role'    => $this->evaluator_role,
-            'extraction_method' => $this->extraction_method,
-            'status'            => $status,
-            'descriptive'       => $this->descriptive,
-            'affective'         => $this->affective,
-            'note'              => $this->note,
-        ]);
-    }
 }

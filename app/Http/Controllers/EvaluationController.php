@@ -31,6 +31,9 @@ class EvaluationController extends Controller
      */
     public function store(Request $request)
     {
+        $affective = json_decode($request->input('affective'), true);
+        $affective['cupping_score'] = $this->computeCuppingScore($affective['axis']);
+
         Evaluation::create([
             'offering_id'       => $request->input('offering_id'),
             'evaluator_id'      => auth()->id(),
@@ -38,11 +41,33 @@ class EvaluationController extends Controller
             'extraction_method' => $request->input('extraction_method'),
             'status'            => $request->input('status'),
             'descriptive'       => json_decode($request->input('descriptive'), true),
-            'affective'         => json_decode($request->input('affective'), true),
+            'affective'         => $affective,
             'note'              => $request->input('note'),
         ]);
 
         return redirect()->route('evaluations.create', ['offering' => $request->input('offering_id')]);
+    }
+
+    /**
+     * Coeficiente SCA (versión simplificada): S = 0.65625 * Σh_i + 52.75,
+     * redondeado a 0.25. No incluye penalizaciones por -2u -4d porque esas
+     * son agregados entre varias evaluaciones de la misma oferta, no de una sola.
+     * "fragrance" se duplica a partir de "aroma" (no existe eje separado en el modelo).
+     */
+    private function computeCuppingScore(array $axis): float
+    {
+        $sum = $axis['aroma']       // fragrance (duplicado de aroma)
+            + $axis['aroma']
+            + $axis['flavor']
+            + $axis['aftertaste']
+            + $axis['acidity']
+            + $axis['sweetness']
+            + $axis['mouthfeel']
+            + $axis['overall'];
+
+        $score = 0.65625 * $sum + 52.75;
+
+        return round($score * 4) / 4;
     }
 
     /**
