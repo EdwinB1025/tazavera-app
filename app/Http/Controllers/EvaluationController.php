@@ -13,6 +13,8 @@ class EvaluationController extends Controller
      */
     public function index(Request $request)
     {
+        $request->merge(['id' => auth()->id()]);
+
         $evaluations = Evaluation::search($request);
 
         return view('layouts.evaluations.index', compact('evaluations'));

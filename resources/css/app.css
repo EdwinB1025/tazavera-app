@@ -708,6 +708,7 @@
     }
 
     .tz-badge-provisional[data-flux-badge] {
+        @apply !text-xs md: !text-base;
         background-color: color-mix(in srgb, var(--color-warmgray-500) 25%, white) !important;
         color: var(--color-text-primary) !important;
     }

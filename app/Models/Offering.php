@@ -96,7 +96,7 @@ class Offering extends Model
             $name,
             fn($q) => $q->whereHas(
                 'coffee',
-                fn($coffee) => $coffee->name($name)
+                fn($coffee) => $coffee->nameLike($name)
             )
         );
     }
@@ -138,15 +138,15 @@ class Offering extends Model
     }
 
     #[Scope]
-    protected function locationName(Builder $query, ?string $name): void
+    protected function locationId(Builder $query, int $locationId): void
     {
-        $query->when(
-            $name,
-            fn($q) => $q->whereHas(
-                'location',
-                fn($location) => $location->name($name)
-            )
-        );
+        $query->where('location_id', $locationId);
+    }
+
+    #[Scope]
+    protected function coffeeId(Builder $query, int $coffeeId): void
+    {
+        $query->where('coffee_id', $coffeeId);
     }
 
     #[Scope]

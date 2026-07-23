@@ -20,13 +20,10 @@ class Evaluation extends Model
     public static function search(Request $request)
     {
         return Evaluation::query()
-            ->when(
-                $request->input('id'),
-                fn($q) => $q->whereKey($request->input('id')) //query de evaluacion individual
-            )
-            ->name($request->input('name')) //query de nombre del cafe evaluado
+            ->evaluator($request->input('id')) //query de evaluacion individual
+            ->coffeeId($request->input('coffee_id')) //query de cafe evaluado por id
             ->city($request->input('city')) //query de ciudad en cafeteria
-            ->locationName($request->input('location')) //query de nombre de la cafeteria.
+            ->locationId($request->input('location_id')) //query de cafeteria por id
             ->when($request->input('score'), fn($q) => $q->scoreMin((float) $request->input('score'))) // query de puntaje
             ->with('offering.coffee', 'offering.location')
             ->latest()
@@ -92,13 +89,13 @@ class Evaluation extends Model
     }
 
     #[Scope]
-    protected function name(Builder $query, ?string $name): void
+    protected function coffeeId(Builder $query, ?int $coffeeId): void
     {
         $query->when(
-            $name,
+            $coffeeId,
             fn($q) => $q->whereHas(
                 'offering',
-                fn($offering) => $offering->name($name)
+                fn($offering) => $offering->coffeeId($coffeeId)
             )
         );
     }
@@ -128,14 +125,23 @@ class Evaluation extends Model
     }
 
     #[Scope]
-    protected function locationName(Builder $query, ?string $name): void
+    protected function locationId(Builder $query, ?int $locationId): void
     {
         $query->when(
-            $name,
+            $locationId,
             fn($q) => $q->whereHas(
                 'offering',
-                fn($offering) => $offering->locationName($name)
+                fn($offering) => $offering->locationId($locationId)
             )
+        );
+    }
+
+    #[Scope]
+    protected function evaluator(Builder $query, int $userId): void
+    {
+        $query->when(
+            $userId,
+            fn($q) => $q->where('evaluator_id', $userId)
         );
     }
 

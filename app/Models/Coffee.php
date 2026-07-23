@@ -22,7 +22,7 @@ class Coffee extends Model
     }
 
     #[Scope]
-    protected function name(Builder $query, string $name): void
+    protected function nameLike(Builder $query, string $name): void
     {
         foreach (explode(' ', trim($name)) as $word) {
             $query->where('name', 'like', '%' . $word . '%');

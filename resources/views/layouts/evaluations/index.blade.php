@@ -3,6 +3,10 @@
         <flux:subheading>EVALUACIONES</flux:subheading>
     </div>
 
+    <div class="mb-4">
+        <livewire:evaluations.evaluation-filterbar class="mt-auto" />
+    </div>
+
     <div class="overflow-y-auto h-[calc(100vh-16rem)] flex flex-col gap-2 pr-2 mx-[1%]">
     </div>
 

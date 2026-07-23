@@ -39,7 +39,7 @@ new class extends Component
             {{-- Lado derecho: contenido --}}
             <div data-flux-offering-content>
                 {{-- Header: nombre + badges de estado --}}
-                <div class="flex max-md:flex-col gap-2 items-start">
+                <div class="flex max-md:flex-col gap-2 items-center">
                     @if($offering->verification_status === 'verified')
                     <flux:badge icon="check" class="tz-badge-verified">Verificado</flux:badge>
                     @else
