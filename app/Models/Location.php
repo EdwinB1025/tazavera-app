@@ -32,4 +32,12 @@ class Location extends Model
     {
         $query->where('city', $city);
     }
+
+    #[Scope]
+    protected function name(Builder $query, string $name): void
+    {
+        foreach (explode(' ', trim($name)) as $word) {
+            $query->where('name', 'like', '%' . $word . '%');
+        }
+    }
 }

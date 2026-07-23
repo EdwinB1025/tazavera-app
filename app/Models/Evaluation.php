@@ -9,12 +9,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
 
 #[Fillable(['offering_id', 'evaluator_id', 'evaluator_role', 'extraction_method', 'status', 'descriptive', 'affective', 'note'])]
 class Evaluation extends Model
 {
     /** @use HasFactory<EvaluationFactory> */
     use HasFactory;
+
+    public static function search(Request $request)
+    {
+        return Evaluation::query()
+            ->when(
+                $request->input('id'),
+                fn($q) => $q->whereKey($request->input('id')) //query de evaluacion individual
+            )
+            ->name($request->input('name')) //query de nombre del cafe evaluado
+            ->city($request->input('city')) //query de ciudad en cafeteria
+            ->locationName($request->input('location')) //query de nombre de la cafeteria.
+            ->when($request->input('score'), fn($q) => $q->scoreMin((float) $request->input('score'))) // query de puntaje
+            ->with('offering.coffee', 'offering.location')
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+    }
+
 
     #[Scope]
     protected function hasCataRefs(Builder $query, array $refs, ?array $dimensions = null): void
@@ -52,8 +71,6 @@ class Evaluation extends Model
         );
     }
 
-
-
     #[Scope]
     protected function coffeeshop(Builder $query): void
     {
@@ -71,6 +88,54 @@ class Evaluation extends Model
     {
         $query->when(
             fn($q) => $q->where('affective->cupping_score', '>=', $score)
+        );
+    }
+
+    #[Scope]
+    protected function name(Builder $query, ?string $name): void
+    {
+        $query->when(
+            $name,
+            fn($q) => $q->whereHas(
+                'offering',
+                fn($offering) => $offering->name($name)
+            )
+        );
+    }
+
+    #[Scope]
+    protected function city(Builder $query, ?string $city): void
+    {
+        $query->when(
+            $city,
+            fn($q) => $q->whereHas(
+                'offering',
+                fn($offering) => $offering->city($city)
+            )
+        );
+    }
+
+    #[Scope]
+    protected function process(Builder $query, ?string $process): void
+    {
+        $query->when(
+            $process,
+            fn($q) => $q->whereHas(
+                'offering',
+                fn($offering) => $offering->process($process)
+            )
+        );
+    }
+
+    #[Scope]
+    protected function locationName(Builder $query, ?string $name): void
+    {
+        $query->when(
+            $name,
+            fn($q) => $q->whereHas(
+                'offering',
+                fn($offering) => $offering->locationName($name)
+            )
         );
     }
 

@@ -67,7 +67,10 @@ class Offering extends Model
     {
 
         $offerings = Offering::query()
-            ->when($request->request('id'), fn($q) => $q->whereKey(request('id')))
+            ->when(
+                $request->input('id'),
+                fn($q) => $q->whereKey($request->input('id'))
+            )
             ->name($request->input('name'))
             ->city($request->input('city'))
             ->origin($request->input('origin'))
@@ -132,6 +135,12 @@ class Offering extends Model
                 fn($coffee) => $coffee->process($process)
             )
         );
+    }
+
+    #[Scope]
+    protected function locationName(Builder $query, ?string $name): void
+    {
+        $query->when($name, fn($q) => $q->whereHas('location', fn($location) => $location->name($name)));
     }
 
     #[Scope]
