@@ -17,15 +17,61 @@ class Evaluation extends Model
     use HasFactory;
 
     #[Scope]
-    protected function hasCataRefs(Builder $query, array $refs): void
+    protected function hasCataRefs(Builder $query, array $refs, ?array $dimensions = null): void
     {
-        $query->where(function ($sub) use ($refs) {
-            foreach ($refs as $ref) {
-                foreach (['aroma', 'flavor_aftertaste'] as $key) {
-                    $sub->orWhereJsonContains("descriptive->cata->{$key}", ['ref' => (int)$ref]);
+        $dimensions ??= ['aroma', 'flavor_aftertaste'];
+        $query->when(
+            $refs,
+            fn($q) => $q->where(
+                function ($sub) use ($refs, $dimensions) {
+                    foreach ($refs as $ref) {
+                        foreach ($dimensions as $key) {
+                            $sub->orWhereJsonContains("descriptive->cata->{$key}", ['ref' => (int)$ref,]);
+                        }
+                    }
                 }
-            }
-        });
+            )
+        );
+    }
+
+    #[Scope]
+    protected function hasCataLevels(Builder $query, array $levels, ?array $dimensions = null): void
+    {
+        $dimensions ??= ['aroma', 'flavor_aftertaste'];
+        $query->when(
+            $levels,
+            fn($q) => $q->where(
+                function ($sub) use ($levels, $dimensions) {
+                    foreach ($levels as $level) {
+                        foreach ($dimensions as $key) {
+                            $sub->orWhereJsonContains("descriptive->cata->{$key}", ['level' => (int)$level,]);
+                        }
+                    }
+                }
+            )
+        );
+    }
+
+
+
+    #[Scope]
+    protected function coffeeshop(Builder $query): void
+    {
+        $query->where('evaluator_role', 'coffeeshop');
+    }
+
+    #[Scope]
+    protected function specialist(Builder $query): void
+    {
+        $query->where('evaluator_role', 'specialist');
+    }
+
+    #[Scope]
+    protected function scoreMin(Builder $query, float $score): void
+    {
+        $query->when(
+            fn($q) => $q->where('affective->cupping_score', '>=', $score)
+        );
     }
 
     public function offering(): BelongsTo

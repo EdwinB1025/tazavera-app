@@ -23,11 +23,11 @@ class Offering extends Model
     {
         if (empty($this->consensus['cata_freq'])) {
             $evaluations = $this->evaluations()
-                ->where('evaluator_role', 'coffeeshop')
+                ->coffeeshop()
                 ->first();
             $tastes_source = array_merge(
-                $evaluations?->descriptive['cata']['aroma'] ?? [],
-                $evaluations?->descriptive['cata']['flavor_aftertaste'] ?? []
+                $evaluations->descriptive['cata']['aroma'] ?? [],
+                $evaluations->descriptive['cata']['flavor_aftertaste'] ?? []
             );
         } else {
             $tastes_source = $this->consensus['cata_freq'];
@@ -46,29 +46,28 @@ class Offering extends Model
 
     public function getMainTastes(): array
     {
-        if (empty($this->consensus['main_tastes'])) {
-            $tastes_source = $this->evaluations()
-                ->where('evaluator_role', 'coffeeshop')
-                ->first()->main_tastes() ?? [];
-        } else {
-            $tastes_source = $this->main_tastes() ?? [];
-        }
-
-        return $tastes_source;
+        return  $this->evaluations()
+            ->coffeeshop()
+            ->first()->main_tastes() ??
+            ($this->main_tastes() ?? []);
     }
 
 
     public function getScore(): float
     {
         return data_get($this->consensus, 'cupping_avg')
-            ?? $this->evaluations()->where('evaluator_role', 'coffeeshop')->first()?->affective['cupping_score']
-            ?? 0;
+            ?? ($this->evaluations()
+                ->coffeeshop()
+                ->first()
+                ->affective['cupping_score']
+                ?? 0);
     }
 
     public static function search(Request $request)
     {
 
         $offerings = Offering::query()
+            ->when($request->request('id'), fn($q) => $q->whereKey(request('id')))
             ->name($request->input('name'))
             ->city($request->input('city'))
             ->origin($request->input('origin'))
@@ -90,15 +89,13 @@ class Offering extends Model
     #[Scope]
     protected function name(Builder $query, ?string $name): void
     {
-        $query->when($name, fn($condition) => $condition->whereHas(
-            'coffee',
-            function ($subquery) use ($name) {
-                $arrayWords = explode(' ', trim($name));
-                foreach ($arrayWords as $word) {
-                    $subquery->where('name', 'like', '%' . $word . '%');
-                }
-            }
-        ));
+        $query->when(
+            $name,
+            fn($q) => $q->whereHas(
+                'coffee',
+                fn($coffee) => $coffee->name($name)
+            )
+        );
     }
 
     #[Scope]
@@ -106,9 +103,9 @@ class Offering extends Model
     {
         $query->when(
             $city,
-            fn($condition) => $condition->whereHas(
+            fn($q) => $q->whereHas(
                 'location',
-                fn($location) => $location->where('city', $city)
+                fn($location) => $location->city($city)
             )
         );
     }
@@ -118,9 +115,9 @@ class Offering extends Model
     {
         $query->when(
             $origin,
-            fn($condition) => $condition->whereHas(
+            fn($q) => $q->whereHas(
                 'coffee',
-                fn($coffee) => $coffee->where('extrinsics->origin->country', $origin)
+                fn($coffee) => $coffee->origin($origin)
             )
         );
     }
@@ -130,9 +127,9 @@ class Offering extends Model
     {
         $query->when(
             $process,
-            fn($condition) => $condition->whereHas(
+            fn($q) => $q->whereHas(
                 'coffee',
-                fn($coffee) => $coffee->where('extrinsics->process', $process)
+                fn($coffee) => $coffee->process($process)
             )
         );
     }
@@ -149,10 +146,13 @@ class Offering extends Model
         if ($consensus->exists()) {
             $query->mergeConstraintsFrom($consensus);
         } else {
-            $query->when($score, fn($condition) => $condition->whereHas(
-                'evaluations',
-                fn($subquery) => $subquery->where('evaluator_role', 'coffeeshop')->where('affective->cupping_score', '>=', $score)
-            ));
+            $query->when(
+                $score,
+                fn($q) => $q->whereHas(
+                    'evaluations',
+                    fn($evaluations) => $evaluations->coffeeshop()->scoreMin($score)
+                )
+            );
         }
     }
 
