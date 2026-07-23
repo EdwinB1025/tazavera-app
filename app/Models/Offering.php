@@ -140,7 +140,13 @@ class Offering extends Model
     #[Scope]
     protected function locationName(Builder $query, ?string $name): void
     {
-        $query->when($name, fn($q) => $q->whereHas('location', fn($location) => $location->name($name)));
+        $query->when(
+            $name,
+            fn($q) => $q->whereHas(
+                'location',
+                fn($location) => $location->name($name)
+            )
+        );
     }
 
     #[Scope]

@@ -11,9 +11,11 @@ class EvaluationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $evaluations = Evaluation::search($request);
+
+        return view('layouts.evaluations.index', compact('evaluations'));
     }
 
     /**
@@ -23,7 +25,7 @@ class EvaluationController extends Controller
     {
         $offering = Offering::find($request->input('offering'));
         $offering->load('location', 'coffee');
-        return view('layouts.evaluations.index', compact('offering'));
+        return view('layouts.evaluations.create', compact('offering'));
     }
 
     /**

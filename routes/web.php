@@ -12,7 +12,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->names([
             'index' => 'offerings',
         ]);
-    Route::resource('evaluations', EvaluationController::class);
+    Route::resource('evaluations', EvaluationController::class)->names([
+        'index' => 'evaluations',
+    ]);
 });
 
 require __DIR__ . '/settings.php';

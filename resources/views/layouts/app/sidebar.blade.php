@@ -9,7 +9,7 @@
             <flux:sidebar.item icon="home" :href="route('offerings')" :current="request()->routeIs('offerings')" wire:navigate>
                 {{ __('Ofertas') }}
             </flux:sidebar.item>
-            <flux:sidebar.item icon="clipboard-list" :current="request()->routeIs('evaluaciones')" wire:navigate>
+            <flux:sidebar.item icon="clipboard-list" :href="route('evaluations')" :current="request()->routeIs('evaluations')" wire:navigate>
                 {{ __('Mis evaluaciones') }}
             </flux:sidebar.item>
         </flux:sidebar.group>
