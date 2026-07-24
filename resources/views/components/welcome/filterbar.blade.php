@@ -1,4 +1,4 @@
-<form class="tz-filter" method="GET" action="">
+<form class="tz-filter  fixed bottom-12 inset-x-0 mx-auto z-10" method="GET" action="">
     <flux:field>
         <flux:label>Ciudad</flux:label>
         <flux:select placeholder="Todas">

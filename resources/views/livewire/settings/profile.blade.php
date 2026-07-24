@@ -9,7 +9,6 @@
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
 
-                {{-- @chisel-email-verification --}}
                 @if ($this->hasUnverifiedEmail)
                 <div>
                     <flux:text class="mt-4">
@@ -22,7 +21,6 @@
 
                 </div>
                 @endif
-                {{-- @end-chisel-email-verification --}}
             </div>
 
             <div class="flex items-center gap-4">
@@ -30,12 +28,8 @@
             </div>
         </form>
 
-        {{-- @chisel-email-verification --}}
         @if ($this->showDeleteUser)
-        {{-- @end-chisel-email-verification --}}
         <livewire:settings.delete-user-form />
-        {{-- @chisel-email-verification --}}
         @endif
-        {{-- @end-chisel-email-verification --}}
     </x-settings.layout>
 </section>
