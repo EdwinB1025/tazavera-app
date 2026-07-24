@@ -39,7 +39,9 @@ class OfferingController extends Controller
      */
     public function show(Offering $offering)
     {
-        //
+        $offering->load('coffee', 'location');
+
+        return view('layouts.offerings.show', compact('offering'));
     }
 
     /**

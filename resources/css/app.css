@@ -131,8 +131,14 @@
     }
 
     [data-flux-navbar] {
-        @apply !flex !items-center !justify-center !gap-1 !rounded-none !py-0;
-        background-color: transparent !important;
+        @apply !flex !flex-1 !items-center !justify-center rounded-none !py-0;
+        background-color: var(--color-nav-surface) !important;
+    }
+
+    .tz-evaluations-nav {
+        @apply !flex !items-center !justify-center rounded-2xl !py-0;
+        background-color: color-mix(in srgb, var(--color-nav-surface) 45%, transparent) !important;
+        border: 2px solid color-mix(in srgb, var(--color-ui-muted) 15%, transparent) !important;
     }
 
     [data-flux-navlist] {
@@ -145,12 +151,41 @@
         background-color: var(--color-nav-obscure) !important;
     }
 
+    .tz-evaluations-nav [data-flux-navbar-items] {
+        @apply !rounded-none !flex !flex-1 !items-center !justify-center ;
+        height: 4rem !important;
+        background-color: transparent !important;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:not(:last-child) {
+        border-right: 2px solid color-mix(in srgb, var(--color-ui-muted) 15%, transparent) !important;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:first-child {
+        @apply !rounded-r-none;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:last-child {
+        @apply !rounded-l-none;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:not(:first-child):not(:last-child) {
+        @apply !rounded-none;
+    }
 
     [data-flux-navbar-items] {
-        @apply !rounded-none !flex !items-center !min-w-40 max-lg:!min-w-34 max-md:!min-w-32;
+        @apply !rounded-none !flex !flex-1 !items-center !justify-center !min-w-40 max-lg:!min-w-34 max-md:!min-w-32;
         height: 4rem !important;
-        flex-basis: 6rem !important;
         background-color: transparent !important;
+    }
+
+    /* ─── TABS (ej. offerings/show) — mismo navbar, esquinas redondeadas, sin gaps, ocupa todo el ancho ─── */
+    [data-flux-tabs] {
+        @apply !gap-0;
+    }
+
+    [data-flux-tabs] [data-flux-navbar-items] {
+        @apply !rounded-lg !flex-1 !mx-0;
     }
 
 
@@ -182,6 +217,11 @@
         background-color: var(--color-nav-current) !important;
     }
 
+    .tz-evaluations-nav [data-flux-navbar-items][data-current] {
+        @apply !shadow-md;
+        background-color: color-mix(in srgb, var(--color-nav-surface) 45%, transparent) !important;
+    }
+
     [data-flux-navlist-item][data-current],
     [data-flux-sidebar-item][data-current] {
         @apply !shadow-md !underline !underline-offset-3 !border-l-4 !border-l-[var(--color-primary)];
@@ -189,12 +229,23 @@
         text-decoration-color: var(--color-text-filter-label) !important;
     }
 
-
     [data-flux-navbar-items]:hover [data-content],
     [data-flux-navlist-item]:hover [data-content],
     [data-flux-sidebar-item]:hover [data-content] {
         @apply !font-bold;
         color: var(--color-text-accent) !important;
+    }
+    
+    [data-flux-navbar-items]:hover,
+    [data-flux-navlist-item]:hover,
+    [data-flux-sidebar-item]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:hover {
+        @apply !inset-shadow-sm;
+        background-color: color-mix(in srgb, var(--color-nav-surface) 70%, transparent) !important;
     }
 
     [data-flux-navbar-items] [data-flux-icon] {
@@ -211,14 +262,6 @@
     [data-flux-sidebar-item]:hover [data-flux-icon] {
         color: var(--color-text-primary) !important;
     }
-
-    [data-flux-navbar-items]:hover,
-    [data-flux-navlist-item]:hover,
-    [data-flux-sidebar-item]:hover {
-        @apply !inset-shadow-sm;
-        background-color: var(--color-nav-hover) !important;
-    }
-    
 
     /* ─── SEARCH (sidebar) ─── */
     [data-flux-sidebar] [data-flux-control] {
