@@ -23,26 +23,28 @@
         </flux:text>
     </div>
 
-    <div x-data="{ tab: 'general' }" class="tz-evaluations-nav mx-[5%]">
-        <nav class="flex items-stretch flex-1" data-flux-tabs>
-            <button type="button" @click="tab = 'general'" :data-current="tab === 'general'" data-flux-navbar-items>
-                <div class="text-sm font-medium leading-none whitespace-nowrap" data-content>Información General</div>
-            </button>
-            <button type="button" @click="tab = 'evaluaciones'" :data-current="tab === 'evaluaciones'" data-flux-navbar-items>
-                <div class="text-sm font-medium leading-none whitespace-nowrap" data-content>Evaluaciones</div>
-            </button>
-            <button type="button" @click="tab = 'tecnica'" :data-current="tab === 'tecnica'" data-flux-navbar-items>
-                <div class="text-sm font-medium leading-none whitespace-nowrap" data-content>Información Técnica</div>
-            </button>
-        </nav>
-
-        <div x-show="tab === 'general'">
-            {{-- TODO: Información General --}}
+    <div x-data="{ tab: 'general' }">
+        <div class="tz-evaluations-nav mx-[5%]">
+            <nav class="flex items-stretch flex-1" data-flux-tabs>
+                <button type="button" @click="tab = 'general'" :data-current="tab === 'general'" data-flux-navbar-items>
+                    <div class="text-sm font-medium leading-none whitespace-nowrap" data-content>Información General</div>
+                </button>
+                <button type="button" @click="tab = 'evaluaciones'" :data-current="tab === 'evaluaciones'" data-flux-navbar-items>
+                    <div class="text-sm font-medium leading-none whitespace-nowrap" data-content>Evaluaciones</div>
+                </button>
+                <button type="button" @click="tab = 'tecnica'" :data-current="tab === 'tecnica'" data-flux-navbar-items>
+                    <div class="text-sm font-medium leading-none whitespace-nowrap" data-content>Información Técnica</div>
+                </button>
+            </nav>
         </div>
-        <div x-show="tab === 'evaluaciones'" x-cloak>
+
+        <div x-show="tab === 'general'" class="mt-4">
+            <x-layouts::offerings.partials.general-info :offering="$offering" />
+        </div>
+        <div x-show="tab === 'evaluaciones'" x-cloak class="mt-4">
             {{-- TODO: Evaluaciones --}}
         </div>
-        <div x-show="tab === 'tecnica'" x-cloak>
+        <div x-show="tab === 'tecnica'" x-cloak class="mt-4">
             {{-- TODO: Información Técnica --}}
         </div>
     </div>
