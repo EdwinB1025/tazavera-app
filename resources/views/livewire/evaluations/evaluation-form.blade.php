@@ -3,7 +3,7 @@
 
     <div class="flex flex-col items-start gap-4 mb-2">
         <div class="flex items-center justify-between w-full" data-flux-evaluation-actions>
-            <flux:link :href="route('offerings', request()->query())">
+            <flux:link :href="$evaluation ? route('evaluations', request()->query()) : route('offerings', request()->query())">
                 <flux:icon.arrow-left class="inline size-4" /> Volver
             </flux:link>
             <div class="flex items-center gap-2">
@@ -95,23 +95,27 @@
     @php
     $item = (object) $item;
     @endphp
-    @include('layouts::evaluations.partials.evaluation-card')
+    @include('layouts::evaluations.partials.evaluation-axis')
 
     @endforeach
 
-    <form id="evaluation-form" method="POST" action="{{ route('evaluations.store') }}">
+    <form id="evaluation-form" method="POST" action="{{ $evaluation ? route('evaluations.update', $evaluation) : route('evaluations.store') }}">
         @csrf
+        @if($evaluation)
+        @method('PUT')
+        @endif
+        {{-- X-BIN atravez de persiste los datos del estado actual del formulario en las propiedades de la clase component en livewire--}}
         <input type="hidden" name="offering_id" value="{{ $offering->id }}">
-        <input type="hidden" name="evaluator_role" value="{{ $evaluator_role }}">
-        <input type="hidden" name="extraction_method" value="{{ $extraction_method }}">
-        <input type="hidden" name="descriptive" value="{{ json_encode($descriptive) }}">
-        <input type="hidden" name="affective" value="{{ json_encode($affective) }}">
-        <input type="hidden" name="note" value="{{ $note }}">
+        <input type="hidden" name="evaluator_role" x-bind:value="$wire.evaluator_role">
+        <input type="hidden" name="extraction_method" x-bind:value="$wire.extraction_method">
+        <input type="hidden" name="descriptive" x-bind:value="JSON.stringify($wire.descriptive)">
+        <input type="hidden" name="affective" x-bind:value="JSON.stringify($wire.affective)">
+        <input type="hidden" name="note" x-bind:value="$wire.note">
     </form>
 
     {{-- ACCIONES FINALES --}}
     <div class="tz-top-border-card pt-3 mx-4" data-flux-evaluation-actions>
-        <flux:button variant="outline" size="sm" data-tz-action="cancel" href="{{ route('offerings', request()->query()) }}">Cancelar</flux:button>
+        <flux:button variant="outline" size="sm" data-tz-action="cancel" href="{{ $evaluation ? route('evaluations', request()->query()) : route('offerings', request()->query()) }}">Cancelar</flux:button>
         <flux:button variant="outline" size="sm" type="submit" form="evaluation-form" name="status" value="open" data-tz-action="save">Guardar</flux:button>
         <flux:button variant="outline" size="sm" type="submit" form="evaluation-form" name="status" value="closed" data-tz-action="close">Cerrar Evaluación</flux:button>
     </div>

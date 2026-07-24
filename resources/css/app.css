@@ -647,27 +647,27 @@
         --tw-ring-offset-color: var(--color-text-inverse) !important;
     }
 
-    /* ─── OFFERING CARD ─── */
-    [data-flux-offering-card] {
+    /* ─── CARD (base compartida por offering-card y evaluation-card) ─── */
+    [data-flux-card] {
         @apply flex flex-col gap-3 rounded-2xl border-l-4 p-3 shadow-lg;
         background-color: var(--color-on-primary);
         border-left-color: var(--color-primary);
     }
 
     /* -- SCORE -- */
-    [data-flux-offering-score] {
+    [data-flux-card-score] {
         @apply flex flex-col items-center justify-center min-w-24 px-4 my-4;
         text-align: center;
     }
 
-    [data-flux-offering-value] {
+    [data-flux-card-value] {
         @apply font-bold text-3xl leading-none italic font-bold;
         color: var(--color-text-primary);
         font-family: var(--font-body);
     }
 
-    [data-flux-badge]:not([data-flux-offering-tastes] [data-flux-badge]) {
-        @apply !min-w-24 max-md:!min-w-20 max-md:!text-xs !justify-center;
+    [data-flux-badge]:not([data-flux-card-content] [data-flux-badge]) {
+        @apply !min-w-24 max-md:!min-w-20 !text-sm max-md:!text-xs !justify-center;
         color: var(--color-text-filter-label) !important;
     }
 
@@ -687,12 +687,12 @@
         background-color: var(--color-rating-commercial) !important;
     }
 
-    [data-flux-offering-scale] {
+    [data-flux-card-scale] {
         @apply text-xs;
         color: var(--color-text-secondary);
     }
 
-    [data-flux-offering-content] {
+    [data-flux-card-content] {
         @apply flex flex-col gap-2 flex-1 px-4 my-2;
     }
 
@@ -701,16 +701,16 @@
     }
 
     /* ─── STATUS BADGES ─── */
-    .tz-badge-verified[data-flux-badge] {
-        @apply !text-xs md:!text-base;
-        background-color: var(--color-rating-excellent) !important;
-        color: var(--color-text-filter-label) !important;
+    .tz-badge-provisional[data-flux-badge] {
+        @apply !text-xs;
+        background-color: color-mix(in srgb, var(--color-ui-strong) 25%, white) !important;
+        color: var(--color-text-primary) !important;
     }
 
-    .tz-badge-provisional[data-flux-badge] {
-        @apply !text-xs md: !text-base;
-        background-color: color-mix(in srgb, var(--color-warmgray-500) 25%, white) !important;
-        color: var(--color-text-primary) !important;
+    .tz-badge-verified[data-flux-badge] {
+        @apply !text-xs;
+        background-color: color-mix(in srgb, var(--color-ui-button-light) 65%, white) !important;
+        color: var(--color-text-filter-label) !important;
     }
 
     /* ─── OFFERING SHOP ─── */
@@ -761,7 +761,7 @@
         
     }
 
-    [data-flux-offering-content] [data-flux-heading] {
+    [data-flux-card-content] [data-flux-heading] {
         @apply font-bold !text-2xl md:!text-3xl leading-tight;
         color: var(--color-text-primary) !important;
     }
@@ -779,34 +779,52 @@
         @apply flex gap-4 mt-2;
     }
 
-    [data-flux-offering-actions] {
+    [data-flux-card-actions] {
         @apply flex justify-end gap-2 pr-2 pt-3 max-md:p-1 !mx-2 max-md:m-1;
     }
 
-    [data-flux-offering-actions] [data-flux-button] {
+    [data-flux-card-actions] [data-flux-button] {
         @apply !text-xs !px-3 !py-2 !min-w-40 max-xl:!min-w-24;
     }
 
-    [data-flux-offering-actions] [data-flux-button]:first-child {
+    /* Ver / Editar — olive translúcido → sólido en hover */
+    [data-flux-card-actions] [data-tz-action="view"],
+    [data-flux-card-actions] [data-tz-action="edit"] {
         background-color: color-mix(in srgb, var(--color-ui-button-light) 65%, transparent) !important;
         color: var(--color-text-filter-label) !important;
         transition: background-color 0.2s, color 0.2s;
     }
 
-    [data-flux-offering-actions] [data-flux-button]:first-child:hover {
+    [data-flux-card-actions] [data-tz-action="view"]:hover,
+    [data-flux-card-actions] [data-tz-action="edit"]:hover {
         background-color: var(--color-ui-button-light) !important;
-        color: var(--color-text-filter-label) !important;
+        color: var(--color-text-inverse) !important;
         transition: background-color 0.2s, color 0.2s;
     }
 
-    /* Botón Evaluar — oxblood transparente → sólido en hover */
-    [data-flux-offering-actions] [data-flux-button]:last-child {
+    /* Evaluar / Cerrar Evaluación — oxblood transparente → sólido en hover */
+    [data-flux-card-actions] [data-tz-action="evaluate"],
+    [data-flux-card-actions] [data-tz-action="close"] {
         background-color: color-mix(in srgb, var(--color-primary) 65%, transparent) !important;
-        color: var(--color-primary) !important;
+        color: var(--color-nav-text) !important;
+        transition: background-color 0.2s, color 0.2s;
     }
 
-    [data-flux-offering-actions] [data-flux-button]:last-child:hover {
+    [data-flux-card-actions] [data-tz-action="evaluate"]:hover,
+    [data-flux-card-actions] [data-tz-action="close"]:hover {
         background-color: var(--color-primary) !important;
+        color: var(--color-text-inverse) !important;
+    }
+
+    /* Eliminar — rojo translúcido → sólido en hover */
+    [data-flux-card-actions] [data-tz-action="delete"] {
+        background-color: color-mix(in srgb, var(--color-ui-muted) 35%, transparent) !important;
+        color: var(--color-text-primary) !important;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    [data-flux-card-actions] [data-tz-action="delete"]:hover {
+        background-color:var(--color-text-primary) !important;
         color: var(--color-text-inverse) !important;
     }
 
@@ -927,4 +945,9 @@
 @utility tz-right-border-card {
     border-right-width: 2px;
     border-right-color: color-mix(in srgb, var(--color-ui-muted) 15%, transparent);
+}
+
+@utility tz-left-border-card {
+    border-left-width: 2px;
+    border-left-color: color-mix(in srgb, var(--color-ui-muted) 15%, transparent);
 }

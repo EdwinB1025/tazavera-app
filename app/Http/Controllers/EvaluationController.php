@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Evaluation;
 use App\Models\Offering;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EvaluationController extends Controller
 {
@@ -37,6 +38,7 @@ class EvaluationController extends Controller
     {
         $affective = json_decode($request->input('affective'), true);
         $affective['cupping_score'] = $this->computeCuppingScore($affective['axis']);
+
 
         Evaluation::create([
             'offering_id'       => $request->input('offering_id'),
@@ -87,7 +89,10 @@ class EvaluationController extends Controller
      */
     public function edit(Evaluation $evaluation)
     {
-        //
+        $evaluation->load('offering.location', 'offering.coffee');
+        $offering = $evaluation->offering;
+
+        return view('layouts.evaluations.create', compact('offering', 'evaluation'));
     }
 
     /**
@@ -95,14 +100,33 @@ class EvaluationController extends Controller
      */
     public function update(Request $request, Evaluation $evaluation)
     {
-        //
-    }
+        Log::info('EvaluationController@store request', $request->all());
 
+        $affective = $evaluation->affective;
+
+        if ($request->input('affective')) {
+            $affective = json_decode($request->input('affective'), true);
+            $affective['cupping_score'] = $this->computeCuppingScore($affective['axis']);
+        }
+
+        $evaluation->update([
+            'evaluator_role'    => $request->input('evaluator_role') ?? $evaluation->evaluator_role,
+            'extraction_method' => $request->input('extraction_method') ?? $evaluation->extraction_method,
+            'status'            => $request->input('status') ?? $evaluation->status,
+            'descriptive'       => $request->input('descriptive') ? json_decode($request->input('descriptive'), true) : $evaluation->descriptive,
+            'affective'         => $affective,
+            'note'              => $request->input('note') ?? $evaluation->note,
+        ]);
+
+        return redirect()->route('evaluations');
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Evaluation $evaluation)
     {
-        //
+        $evaluation->delete();
+
+        return redirect()->route('evaluations');
     }
 }

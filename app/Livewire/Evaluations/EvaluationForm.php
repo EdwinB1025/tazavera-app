@@ -3,6 +3,7 @@
 namespace App\Livewire\Evaluations;
 
 use App\Models\CataAttribute;
+use App\Models\Evaluation;
 use App\Models\Offering;
 use App\Models\OlfactoryTaxonomy;
 use Livewire\Component;
@@ -11,6 +12,7 @@ class EvaluationForm extends Component
 {
     // Properties of the entity to be used by the wire:model components
     public Offering $offering;
+    public ?Evaluation $evaluation = null;
 
     public ?string $evaluator_role = 'specialist';
     public ?string $extraction_method = null;
@@ -121,9 +123,18 @@ class EvaluationForm extends Component
         'kalita',
     ];
 
-    public function mount(Offering $offering): void
+    public function mount(Offering $offering, ?Evaluation $evaluation = null): void
     {
         $this->offering = $offering->load('coffee', 'location');
+        $this->evaluation = $evaluation;
+
+        if ($evaluation) {
+            $this->evaluator_role    = $evaluation->evaluator_role;
+            $this->extraction_method = $evaluation->extraction_method;
+            $this->note              = $evaluation->note;
+            $this->descriptive       = $evaluation->descriptive;
+            $this->affective         = $evaluation->affective;
+        }
     }
 
     public function render()
@@ -149,5 +160,4 @@ class EvaluationForm extends Component
             ]
         );
     }
-
 }

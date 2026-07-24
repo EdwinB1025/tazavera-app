@@ -1,5 +1,5 @@
 @props(['axis'])
-<div x-data="{ value: @entangle('descriptive.axis.'.$axis.'.value') }"
+<div x-data="{ value: @entangle('descriptive.axis.'.$axis) }"
     x-init="value = value ?? 0"
     class="py-4 px-2 mx-2">
 

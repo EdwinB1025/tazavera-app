@@ -9,11 +9,11 @@ new class extends Component
 };
 ?>
 
-<div class="tz-offering-card mb-2" data-flux-offering-card>
+<div class="mb-2" data-flux-card>
     <div class="flex max-lg:flex-col">
         <div class="flex flex-1 min-w-0">
             {{-- Lado izquierdo: puntaje --}}
-            <div class="tz-right-border-card" data-flux-offering-score>
+            <div class="tz-right-border-card" data-flux-card-score>
                 @php
                 $score = $offering->getScore() ?? 0;
 
@@ -31,13 +31,13 @@ new class extends Component
                 $badge_color = 'tz-rating-commercial';
                 }
                 @endphp
-                <div data-flux-offering-value>{{ $score }}</div>
-                <div data-flux-offering-scale>/100</div>
+                <div data-flux-card-value>{{ $score }}</div>
+                <div data-flux-card-scale>/100</div>
                 <flux:badge class="{{ $badge_color }}">{{$badge_label}}</flux:badge>
             </div>
 
             {{-- Lado derecho: contenido --}}
-            <div data-flux-offering-content>
+            <div data-flux-card-content>
                 {{-- Header: nombre + badges de estado --}}
                 <div class="flex max-md:flex-col gap-2 items-center">
                     @if($offering->verification_status === 'verified')
@@ -106,9 +106,9 @@ new class extends Component
                 </span>
             </div>
             {{-- Botones --}}
-            <div class="flex" data-flux-offering-actions>
-                <flux:button variant="outline" size="sm" icon="eye" href="">Ver</flux:button>
-                <flux:button variant="outline" size="sm" icon="plus" href="{{route('evaluations.create', array_merge(request()->query(), ['offering' => $offering->id]))}}">Evaluar</flux:button>
+            <div class="flex" data-flux-card-actions>
+                <flux:button variant="outline" size="sm" icon="eye" data-tz-action="view" href="">Ver</flux:button>
+                <flux:button variant="outline" size="sm" icon="plus" data-tz-action="evaluate" href="{{route('evaluations.create', array_merge(request()->query(), ['offering' => $offering->id]))}}">Evaluar</flux:button>
             </div>
         </div>
     </div>

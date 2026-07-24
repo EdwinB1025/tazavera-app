@@ -25,6 +25,7 @@ class Evaluation extends Model
             ->city($request->input('city')) //query de ciudad en cafeteria
             ->locationId($request->input('location_id')) //query de cafeteria por id
             ->when($request->input('score'), fn($q) => $q->scoreMin((float) $request->input('score'))) // query de puntaje
+            ->statusIs($request->input('status'))
             ->with('offering.coffee', 'offering.location')
             ->latest()
             ->paginate(12)
@@ -81,9 +82,10 @@ class Evaluation extends Model
     }
 
     #[Scope]
-    protected function scoreMin(Builder $query, float $score): void
+    protected function scoreMin(Builder $query, ?float $score): void
     {
         $query->when(
+            $score,
             fn($q) => $q->where('affective->cupping_score', '>=', $score)
         );
     }
@@ -137,11 +139,20 @@ class Evaluation extends Model
     }
 
     #[Scope]
-    protected function evaluator(Builder $query, int $userId): void
+    protected function evaluator(Builder $query, ?int $userId): void
     {
         $query->when(
             $userId,
             fn($q) => $q->where('evaluator_id', $userId)
+        );
+    }
+
+    #[Scope]
+    protected function statusIs(Builder $query, ?string $status): void
+    {
+        $query->when(
+            $status,
+            fn($q) => $q->where('status', $status)
         );
     }
 
