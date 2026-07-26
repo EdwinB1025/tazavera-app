@@ -17,9 +17,10 @@ class Evaluation extends Model
     /** @use HasFactory<EvaluationFactory> */
     use HasFactory;
 
-    public static function search(Request $request)
+    #[Scope]
+    protected function search(Builder $query, Request $request)
     {
-        return Evaluation::query()
+        return $query
             ->evaluator($request->input('id')) //query de evaluacion individual
             ->coffeeId($request->input('coffee_id')) //query de cafe evaluado por id
             ->city($request->input('city')) //query de ciudad en cafeteria

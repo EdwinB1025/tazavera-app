@@ -118,7 +118,7 @@ class EvaluationController extends Controller
             'note'              => $request->input('note') ?? $evaluation->note,
         ]);
 
-        return redirect()->route('evaluations');
+        return redirect()->back();
     }
     /**
      * Remove the specified resource from storage.
@@ -127,6 +127,6 @@ class EvaluationController extends Controller
     {
         $evaluation->delete();
 
-        return redirect()->route('evaluations');
+        return redirect()->back();
     }
 }

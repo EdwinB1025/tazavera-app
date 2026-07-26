@@ -29,8 +29,24 @@ class OlfactoryTaxonomy extends Model
     /** @return Builder|OlfactoryTaxonomy
      * Retrieve colors by references of the cata attributes */
     #[Scope]
-    protected function byRefs(Builder $query, array $refs): void
+    protected function byRefs(Builder $query, array|int $refs): void
     {
-        $query->when($refs, fn($condition) => $condition->whereIn('id', $refs));
+        $query->when($refs, fn($condition) => $condition->whereIn('id', (array) $refs));
+    }
+
+    /** @return Builder|OlfactoryTaxonomy
+     * Retrieve colors by references of the cata attributes */
+    #[Scope]
+    protected function byParentId(Builder $query, int $ref): void
+    {
+        $query->when($ref, fn($condition) => $condition->where('parent_id', (int) $ref));
+    }
+
+    /** @return Builder|OlfactoryTaxonomy
+     * Retrieve colors by references of the cata attributes */
+    #[Scope]
+    protected function byLevel(Builder $query, int $level): void
+    {
+        $query->when($level, fn($condition) => $condition->where('level', (int) $level));
     }
 }

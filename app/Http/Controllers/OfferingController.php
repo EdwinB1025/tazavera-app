@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterOfferingRequest;
+use App\Models\Evaluation;
 use App\Models\Offering;
 use Illuminate\Http\Request;
 
@@ -37,11 +38,14 @@ class OfferingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Offering $offering)
+    public function show(Request $request, Offering $offering)
     {
         $offering->load('coffee', 'location');
 
-        return view('layouts.offerings.show', compact('offering'));
+        $request->merge(['coffee_id' => $offering->coffee_id]);
+        $evaluations = Evaluation::specialist()->search($request);
+
+        return view('layouts.offerings.show', compact('offering', 'evaluations'));
     }
 
     /**

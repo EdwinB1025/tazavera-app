@@ -89,6 +89,9 @@
     --color-ui-strong: var(--color-pine-900);
     --color-ui-muted: var(--color-pine-700);
     --color-ui-button-light: var(--color-olive-500);
+    --color-bean-on: color-mix(in srgb, var(--color-brown-800) 80%, transparent);
+    --color-bean-off: var(--color-olive-500);
+    --colore-intensity-slider-bg: color-mix(in srgb, var(--color-brown-800) 25%, white);
 }
 
 @theme {
@@ -220,6 +223,7 @@
     .tz-evaluations-nav [data-flux-navbar-items][data-current] {
         @apply !shadow-md;
         background-color: color-mix(in srgb, var(--color-nav-surface) 45%, transparent) !important;
+        border-bottom: 2px solid var(--color-ui-strong) !important;
     }
 
     [data-flux-navlist-item][data-current],
@@ -402,6 +406,11 @@
         @apply !font-bold !text-4xl max-md:!text-2xl !leading-tight;
         font-family: var(--font-body) !important;
         color: var(--color-text-primary) !important;
+    }
+
+    /* ─── HEADING DE TARJETA (más pequeño, ej. encabezado de card) ─── */
+    .tz-card-heading[data-flux-heading] {
+        @apply !text-2xl max-md:!text-xl;
     }
 
     /* ─── SUBHEADING ─── */
@@ -710,7 +719,7 @@
     }
 
     [data-flux-badge]:not([data-flux-card-content] [data-flux-badge]) {
-        @apply !min-w-24 max-md:!min-w-20 !text-sm max-md:!text-xs !justify-center;
+        @apply !min-w-24 !rounded-xl max-md:!min-w-20 !text-sm max-md:!text-xs !justify-center;
         color: var(--color-text-filter-label) !important;
     }
 
@@ -926,13 +935,13 @@
 
     /* fondo de icono resaltado */
     .bean-on {
-            color: color-mix(in srgb, var(--color-brown-800) 80%, transparent);
+            color: var(--color-bean-on);
         }
-    
+
     /* fondo de icono apagado */
 
     .bean-off {
-        color: var(--color-ui-button-light);
+        color: var(--color-bean-off);
     }
 
     /* barra de intensidad en forma de evaluacion*/
@@ -942,10 +951,10 @@
         height: 6px;
         border-radius: 999px;
         outline: none;
-    background: /* Capa 1 (encima): el apagado, desde --fill hasta el final */
+         background: /* Capa 1 (encima): el apagado, desde --fill hasta el final */
         linear-gradient(to right,
             transparent var(--fill, 0%),
-            color-mix(in srgb, var(--color-brown-800) 25%, white) var(--fill, 0%)),
+            var(--color-intensity-slider-bg) var(--fill, 0%)),
         /* Capa 2 (debajo): el degradado FIJO, siempre 0%→100% */
         linear-gradient(to right,
             var(--color-ui-button-light) 0%,

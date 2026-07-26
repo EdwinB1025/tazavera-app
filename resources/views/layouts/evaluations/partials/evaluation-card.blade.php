@@ -69,7 +69,9 @@
             <flux:button type="submit" variant="outline" size="sm" data-tz-action="close">Cerrar Evaluación</flux:button>
         </form>
 
+        @if($evaluation->evaluator_role === 'specialist')
         <flux:button variant="outline" size="sm" data-tz-action="edit" href="{{ route('evaluations.edit', $evaluation) }}">Editar</flux:button>
+        @endif
         @endif
         <form method="POST" action="{{ route('evaluations.destroy', $evaluation) }}" onsubmit="return confirm('¿Eliminar esta evaluación?')">
             @csrf

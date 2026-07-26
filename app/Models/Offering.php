@@ -18,6 +18,37 @@ class Offering extends Model
     /** @use HasFactory<OfferingFactory> */
     use HasFactory;
 
+    /** Valor temporal mientras el cálculo real de consenso no está implementado */
+    public const DEFAULT_CONSENSUS = [
+        'axis_avg' => [
+            'aroma'     => 7.4,
+            'flavor'    => 8.1,
+            'acidity'   => 8.0,
+            'sweetness' => 6.5,
+            'mouthfeel' => 7.0,
+            'overall'   => 7.8,
+        ],
+        'cupping_avg' => 83.5,
+        'main_tastes' => [
+            ['ref' => 24, 'count' => 4, 'level' => 0],
+        ],
+        'cata_freq' => [
+            ['ref' => 1,  'parent_id' => null, 'count' => 5, 'level' => 0],
+            ['ref' => 19, 'parent_id' => 1,    'count' => 5, 'level' => 1],
+            ['ref' => 20, 'parent_id' => 19,   'count' => 5, 'level' => 2],
+
+            ['ref' => 24, 'parent_id' => null, 'count' => 7, 'level' => 0],
+            ['ref' => 25, 'parent_id' => 24,   'count' => 7, 'level' => 1],
+            ['ref' => 29, 'parent_id' => 25,   'count' => 4, 'level' => 2],
+            ['ref' => 30, 'parent_id' => 25,   'count' => 3, 'level' => 2],
+        ],
+    ];
+
+    public function getConsensus(): array
+    {
+        return $this->consensus ?? self::DEFAULT_CONSENSUS;
+    }
+
     /** We assign the responsability of retriving the tastes and the score to the offering model, not the view */
     public function getCata(int|array|null $level = null): array
     {
