@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div x-show="tab === 'tecnica'" x-cloak class="mt-4">
-                {{-- TODO: Información Técnica --}}
+                <x-layouts::offerings.partials.technical-info :offering="$offering" />
             </div>
         </div>
     </div>

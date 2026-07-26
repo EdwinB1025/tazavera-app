@@ -91,7 +91,7 @@
     --color-ui-button-light: var(--color-olive-500);
     --color-bean-on: color-mix(in srgb, var(--color-brown-800) 80%, transparent);
     --color-bean-off: var(--color-olive-500);
-    --colore-intensity-slider-bg: color-mix(in srgb, var(--color-brown-800) 25%, white);
+    --color-intensity-slider-bg: color-mix(in srgb, var(--color-brown-800) 25%, white);
 }
 
 @theme {
@@ -140,7 +140,7 @@
 
     .tz-evaluations-nav {
         @apply !flex !items-center !justify-center rounded-2xl !py-0;
-        background-color: color-mix(in srgb, var(--color-nav-surface) 45%, transparent) !important;
+        background-color: var(--color-surface-muted) !important;
         border: 2px solid color-mix(in srgb, var(--color-ui-muted) 15%, transparent) !important;
     }
 

@@ -2,8 +2,31 @@
 
 @php
 $cata = collect($cataFreq);
-$refs = $cata->pluck('ref')->map(fn($r) => (int) $r)->all();
-$labels = \App\Models\OlfactoryTaxonomy::byRefs($refs)->get(['id', 'name_es', 'color'])->keyBy('id');
+
+for ($level = 2; $level >= 0; $level--) {
+    $refs = $cata->pluck('ref')->map(fn($r) => (int) $r)->all();
+    $labels = \App\Models\OlfactoryTaxonomy::byRefs($refs)->get(['id', 'parent_id', 'level', 'name_es', 'color'])->keyBy('id');
+
+    // Completamos parent_id en las entradas de este nivel (aunque ya vinieran guardadas
+    // sin ese campo, como las evaluaciones viejas).
+    $cata = $cata->map(function ($item) use ($labels, $level) {
+        if ((int) $item['level'] === $level) {
+            $item['parent_id'] = $labels->get((int) $item['ref'])?->parent_id;
+        }
+        return $item;
+    });
+
+    foreach ($cata->where('level', $level) as $item) {
+        $parentId = $item['parent_id'];
+
+        if ($parentId && !in_array($parentId, $refs)) {
+            $parent = \App\Models\OlfactoryTaxonomy::byRefs($parentId)->first();
+            if ($parent) {
+                $cata->push(['ref' => $parent->id, 'level' => $parent->level, 'parent_id' => $parent->parent_id]);
+            }
+        }
+    }
+}
 
 $roots = $cata->where('level', 0);
 @endphp
