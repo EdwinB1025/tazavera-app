@@ -1,7 +1,8 @@
 {{-- CAFÉ --}}
 <flux:field>
     <flux:label>Café</flux:label>
-    <flux:select name="coffee_id" placeholder="Todos">
+    <flux:select name="coffee_id">
+        <flux:select.option value="" :selected="!old('coffee_id', request('coffee_id'))">Todos</flux:select.option>
         @foreach ($coffees as $coffee)
         <flux:select.option value="{{ $coffee->id }}" :selected="old('coffee_id', request('coffee_id')) == $coffee->id">{{ $coffee->name }}</flux:select.option>
         @endforeach
@@ -11,7 +12,8 @@
 {{-- CAFETERÍA --}}
 <flux:field>
     <flux:label>Cafetería</flux:label>
-    <flux:select name="location_id" placeholder="Todas">
+    <flux:select name="location_id">
+        <flux:select.option value="" :selected="!old('location_id', request('location_id'))">Todas</flux:select.option>
         @foreach ($locations as $location)
         <flux:select.option value="{{ $location->id }}" :selected="old('location_id', request('location_id')) == $location->id">{{ $location->name }}</flux:select.option>
         @endforeach
@@ -21,7 +23,8 @@
 {{-- CIUDAD --}}
 <flux:field>
     <flux:label>Ciudad</flux:label>
-    <flux:select name="city" placeholder="Todas">
+    <flux:select name="city">
+        <flux:select.option value="" :selected="!old('city', request('city'))">Todas</flux:select.option>
         @foreach ($cities as $city)
         <flux:select.option value="{{ $city }}" :selected="old('city', request('city')) === $city">{{ $city }}</flux:select.option>
         @endforeach
@@ -31,7 +34,8 @@
 {{-- PROCESO --}}
 <flux:field>
     <flux:label>Proceso</flux:label>
-    <flux:select name="process" placeholder="Todos">
+    <flux:select name="process">
+        <flux:select.option value="" :selected="!old('process', request('process'))">Todos</flux:select.option>
         @foreach ($processes as $process)
         <flux:select.option value="{{ $process }}" :selected="old('process', request('process')) === $process">{{ $process }}</flux:select.option>
         @endforeach
@@ -41,7 +45,8 @@
 {{-- ESTADO --}}
 <flux:field>
     <flux:label>Estado</flux:label>
-    <flux:select name="status" placeholder="Cualquiera">
+    <flux:select name="status">
+        <flux:select.option value="" :selected="!old('status', request('status'))">Cualquiera</flux:select.option>
         <flux:select.option value="open" :selected="old('status', request('status')) === 'open'">Abierta</flux:select.option>
         <flux:select.option value="closed" :selected="old('status', request('status')) === 'closed'">Cerrada</flux:select.option>
     </flux:select>
@@ -50,7 +55,8 @@
 {{-- PUNTAJE --}}
 <flux:field>
     <flux:label>Puntaje</flux:label>
-    <flux:select name="score" placeholder="Cualquiera">
+    <flux:select name="score">
+        <flux:select.option value="" :selected="!old('score', request('score'))">Cualquiera</flux:select.option>
         <flux:select.option value="80" :selected="old('score', request('score')) === '80'">80+</flux:select.option>
         <flux:select.option value="85" :selected="old('score', request('score')) === '85'">85+</flux:select.option>
         <flux:select.option value="90" :selected="old('score', request('score')) === '90'">90+</flux:select.option>

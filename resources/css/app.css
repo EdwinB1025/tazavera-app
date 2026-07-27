@@ -89,6 +89,9 @@
     --color-ui-strong: var(--color-pine-900);
     --color-ui-muted: var(--color-pine-700);
     --color-ui-button-light: var(--color-olive-500);
+    --color-bean-on: color-mix(in srgb, var(--color-brown-800) 80%, transparent);
+    --color-bean-off: var(--color-olive-500);
+    --color-intensity-slider-bg: color-mix(in srgb, var(--color-brown-800) 25%, white);
 }
 
 @theme {
@@ -131,8 +134,14 @@
     }
 
     [data-flux-navbar] {
-        @apply !flex !items-center !justify-center !gap-1 !rounded-none !py-0;
-        background-color: transparent !important;
+        @apply !flex !flex-1 !items-center !justify-center rounded-none !py-0;
+        background-color: var(--color-nav-surface) !important;
+    }
+
+    .tz-evaluations-nav {
+        @apply !flex !items-center !justify-center rounded-2xl !py-0;
+        background-color: var(--color-surface-muted) !important;
+        border: 2px solid color-mix(in srgb, var(--color-ui-muted) 15%, transparent) !important;
     }
 
     [data-flux-navlist] {
@@ -145,12 +154,41 @@
         background-color: var(--color-nav-obscure) !important;
     }
 
+    .tz-evaluations-nav [data-flux-navbar-items] {
+        @apply !rounded-none !flex !flex-1 !items-center !justify-center ;
+        height: 4rem !important;
+        background-color: transparent !important;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:not(:last-child) {
+        border-right: 2px solid color-mix(in srgb, var(--color-ui-muted) 15%, transparent) !important;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:first-child {
+        @apply !rounded-r-none;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:last-child {
+        @apply !rounded-l-none;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:not(:first-child):not(:last-child) {
+        @apply !rounded-none;
+    }
 
     [data-flux-navbar-items] {
-        @apply !rounded-none !flex !items-center !min-w-40 max-lg:!min-w-34 max-md:!min-w-32;
+        @apply !rounded-none !flex !flex-1 !items-center !justify-center !min-w-40 max-lg:!min-w-34 max-md:!min-w-32;
         height: 4rem !important;
-        flex-basis: 6rem !important;
         background-color: transparent !important;
+    }
+
+    /* ─── TABS (ej. offerings/show) — mismo navbar, esquinas redondeadas, sin gaps, ocupa todo el ancho ─── */
+    [data-flux-tabs] {
+        @apply !gap-0;
+    }
+
+    [data-flux-tabs] [data-flux-navbar-items] {
+        @apply !rounded-lg !flex-1 !mx-0;
     }
 
 
@@ -182,6 +220,12 @@
         background-color: var(--color-nav-current) !important;
     }
 
+    .tz-evaluations-nav [data-flux-navbar-items][data-current] {
+        @apply !shadow-md;
+        background-color: color-mix(in srgb, var(--color-nav-surface) 45%, transparent) !important;
+        border-bottom: 2px solid var(--color-ui-strong) !important;
+    }
+
     [data-flux-navlist-item][data-current],
     [data-flux-sidebar-item][data-current] {
         @apply !shadow-md !underline !underline-offset-3 !border-l-4 !border-l-[var(--color-primary)];
@@ -189,12 +233,23 @@
         text-decoration-color: var(--color-text-filter-label) !important;
     }
 
-
     [data-flux-navbar-items]:hover [data-content],
     [data-flux-navlist-item]:hover [data-content],
     [data-flux-sidebar-item]:hover [data-content] {
         @apply !font-bold;
         color: var(--color-text-accent) !important;
+    }
+    
+    [data-flux-navbar-items]:hover,
+    [data-flux-navlist-item]:hover,
+    [data-flux-sidebar-item]:hover {
+        @apply !inset-shadow-sm;
+        background-color: var(--color-nav-hover) !important;
+    }
+
+    .tz-evaluations-nav [data-flux-navbar-items]:hover {
+        @apply !inset-shadow-sm;
+        background-color: color-mix(in srgb, var(--color-nav-surface) 70%, transparent) !important;
     }
 
     [data-flux-navbar-items] [data-flux-icon] {
@@ -211,14 +266,6 @@
     [data-flux-sidebar-item]:hover [data-flux-icon] {
         color: var(--color-text-primary) !important;
     }
-
-    [data-flux-navbar-items]:hover,
-    [data-flux-navlist-item]:hover,
-    [data-flux-sidebar-item]:hover {
-        @apply !inset-shadow-sm;
-        background-color: var(--color-nav-hover) !important;
-    }
-    
 
     /* ─── SEARCH (sidebar) ─── */
     [data-flux-sidebar] [data-flux-control] {
@@ -359,6 +406,11 @@
         @apply !font-bold !text-4xl max-md:!text-2xl !leading-tight;
         font-family: var(--font-body) !important;
         color: var(--color-text-primary) !important;
+    }
+
+    /* ─── HEADING DE TARJETA (más pequeño, ej. encabezado de card) ─── */
+    .tz-card-heading[data-flux-heading] {
+        @apply !text-2xl max-md:!text-xl;
     }
 
     /* ─── SUBHEADING ─── */
@@ -667,7 +719,7 @@
     }
 
     [data-flux-badge]:not([data-flux-card-content] [data-flux-badge]) {
-        @apply !min-w-24 max-md:!min-w-20 !text-sm max-md:!text-xs !justify-center;
+        @apply !min-w-24 !rounded-xl max-md:!min-w-20 !text-sm max-md:!text-xs !justify-center;
         color: var(--color-text-filter-label) !important;
     }
 
@@ -883,13 +935,13 @@
 
     /* fondo de icono resaltado */
     .bean-on {
-            color: color-mix(in srgb, var(--color-brown-800) 80%, transparent);
+            color: var(--color-bean-on);
         }
-    
+
     /* fondo de icono apagado */
 
     .bean-off {
-        color: var(--color-ui-button-light);
+        color: var(--color-bean-off);
     }
 
     /* barra de intensidad en forma de evaluacion*/
@@ -899,10 +951,10 @@
         height: 6px;
         border-radius: 999px;
         outline: none;
-    background: /* Capa 1 (encima): el apagado, desde --fill hasta el final */
+         background: /* Capa 1 (encima): el apagado, desde --fill hasta el final */
         linear-gradient(to right,
             transparent var(--fill, 0%),
-            color-mix(in srgb, var(--color-brown-800) 25%, white) var(--fill, 0%)),
+            var(--color-intensity-slider-bg) var(--fill, 0%)),
         /* Capa 2 (debajo): el degradado FIJO, siempre 0%→100% */
         linear-gradient(to right,
             var(--color-ui-button-light) 0%,

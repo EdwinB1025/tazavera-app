@@ -15,7 +15,10 @@
             </ul>
         </div>
         @endif
-        <form class="tz-filter" method="GET" action="{{ route('evaluations') }}">
+        <form class="tz-filter" method="GET" action="{{ url()->current() }}">
+            @if(request('tab'))
+            <input type="hidden" name="tab" value="{{ request('tab') }}">
+            @endif
             @include('livewire.evaluations.partials.filter-fields')
 
             <div class="flex-[0.8] flex items-center justify-center self-stretch border-l border-l-[rgba(15,13,11,0.15)]">
@@ -45,7 +48,10 @@
         </flux:modal.trigger>
 
         <flux:modal name="evaluation-filters" class="tz-filter-stack">
-            <form class="flex flex-col gap-4" method="GET" action="{{ route('evaluations') }}">
+            <form class="flex flex-col gap-4" method="GET" action="{{ url()->current() }}">
+            @if(request('tab'))
+            <input type="hidden" name="tab" value="{{ request('tab') }}">
+            @endif
                 @include('livewire.evaluations.partials.filter-fields')
 
                 <flux:button variant="primary" type="submit" icon="magnifying-glass" class="w-full">Buscar</flux:button>

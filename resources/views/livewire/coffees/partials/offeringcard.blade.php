@@ -107,7 +107,7 @@ new class extends Component
             </div>
             {{-- Botones --}}
             <div class="flex" data-flux-card-actions>
-                <flux:button variant="outline" size="sm" icon="eye" data-tz-action="view" href="">Ver</flux:button>
+                <flux:button variant="outline" size="sm" icon="eye" data-tz-action="view" href="{{ route('offerings.show', $offering) }}">Ver</flux:button>
                 <flux:button variant="outline" size="sm" icon="plus" data-tz-action="evaluate" href="{{route('evaluations.create', array_merge(request()->query(), ['offering' => $offering->id]))}}">Evaluar</flux:button>
             </div>
         </div>

@@ -29,7 +29,7 @@ $data = $nodes->map(fn($n) => [
                 const rm = [node.id, ...this.descendants(node.id)];
                 this.selected = this.selected.filter(x => !rm.includes(x.ref));
             } else {
-                this.selected = [...this.selected, { ref: node.id, level: node.level }];
+                this.selected = [...this.selected, { ref: node.id, level: node.level, parent_id: node.parent }];
             }
         },
     }"

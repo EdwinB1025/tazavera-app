@@ -17,13 +17,15 @@ class Evaluation extends Model
     /** @use HasFactory<EvaluationFactory> */
     use HasFactory;
 
-    public static function search(Request $request)
+    #[Scope]
+    protected function search(Builder $query, Request $request)
     {
-        return Evaluation::query()
+        return $query
             ->evaluator($request->input('id')) //query de evaluacion individual
             ->coffeeId($request->input('coffee_id')) //query de cafe evaluado por id
             ->city($request->input('city')) //query de ciudad en cafeteria
             ->locationId($request->input('location_id')) //query de cafeteria por id
+            ->process($request->input('process')) //query de proceso del cafe
             ->when($request->input('score'), fn($q) => $q->scoreMin((float) $request->input('score'))) // query de puntaje
             ->statusIs($request->input('status'))
             ->with('offering.coffee', 'offering.location')
