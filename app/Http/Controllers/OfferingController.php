@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\FilterOfferingRequest;
+use App\Models\Evaluation;
+use App\Models\Offering;
+use Illuminate\Http\Request;
+
+class OfferingController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(FilterOfferingRequest $request)
+    {
+        $offerings = Offering::search($request);
+
+        return view('layouts.offerings.index', compact('offerings'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request, Offering $offering)
+    {
+        $offering->load('coffee', 'location');
+
+        $request->merge(['coffee_id' => $offering->coffee_id]);
+        $evaluations = Evaluation::specialist()->search($request);
+
+        return view('layouts.offerings.show', compact('offering', 'evaluations'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Offering $offering)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Offering $offering)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Offering $offering)
+    {
+        //
+    }
+}
