@@ -84,7 +84,7 @@ class Offering extends Model
             )
         );
 
-        self::mergeConsensus($id, ['cata_freq' => self::addCountToCataRefs($cataRefs, withParent: true)]);
+        self::mergeConsensus($id, ['cata_freq' => self::addCountToCataRefs($cataRefs)]);
     }
 
     public static function updateMainTastes(string $id): void
@@ -92,7 +92,7 @@ class Offering extends Model
         $evaluations = self::getConsensusEvaluations($id);
         $mainTasteRefs = $evaluations->flatMap(fn($e) => $e->descriptive['main_tastes'] ?? []);
 
-        self::mergeConsensus($id, ['main_tastes' => self::addCountToCataRefs($mainTasteRefs, withParent: false)]);
+        self::mergeConsensus($id, ['main_tastes' => self::addCountToCataRefs($mainTasteRefs)]);
     }
 
     /**
@@ -122,19 +122,17 @@ class Offering extends Model
         return $this->consensus;
     }
 
-    private static function addCountToCataRefs($refs, bool $withParent): array
+    private static function addCountToCataRefs($refs): array
     {
         return collect($refs)
             ->groupBy('ref')
-            ->map(function ($group) use ($withParent) {
+            ->map(function ($group) {
                 $item = [
                     'ref'   => (int) $group->first()['ref'],
                     'level' => $group->first()['level'],
-                ];
+                    'parent_id' => $group->first()['parent_id'] ?? null,
 
-                if ($withParent) {
-                    $item['parent_id'] = $group->first()['parent_id'];
-                }
+                ];
 
                 $item['count'] = $group->count();
 
