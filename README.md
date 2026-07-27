@@ -151,7 +151,6 @@ El diseño (CVA/SCA) y el código no siempre van de la mano — esta tabla es la
 | Recalcular consenso al **cerrar** vía \`update()\` | ⚠️ Gap conocido — solo se dispara desde \`store()\` |
 | Concordancia inter-especialista (Kendall's W) | ❌ No implementada — columnas existen, sin lógica que las calcule |
 | Evaluación consumer | ❌ No implementada — rol existe en el ENUM, sin formulario ni validación |
-| Vista \`cata_attributes\` | 💀 Creada en BD pero no usada — el formulario consulta \`olfactory_taxonomies\` directo vía scopes Eloquent; candidata a limpieza |
 | \`specialist_profiles\` | 📋 Backlog — extensión 1-1 de \`users\` |
 
 Detalle de cada gap, con su razón de diseño, en \`Desarrollo MVP/notas_de_implementacion.md\` (sección 7).
