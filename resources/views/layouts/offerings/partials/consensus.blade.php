@@ -2,9 +2,9 @@
 
 @php
 $consensus = $offering->getConsensus();
-$axisAvg = $consensus['axis_avg'] ?? [];
-$cuppingAvg = $consensus['cupping_avg'] ?? 0;
-$cataFreq = $consensus['cata_freq'] ?? [];
+$axisAvg = data_get($consensus, 'axis_avg', []);
+$cuppingAvg = data_get($consensus, 'cupping_avg', 0);
+$cataFreq = data_get($consensus, 'cata_freq', []);
 
 if ($cuppingAvg >= 90) {
 $badgeColor = 'tz-rating-exceptional';
@@ -21,7 +21,7 @@ $axes = ['aroma', 'flavor', 'acidity', 'sweetness', 'mouthfeel', 'overall'];
 
 <div class="tz-form-main flex flex-col gap-4">
     <div class="flex items-center justify-between">
-        <flux:heading class="tz-card-heading">CONSENSO</flux:heading>
+        <flux:subheading class="tz-subtitle2">CONSENSO</flux:subheading>
         <flux:badge class="{{ $badgeColor }}">
             <div data-flux-card-value>{{ $cuppingAvg }}</div>
             <div data-flux-card-scale>/100</div>
