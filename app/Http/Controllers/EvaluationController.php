@@ -79,7 +79,9 @@ class EvaluationController extends Controller
      */
     public function show(Evaluation $evaluation)
     {
-        //
+        $evaluation->load('offering.location', 'offering.coffee');
+
+        return view('layouts.evaluations.show', compact('evaluation'));
     }
 
     /**
