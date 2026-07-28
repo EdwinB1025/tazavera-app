@@ -69,6 +69,7 @@
     --color-surface-muted: color-mix(in srgb, var(--color-olive-500) 62%, white);
     --color-surface-neutral: color-mix(in srgb, var(--color-olive-500) 85%, transparent);
     --color-surface-muted-hover: color-mix(in srgb, var(--color-olive-500) 40%, transparent);
+    --color-surface-hover: color-mix(in srgb, var(--color-olive-800) 40%, transparent);
     --color-surface-form: var(--color-cream-100);
 
 }
@@ -222,7 +223,7 @@
 
     .tz-evaluations-nav [data-flux-navbar-items][data-current] {
         @apply !shadow-md;
-        background-color: color-mix(in srgb, var(--color-nav-surface) 45%, transparent) !important;
+        background-color: color-mix(in srgb, var(--color-surface-muted) 55%, var(--color-surface-hover)) !important;
         border-bottom: 2px solid var(--color-ui-strong) !important;
     }
 
@@ -249,7 +250,7 @@
 
     .tz-evaluations-nav [data-flux-navbar-items]:hover {
         @apply !inset-shadow-sm;
-        background-color: color-mix(in srgb, var(--color-nav-surface) 70%, transparent) !important;
+        background-color: var(--color-surface-hover) !important;
     }
 
     [data-flux-navbar-items] [data-flux-icon] {

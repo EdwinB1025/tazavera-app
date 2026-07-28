@@ -5,17 +5,17 @@ $evaluation = $evaluation ?? $offering->evaluations()->coffeeshop()->first();
 $components = \App\Livewire\Evaluations\EvaluationForm::COMPONENTS;
 
 if ($evaluation) {
-    $cuppingScore = $evaluation->affective['cupping_score'] ?? 0;
+$cuppingScore = $evaluation->affective['cupping_score'] ?? 0;
 
-    if ($cuppingScore >= 90) {
-        $badgeColor = 'tz-rating-exceptional';
-    } elseif ($cuppingScore >= 85) {
-        $badgeColor = 'tz-rating-excellent';
-    } elseif ($cuppingScore >= 80) {
-        $badgeColor = 'tz-rating-good';
-    } else {
-        $badgeColor = 'tz-rating-commercial';
-    }
+if ($cuppingScore >= 90) {
+$badgeColor = 'tz-rating-exceptional';
+} elseif ($cuppingScore >= 85) {
+$badgeColor = 'tz-rating-excellent';
+} elseif ($cuppingScore >= 80) {
+$badgeColor = 'tz-rating-good';
+} else {
+$badgeColor = 'tz-rating-commercial';
+}
 }
 @endphp
 

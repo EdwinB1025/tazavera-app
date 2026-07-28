@@ -5,10 +5,10 @@ $full = (int) floor($value);
 $fraction = $value - $full;
 @endphp
 
-<div class="flex flex-col items-center p-2 w-full">
-    <div class="flex items-center justify-between gap-2 w-full">
-        <flux:label class="self-start w-20 shrink-0">{{ __('axis.'.$axis) }}: </flux:label>
-        <div class="flex flex-nowrap gap-1">
+<div class="flex flex-col items-center min-w-0 p-2 w-full">
+    <div class="grid grid-cols-[1fr_auto_0.5fr] items-center gap-2 min-w-0 w-full">
+        <flux:label class="justify-self-start">{{ __('axis.'.$axis) }}: </flux:label>
+        <div class="flex flex-nowrap items-center justify-self-center min-w-0">
             @for($i = 1; $i <= 9; $i++)
                 @php
                 $class=null;
@@ -24,11 +24,11 @@ $fraction = $value - $full;
                 $class = 'bean-off';
                 }
                 @endphp
-                <span @if($class) class="{{ $class }}" @endif @if($style) style="{{ $style }}" @endif>
+                <span @if($class) class="{{ $class }} min-w-0" @endif @if($style) style="{{ $style }}" @endif>
                     <flux:icon.coffee-bean :number="$i" size="lg" bg="currentColor" />
                 </span>
                 @endfor
         </div>
-        <span class="tz-paragraph italic underline w-12 shrink-0 text-right">{{ $value }}</span>
+        <span class="tz-paragraph italic underline w-auto justify-self-end">{{ $value }}</span>
     </div>
 </div>
