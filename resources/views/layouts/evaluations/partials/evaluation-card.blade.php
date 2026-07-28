@@ -61,6 +61,8 @@
 
     {{-- Acciones --}}
     <div class="flex" data-flux-card-actions>
+        <flux:button variant="outline" size="sm" data-tz-action="view" href="{{ route('evaluations.show', ['evaluation' => $evaluation, 'back' => url()->current()]) }}">Ver</flux:button>
+
         @if($evaluation->status === 'open')
         <form method="POST" action="{{ route('evaluations.update', $evaluation) }}" onsubmit="return confirm('¿Cerrar esta evaluación?')">
             @csrf
