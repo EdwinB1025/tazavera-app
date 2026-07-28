@@ -15,9 +15,7 @@ class EvaluationController extends Controller
     public function index(Request $request)
     {
         $request->merge(['id' => auth()->id()]);
-
         $evaluations = Evaluation::search($request);
-
         return view('layouts.evaluations.index', compact('evaluations'));
     }
 
@@ -51,63 +49,7 @@ class EvaluationController extends Controller
             'note'              => $request->input('note'),
         ]);
 
-        return redirect()->route('evaluations.create', ['offering' => $request->input('offering_id')]);
-    }
-
-    /**
-     * Recalcula y guarda el consenso de la offering cuando ya hay más de 5
-     * evaluaciones cerradas de especialistas. axis_avg promedia affective.axis;
-     * cata_freq y main_tastes cuentan frecuencia de refs entre esas evaluaciones;
-     * cupping_avg descuenta 4 puntos por cada taza defectuosa, normalizado a un
-     * panel de 5 tazas (penalización -4d del protocolo SCA; -2u queda pendiente).
-     */
-    private function updateConsensus(Offering $offering): void
-    {
-
-        $axisKeys = ['aroma', 'flavor', 'aftertaste', 'acidity', 'sweetness', 'mouthfeel', 'overall'];
-        $axisAvg = collect($axisKeys)->mapWithKeys(fn($axis) => [
-            $axis => round($evaluations->avg(fn($e) => $e->affective['axis'][$axis] ?? 0), 2),
-        ])->all();
-
-        $defectiveCount = $evaluations->filter(fn($e) => $e->affective['is_defective'] ?? false)->count();
-        $cuppingRaw = $evaluations->avg(fn($e) => $e->affective['cupping_score'] ?? 0);
-        $cuppingAvg = round(($cuppingRaw - 4 * $defectiveCount * 5 / $n) * 4) / 4;
-
-        $cataRefs = $evaluations->flatMap(fn($e) => [
-            ...($e->descriptive['cata']['aroma'] ?? []),
-            ...($e->descriptive['cata']['flavor_aftertaste'] ?? []),
-            ...($e->affective['cata']['mouthfeel'] ?? []),
-            ...($e->affective['cata']['defects'] ?? []),
-        ]);
-        $mainTasteRefs = $evaluations->flatMap(fn($e) => $e->descriptive['main_tastes'] ?? []);
-
-        $offering->update([
-            'consensus' => [
-                'axis_avg'    => $axisAvg,
-                'cupping_avg' => $cuppingAvg,
-                'main_tastes' => $this->countCataRefs($mainTasteRefs, withParent: false),
-                'cata_freq'   => $this->countCataRefs($cataRefs, withParent: true),
-            ],
-        ]);
-    }
-
-    /**
-     * Agrupa refs de cata repetidos entre evaluaciones y cuenta su frecuencia.
-     * El parent_id, si se pide, se toma del que ya guardó descriptor-cascade.blade.php
-     * al crear la evaluación (no se re-consulta la taxonomía).
-     */
-    private function countCataRefs($refs, bool $withParent): array
-    {
-        return collect($refs)->groupBy('ref')->map(function ($group) use ($withParent) {
-            $item = [
-                'ref'   => (int) $group->first()['ref'],
-                'level' => $group->first()['level'],
-                'parent_id' => $group->fist()['parent_id'],
-                'count' => $group->count(),
-            ];
-
-            return $item;
-        })->values()->all();
+        return redirect()->route('evaluations', ['offering' => $request->input('offering_id')]);
     }
 
     /**
@@ -145,6 +87,8 @@ class EvaluationController extends Controller
      */
     public function edit(Evaluation $evaluation)
     {
+        session(['evaluation_return_to' => url()->previous()]);
+
         $evaluation->load('offering.location', 'offering.coffee');
         $offering = $evaluation->offering;
 
@@ -190,7 +134,7 @@ class EvaluationController extends Controller
             }
         }
 
-        return redirect()->back();
+        return redirect(session()->pull('evaluation_return_to', url()->previous()));
     }
     /**
      * Remove the specified resource from storage.

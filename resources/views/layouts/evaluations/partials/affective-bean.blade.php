@@ -7,7 +7,7 @@
             @click="selected = {{ $i }}"
             :class="selected >= {{ $i }} ? 'bean-on' : 'bean-off'"
             class="transition-colors">
-            <flux:icon.coffee-bean :number="$i" size="xl" bg="currentColor" />
+            <flux:icon.coffee-bean :number="$i" size="lg" bg="currentColor" />
             </button>
             @endfor
     </div>
