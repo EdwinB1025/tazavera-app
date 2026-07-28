@@ -3,7 +3,7 @@
 
     <div class="flex flex-col items-start gap-4 mb-2">
         <div class="flex items-center justify-between w-full" data-flux-evaluation-actions>
-            <flux:link :href="$evaluation ? route('evaluations', request()->query()) : route('offerings', request()->query())">
+            <flux:link :href="$evaluation ? route('evaluations', request()->query()) : route('offerings.show', request()->query())">
                 <flux:icon.arrow-left class="inline size-4" /> Volver
             </flux:link>
             <div class="flex items-center gap-2">

@@ -28,10 +28,10 @@ $axes = ['aroma', 'flavor', 'acidity', 'sweetness', 'mouthfeel', 'overall'];
         </flux:badge>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="flex-1 flex flex-col gap-3 p-4 max-md:p-2 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+        <div class="flex-1 min-w-0 flex flex-col gap-3 p-4 max-md:p-2 w-full">
             <flux:subheading class="tz-subtitle">Atributos SCA</flux:subheading>
-            <div class="flex flex-col p-2  w-full">
+            <div class="flex flex-col min-w-0 p-2 w-full">
                 @foreach($axes as $axis)
                 <x-layouts::offerings.partials.consensus-axis :axis="$axis" :value="$axisAvg[$axis] ?? 0" />
                 @endforeach
