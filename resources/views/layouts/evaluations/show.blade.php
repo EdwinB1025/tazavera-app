@@ -4,6 +4,12 @@
             <flux:icon.arrow-left class="inline size-4" /> Volver
         </flux:link>
 
-        {{-- TODO: contenido --}}
+        <flux:heading level="2">{{ ucfirst($evaluation->offering->coffee->name) }}</flux:heading>
+
+        <x-layouts::evaluations.partials.technical-info :evaluation="$evaluation" />
+
+        <div data-flux-evaluation-actions>
+            <flux:button variant="outline" size="sm" data-tz-action="cancel" href="{{ request('back', route('evaluations')) }}">Volver</flux:button>
+        </div>
     </div>
 </x-layouts::app>
