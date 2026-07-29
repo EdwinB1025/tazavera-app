@@ -75,81 +75,81 @@ El esquema completo de entidades y la estructura real de los JSON (`descriptive`
 
 ### 1. Clonar el repositorio
 
-\`\`\`bash
+```bash
 git clone https://github.com/EdwinB1025/tazavera-app.git
 cd tazavera-app
-\`\`\`
+```
 
 ### 2. Instalar dependencias PHP
 
-\`\`\`bash
+```bash
 composer install
-\`\`\`
+```
 
 ### 3. Configurar el entorno
 
-\`\`\`bash
+```bash
 cp .env.example .env
 php artisan key:generate
-\`\`\`
+```
 
-⚠️ **Importante:** \`.env.example\` trae \`DB_CONNECTION=sqlite\` por defecto (plantilla del starter kit de Laravel, sin ajustar a este proyecto). Hay que cambiarlo a MySQL a mano, porque una de las migraciones crea una vista SQL (\`CREATE OR REPLACE VIEW\`) que **no es válida en SQLite**. Editar \`.env\`:
+⚠️ **Importante:** `.env.example` trae `DB_CONNECTION=sqlite` por defecto (plantilla del starter kit de Laravel, sin ajustar a este proyecto). Hay que cambiarlo a MySQL a mano, porque una de las migraciones crea una vista SQL (`CREATE OR REPLACE VIEW`) que **no es válida en SQLite**. Editar `.env`:
 
-\`\`\`env
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=tazavera
 DB_USERNAME=root
 DB_PASSWORD=
-\`\`\`
+```
 
-Crear la base de datos vacía en MySQL antes de migrar (con el cliente que uses, ej. \`mysql -u root -p -e "CREATE DATABASE tazavera;"\`).
+Crear la base de datos vacía en MySQL antes de migrar (con el cliente que uses, ej. `mysql -u root -p -e "CREATE DATABASE tazavera;"`).
 
 ### 4. Migrar y poblar la base de datos
 
-\`\`\`bash
+```bash
 php artisan migrate
 php artisan db:seed
-\`\`\`
+```
 
-🌱 El seeder (\`DatabaseSeeder\`) corre, en orden: \`CoffeshopSeeder\`, \`CoffeesSeeder\`, \`OlfactoryTaxonomySeeder\` (113 nodos de la taxonomía sensorial desde CSV, fuente: WCR Sensory Lexicon), \`OfferingsSeeder\`, \`ProvisionalEvaluationSeeder\`. Con esto queda una base de datos utilizable de punta a punta sin cargar nada a mano.
+🌱 El seeder (`DatabaseSeeder`) corre, en orden: `CoffeshopSeeder`, `CoffeesSeeder`, `OlfactoryTaxonomySeeder` (113 nodos de la taxonomía sensorial desde CSV, fuente: WCR Sensory Lexicon), `OfferingsSeeder`, `ProvisionalEvaluationSeeder`. Con esto queda una base de datos utilizable de punta a punta sin cargar nada a mano.
 
 ### 5. Instalar dependencias de frontend
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 ## ▶️ Levantar el proyecto
 
 ### Opción A — un solo comando (recomendado)
 
-\`\`\`bash
+```bash
 composer run dev
-\`\`\`
+```
 
-Levanta en paralelo: el servidor de Laravel (\`php artisan serve\`, puerto 8000), el worker de colas, los logs (\`php artisan pail\`) y Vite en modo desarrollo (hot reload). Todo en una sola terminal, con colores por proceso.
+Levanta en paralelo: el servidor de Laravel (`php artisan serve`, puerto 8000), el worker de colas, los logs (`php artisan pail`) y Vite en modo desarrollo (hot reload). Todo en una sola terminal, con colores por proceso.
 
 ### Opción B — manual, en terminales separadas
 
-\`\`\`bash
+```bash
 php artisan serve
-\`\`\`
+```
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
-La primera levanta el backend en \`http://localhost:8000\`; la segunda compila y sirve los assets (CSS/JS) con recarga en caliente. Con solo \`php artisan serve\` corriendo (sin \`npm run dev\`), la app carga pero sin los estilos/JS compilados actualizados — hace falta al menos un \`npm run build\` una vez.
+La primera levanta el backend en `http://localhost:8000`; la segunda compila y sirve los assets (CSS/JS) con recarga en caliente. Con solo `php artisan serve` corriendo (sin `npm run dev`), la app carga pero sin los estilos/JS compilados actualizados — hace falta al menos un `npm run build` una vez.
 
 ### Producción / build estático
 
-\`\`\`bash
+```bash
 npm run build
-\`\`\`
+```
 
-Compila los assets a \`public/build/\` una sola vez, sin proceso de desarrollo corriendo.
+Compila los assets a `public/build/` una sola vez, sin proceso de desarrollo corriendo.
 
 ## 📊 Estado real de implementación
 
@@ -157,23 +157,23 @@ El diseño (CVA/SCA) y el código no siempre van de la mano — esta tabla es la
 
 | Pieza | Estado |
 |---|---|
-| Evaluación descriptive (especialista) | ✅ Implementada (\`EvaluationForm\`, escala 0-15, CATA, main tastes) |
-| Evaluación affective (especialista) | ✅ Implementada, incl. \`is_defective\` y cupping score individual |
-| Cupping score individual (0-100) | ✅ Implementado — \`EvaluationController::computeCuppingScore()\` |
-| Consenso agregado (\`offerings.consensus\`) | ✅ Implementado, se dispara solo al crear evaluación (\`store()\`), con >5 evaluaciones \`closed\`+\`specialist\` |
-| Deducción \`-4d\` (defectos) en \`cupping_avg\` | ✅ Implementada, agregada a nivel de offering |
-| Deducción \`-2u\` (uniformidad) | 📋 Backlog — no existe campo de uniformidad en el modelo aún |
-| Recalcular consenso al **cerrar** vía \`update()\` | ⚠️ Gap conocido — solo se dispara desde \`store()\` |
+| Evaluación descriptive (especialista) | ✅ Implementada (`EvaluationForm`, escala 0-15, CATA, main tastes) |
+| Evaluación affective (especialista) | ✅ Implementada, incl. `is_defective` y cupping score individual |
+| Cupping score individual (0-100) | ✅ Implementado — `EvaluationController::computeCuppingScore()` |
+| Consenso agregado (`offerings.consensus`) | ✅ Implementado, se dispara solo al crear evaluación (`store()`), con >5 evaluaciones `closed`+`specialist` |
+| Deducción `-4d` (defectos) en `cupping_avg` | ✅ Implementada, agregada a nivel de offering |
+| Deducción `-2u` (uniformidad) | 📋 Backlog — no existe campo de uniformidad en el modelo aún |
+| Recalcular consenso al **cerrar** vía `update()` | ⚠️ Gap conocido — solo se dispara desde `store()` |
 | Concordancia inter-especialista (Kendall's W) | ❌ No implementada — columnas existen, sin lógica que las calcule |
 | Evaluación consumer | ❌ No implementada — rol existe en el ENUM, sin formulario ni validación |
-| Vista \`cata_attributes\` | 💀 Creada en BD pero no usada — el formulario consulta \`olfactory_taxonomies\` directo vía scopes Eloquent; candidata a limpieza |
-| \`specialist_profiles\` | 📋 Backlog — extensión 1-1 de \`users\` |
+| Vista `cata_attributes` | 💀 Creada en BD pero no usada — el formulario consulta `olfactory_taxonomies` directo vía scopes Eloquent; candidata a limpieza |
+| `specialist_profiles` | 📋 Backlog — extensión 1-1 de `users` |
 
-Detalle de cada gap, con su razón de diseño, en \`Desarrollo MVP/notas_de_implementacion.md\` (sección 7).
+Detalle de cada gap, con su razón de diseño, en `Desarrollo MVP/notas_de_implementacion.md` (sección 7).
 
 ## 🗺️ Backlog
 
-Esto no es "falta implementar" — es lo que **deliberadamente se dejó fuera del MVP** para mantener el alcance manejable. Distinto de la tabla de arriba (esa es sobre piezas que el diseño del MVP ya definió pero el código no cubre todavía; esto es funcionalidad de producto futura). El detalle y la fundamentación de cada punto vive en \`Idealizacion/proyecto-mvc-laravel-ideas.md\`.
+Esto no es "falta implementar" — es lo que **deliberadamente se dejó fuera del MVP** para mantener el alcance manejable. Distinto de la tabla de arriba (esa es sobre piezas que el diseño del MVP ya definió pero el código no cubre todavía; esto es funcionalidad de producto futura). El detalle y la fundamentación de cada punto vive en `Idealizacion/proyecto-mvc-laravel-ideas.md`.
 
 - 🧾 **Marketplace transaccional** — órdenes, pagos y comunicación con la cafetería. Modelo previsto: cuenta intermediaria de la plataforma (no pago directo), payout manual/batch al inicio. El MVP es directorio + verificación, no venta.
 - 💸 **Payout automatizado** a cafeterías (settlement programado, evolución del payout manual/batch de arriba).
@@ -191,6 +191,6 @@ Esto no es "falta implementar" — es lo que **deliberadamente se dejó fuera de
 ## 📝 Notas
 
 - 🔐 Login/registro los provee el starter kit de Livewire (autenticación nativa de Laravel) — no hace falta configurar nada extra para probarlos.
-- 🔍 \`php artisan tinker\` sirve para inspeccionar datos rápido (ej. \`Evaluation::find(1)->descriptive\`).
-- 🩹 Si algo falla al migrar con un error de sintaxis SQL, es casi seguro que \`.env\` sigue apuntando a \`sqlite\` — revisar el paso 3.
-- 🧩 Los campos JSON del modelo (\`descriptive\`, \`affective\`, \`consensus\`, \`extrinsics\`, \`attributes\`, \`contact\`) se leen como bloque y se parsean en backend; solo los campos de catálogo que se filtran de verdad (origen, variedad, proceso, tags) van a columnas generadas indexadas. Detalle de consultas en \`Desarrollo MVP/notas_de_implementacion.md\` (sección 4b).
+- 🔍 `php artisan tinker` sirve para inspeccionar datos rápido (ej. `Evaluation::find(1)->descriptive`).
+- 🩹 Si algo falla al migrar con un error de sintaxis SQL, es casi seguro que `.env` sigue apuntando a `sqlite` — revisar el paso 3.
+- 🧩 Los campos JSON del modelo (`descriptive`, `affective`, `consensus`, `extrinsics`, `attributes`, `contact`) se leen como bloque y se parsean en backend; solo los campos de catálogo que se filtran de verdad (origen, variedad, proceso, tags) van a columnas generadas indexadas. Detalle de consultas en `Desarrollo MVP/notas_de_implementacion.md` (sección 4b).
