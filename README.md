@@ -48,8 +48,7 @@ El esquema completo de entidades y la estructura real de los JSON (`descriptive`
 | **Formulario de evaluación** — Estructura de formulario en ejes | ![Evaluación](docs/screenshots/formulario.png) |
 | **Formulario de evaluación (ejes)** — Ejemplo eje de evaluacion | ![Evaluación](docs/screenshots/eje-evaluacion.png) |
 | **Rueda de sabores (CATA wheel)** — Selector de sabores | ![Rueda de sabores](docs/screenshots/rueda-sabores.png) |
-| **Ficha de offering** — Informacion General, Evaluaciones, Ficha Tecnica | ![Ficha de offering](docs/screenshots/offering-consenso.
-png) |
+| **Ficha de offering** — Informacion General, Evaluaciones, Ficha Tecnica | ![Ficha de offering](docs/screenshots/offering-consenso.png) |
 | **Ficha de offering** — Consenso | ![Ficha de offering](docs/screenshots/consenso.png) |
 
 ## 🛠️ Stack
