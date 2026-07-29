@@ -45,9 +45,12 @@ El esquema completo de entidades y la estructura real de los JSON (`descriptive`
 | **Login** — Inicial sesión | ![Usuario](docs/screenshots/log-in.png) |
 | **Registrarse** — Crear nuevo usuario | ![Usuario](docs/screenshots/registrarse.png) |
 | **Formulario de evaluación** — Crear evaluacion + CATA | ![Evaluación](docs/screenshots/crear-evaluacion.png) |
-| **Formulario de evaluación (affective vs decriptive)** — calidad affectiva y descriptiva + cupping score | ![Evaluación affective](docs/screenshots/evaluacion-axis.png) |
-| **Rueda de sabores (CATA wheel)** — selector de sabores | ![Rueda de sabores](docs/screenshots/rueda-sabores.png) |
-| **Ficha de offering** — consenso agregado, cupping_avg, concordancia | ![Ficha de offering](docs/screenshots/offering-consenso.png) |
+| **Formulario de evaluación** — Estructura de formulario en ejes | ![Evaluación](docs/screenshots/formulario.png) |
+| **Formulario de evaluación (ejes)** — Ejemplo eje de evaluacion | ![Evaluación](docs/screenshots/eje-evaluacion.png) |
+| **Rueda de sabores (CATA wheel)** — Selector de sabores | ![Rueda de sabores](docs/screenshots/rueda-sabores.png) |
+| **Ficha de offering** — Informacion General, Evaluaciones, Ficha Tecnica | ![Ficha de offering](docs/screenshots/offering-consenso.
+| **Ficha de offering** — Consenso | ![Ficha de offering](docs/screenshots/consenso.png) |
+png) |
 
 ## 🛠️ Stack
 
