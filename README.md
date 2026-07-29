@@ -38,15 +38,16 @@ El esquema completo de entidades y la estructura real de los JSON (`descriptive`
 
 ## 📸 Capturas
 
-> Pendiente de añadir. Guarda las imágenes en `docs/screenshots/` con estos nombres y las miniaturas de abajo se activan solas — o cambia las rutas si prefieres otra convención.
+> Funcionalidades principales
 
 | | |
 |---|---|
-| **Formulario de evaluación (descriptive)** — captura de intensidad por eje + CATA | ![Evaluación descriptive](docs/screenshots/evaluacion-descriptive.png) |
-| **Formulario de evaluación (affective)** — calidad + cupping score | ![Evaluación affective](docs/screenshots/evaluacion-affective.png) |
-| **Rueda de sabores (CATA wheel)** — sunburst zoomable de descriptores | ![Rueda de sabores](docs/screenshots/rueda-sabores.png) |
+| **Login** — Inicial sesión | ![Usuario](docs/screenshots/log-in.png) |
+| **Registrarse** — Crear nuevo usuario | ![Usuario](docs/screenshots/registrarse.png) |
+| **Formulario de evaluación** — Crear evaluacion + CATA | ![Evaluación](docs/screenshots/crear-evaluacion.png) |
+| **Formulario de evaluación (affective vs decriptive)** — calidad affectiva y descriptiva + cupping score | ![Evaluación affective](docs/screenshots/evaluacion-axis.png) |
+| **Rueda de sabores (CATA wheel)** — selector de sabores | ![Rueda de sabores](docs/screenshots/rueda-sabores.png) |
 | **Ficha de offering** — consenso agregado, cupping_avg, concordancia | ![Ficha de offering](docs/screenshots/offering-consenso.png) |
-| **Mapa de locales** — búsqueda por proximidad | ![Mapa de locales](docs/screenshots/mapa-locales.png) |
 
 ## 🛠️ Stack
 
