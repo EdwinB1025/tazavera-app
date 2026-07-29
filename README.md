@@ -36,6 +36,18 @@ Especialista y consumidor **no se promedian entre sí** — se contrastan atribu
 
 El esquema completo de entidades y la estructura real de los JSON (`descriptive`, `affective`, `consensus`) están en `Desarrollo MVP/entidades.md`.
 
+## 📸 Capturas
+
+> Pendiente de añadir. Guarda las imágenes en `docs/screenshots/` con estos nombres y las miniaturas de abajo se activan solas — o cambia las rutas si prefieres otra convención.
+
+| | |
+|---|---|
+| **Formulario de evaluación (descriptive)** — captura de intensidad por eje + CATA | ![Evaluación descriptive](docs/screenshots/evaluacion-descriptive.png) |
+| **Formulario de evaluación (affective)** — calidad + cupping score | ![Evaluación affective](docs/screenshots/evaluacion-affective.png) |
+| **Rueda de sabores (CATA wheel)** — sunburst zoomable de descriptores | ![Rueda de sabores](docs/screenshots/rueda-sabores.png) |
+| **Ficha de offering** — consenso agregado, cupping_avg, concordancia | ![Ficha de offering](docs/screenshots/offering-consenso.png) |
+| **Mapa de locales** — búsqueda por proximidad | ![Mapa de locales](docs/screenshots/mapa-locales.png) |
+
 ## 🛠️ Stack
 
 - 🐘 **Backend:** Laravel 13, PHP 8.3+ (probado con 8.5)
@@ -151,9 +163,27 @@ El diseño (CVA/SCA) y el código no siempre van de la mano — esta tabla es la
 | Recalcular consenso al **cerrar** vía \`update()\` | ⚠️ Gap conocido — solo se dispara desde \`store()\` |
 | Concordancia inter-especialista (Kendall's W) | ❌ No implementada — columnas existen, sin lógica que las calcule |
 | Evaluación consumer | ❌ No implementada — rol existe en el ENUM, sin formulario ni validación |
+| Vista \`cata_attributes\` | 💀 Creada en BD pero no usada — el formulario consulta \`olfactory_taxonomies\` directo vía scopes Eloquent; candidata a limpieza |
 | \`specialist_profiles\` | 📋 Backlog — extensión 1-1 de \`users\` |
 
 Detalle de cada gap, con su razón de diseño, en \`Desarrollo MVP/notas_de_implementacion.md\` (sección 7).
+
+## 🗺️ Backlog
+
+Esto no es "falta implementar" — es lo que **deliberadamente se dejó fuera del MVP** para mantener el alcance manejable. Distinto de la tabla de arriba (esa es sobre piezas que el diseño del MVP ya definió pero el código no cubre todavía; esto es funcionalidad de producto futura). El detalle y la fundamentación de cada punto vive en \`Idealizacion/proyecto-mvc-laravel-ideas.md\`.
+
+- 🧾 **Marketplace transaccional** — órdenes, pagos y comunicación con la cafetería. Modelo previsto: cuenta intermediaria de la plataforma (no pago directo), payout manual/batch al inicio. El MVP es directorio + verificación, no venta.
+- 💸 **Payout automatizado** a cafeterías (settlement programado, evolución del payout manual/batch de arriba).
+- 🏅 **Panel de fidelización para cafeterías** — suscripciones, puntos.
+- 📈 **Reportes de tendencias de mercado** para cafeterías, incluyendo valor ponderado por atributo (qué le importa a cada segmento de consumidor: flavor, trazabilidad, sostenibilidad, comercio justo).
+- 🎓 **Verificación de especialista — subsistema completo** — banco de preguntas, cuestionario de auto-validación y combinación de certificación Q Grader + exposición + calificación comunitaria. El MVP se queda con la declaración mínima (auto-reporte de certificación Q Grader).
+- ☕ **Tercer lado del mercado — especialistas monetizados** — consultoría, recetas para cafeterías, patentes de bebidas, workshops/experiencias de cata.
+- 🚚 **Integración logística con terceros** — APIs de delivery para automatizar entregas (la cafetería sigue siendo responsable del fulfillment).
+- 🌱 **Physical assessment del café verde** — evaluación del grano sin tostar (color, defectos, humedad, tamaño), condicionado a que la app se expanda hacia la cadena de distribución. El estándar SCA para esto todavía está en fase alpha, así que basarse en él hoy sería frágil.
+- 🔀 **Consenso segregado por método de extracción** — hoy el consenso mezcla espresso, V60, prensa francesa, etc. En backlog, separar el cálculo por método cuando haya volumen suficiente para no perder muestra.
+- 🎯 **Tag Q de calibración en acidez** — hoy es solo informativo; en backlog, cruzarlo con la certificación del evaluador para detectar si los especialistas Q-certificados concuerdan más entre sí en los descriptores de acidez del temario Q.
+- ⏱️ **Cronjob de cierre automático de evaluaciones** — cerrar en masa evaluaciones que llevan abiertas más de cierto tiempo, en vez de depender del cierre manual.
+- 📖 **Guía de uso + FAQ** — explicar al consumidor el "cómo" evaluar y al especialista el "por qué" técnico. Diferido hasta que las decisiones de evaluación estén cerradas, para no documentar algo que todavía cambia.
 
 ## 📝 Notas
 
